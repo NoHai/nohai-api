@@ -4,6 +4,7 @@
   "description": "The backend part of the NoHai application.",
   "main": "./dist/index.js",
   "scripts": {
+    "dev": "nodemon ./dist/index.js",
     "build": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +21,7 @@
   "dependencies": {
     "@types/express": "^4.16.1",
     "express": "^4.16.4",
+    "nodemon": "^1.18.9",
     "typescript": "^3.2.4"
   }
 }
