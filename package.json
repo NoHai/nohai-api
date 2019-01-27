@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NoHai/nohai-api/issues"
   },
-  "homepage": "https://github.com/NoHai/nohai-api#readme"
+  "homepage": "https://github.com/NoHai/nohai-api#readme",
+  "dependencies": {
+    "typescript": "^3.2.4"
+  }
 }
