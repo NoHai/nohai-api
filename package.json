@@ -2,8 +2,9 @@
   "name": "nohai-api",
   "version": "1.0.0",
   "description": "The backend part of the NoHai application.",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
+    "build": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/NoHai/nohai-api#readme",
   "dependencies": {
+    "@types/express": "^4.16.1",
     "express": "^4.16.4",
     "typescript": "^3.2.4"
   }
