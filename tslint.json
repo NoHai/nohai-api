@@ -25,6 +25,10 @@
         "quotemark": [
             true,
             "single"
+        ],
+        "member-access": [
+            true,
+            "no-public"
         ]
     },
     "jsRules": {
