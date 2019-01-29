@@ -1,2 +1,4 @@
-export class Event {
+import { Entity } from './entity';
+
+export class Event extends Entity {
 }
