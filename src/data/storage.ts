@@ -1,9 +1,8 @@
 import { Db } from 'mongodb';
 import { Observable } from 'rxjs';
 import { Entity } from './entities/entity';
-import { IStorage } from './i-storage';
 
-export class Storage<TEntity extends Entity> implements IStorage<TEntity> {
+export class Storage<TEntity extends Entity> {
     private readonly db!: Db;
 
     getMany(predicate: any): Observable<TEntity[]> {
