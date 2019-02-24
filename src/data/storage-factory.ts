@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { Entity } from './entities/entity';
 import { IStorage } from './i-storage';
 import { IStorageFactory } from './i-storage-factory';
