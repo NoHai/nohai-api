@@ -1,5 +1,5 @@
 import { Event } from '../models/event';
-import { ICommand } from './core/i-command';
+import {IObservableCommand} from './core/i-observable-command';
 
-export interface ICreateEvent extends ICommand<Event, Event> {
+export interface ICreateEvent extends IObservableCommand<Event, Event> {
 }
