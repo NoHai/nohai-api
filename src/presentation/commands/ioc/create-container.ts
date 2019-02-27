@@ -5,22 +5,27 @@ import {Nothing} from '../../../business/models/nothing';
 import {DataAutomapper} from '../../../data/mapping/data-automapper';
 import {EventRepository} from '../../../data/repositories/event-repository';
 import {StorageFactory} from '../../../data/storage-factory';
+import {InitializeDatabaseConnection} from "../initialize-database-connection";
 
 export class CreateContainer implements ICommand<Nothing, AwilixContainer> {
-    private businessCommands: ReadonlyArray<any> = [
-        {createEvent: asClass(CreateEvent).scoped()},
+    private readonly dataAutomapper: ReadonlyArray<any> = [
+        {mapper: asClass(DataAutomapper).transient().classic()},
+    ];
+    
+    private readonly businessCommands: ReadonlyArray<any> = [
+        {createEvent: asClass(CreateEvent).transient().classic()},
     ];
 
-    private businessRepositories: ReadonlyArray<any> = [
-        {eventRepository: asClass(EventRepository).scoped()},
+    private readonly businessRepositories: ReadonlyArray<any> = [
+        {eventRepository: asClass(EventRepository).transient().classic()},
     ];
 
-    private dataAutomapper: ReadonlyArray<any> = [
-        {mapper: asClass(DataAutomapper).classic()},
+    private readonly memoryStorage: ReadonlyArray<any> = [
+        {storageFactory: asClass(StorageFactory).singleton().classic()},
     ];
-
-    private memoryStorage: ReadonlyArray<any> = [
-        {storageFactory: asClass(StorageFactory).singleton()},
+    
+    private readonly presentationCommands: ReadonlyArray<any> = [
+        {initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()}  
     ];
 
     private container: AwilixContainer = createContainer({injectionMode: InjectionMode.CLASSIC});
@@ -31,15 +36,11 @@ export class CreateContainer implements ICommand<Nothing, AwilixContainer> {
     }
 
     private buildRegistrations(): ReadonlyArray<any> {
-        const registrations: ReadonlyArray<any> = [];
-
-        registrations
-            .concat(this.dataAutomapper)
+        return this.dataAutomapper
             .concat(this.memoryStorage)
             .concat(this.businessRepositories)
-            .concat(this.businessCommands);
-
-        return registrations;
+            .concat(this.businessCommands)
+            .concat(this.presentationCommands);
     }
 
     private register(registrations: ReadonlyArray<any>): void {

@@ -1,8 +1,7 @@
 import { Db } from 'mongodb';
 import { Observable } from 'rxjs';
-import { Entity } from './entities/entity';
 
-export class Storage<TEntity extends Entity> {
+export class Storage<TEntity> {
     private readonly db!: Db;
 
     getMany(predicate: any): Observable<TEntity[]> {
@@ -14,10 +13,10 @@ export class Storage<TEntity extends Entity> {
     }
 
     update(entity: TEntity): Observable<TEntity> {
-        return Observable.create(this.db.collection('').updateOne({ _id: entity.id }, entity));
+        return Observable.create(this.db.collection('').updateOne({ _id: (<any>entity).id }, entity));
     }
 
     delete(entity: TEntity): Observable<TEntity> {
-        return Observable.create(this.db.collection('').deleteOne({ _id: entity.id }));
+        return Observable.create(this.db.collection('').deleteOne({ _id: (<any>entity).id }));
     }
 }

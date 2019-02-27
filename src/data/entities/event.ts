@@ -1,4 +1,8 @@
-import { Entity } from './entity';
+import {BaseEntity, Entity, PrimaryGeneratedColumn} from "typeorm";
 
-export class Event extends Entity {
+@Entity({database:'test'})
+export class Event extends BaseEntity {
+
+    @PrimaryGeneratedColumn()
+    id!: string;
 }

@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
-import { Entity } from './entities/entity';
 
-export interface IStorage<TEntity extends Entity> {
+export interface IStorage<TEntity> {
     getMany(predicate: any): Observable<TEntity[]>;
 
     insert(entity: TEntity): Observable<TEntity>;
