@@ -1,0 +1,25 @@
+{
+  "data": {
+    "typeorm": {
+      "type": "mongodb",
+      "host": "localhost",
+      "port": 27017,
+      "username": "root",
+      "password": "",
+      "database": "production",
+      "useNewUrlParser": true,
+      "synchronize": true,
+      "logging": false,
+      "entities": [
+        "dist/data/entities/event.js"
+      ],
+      "migrations": [],
+      "subscribers": [],
+      "cli": {
+        "entitiesDir": "src/data/entities",
+        "migrationsDir": "src/data/migrations",
+        "subscribersDir": "src/data/subscribers"
+      }
+    }
+  }
+}
