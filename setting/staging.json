@@ -21,5 +21,8 @@
         "subscribersDir": "src/data/subscribers"
       }
     }
+  },
+  "presentation": {
+    "port": 5000
   }
 }
