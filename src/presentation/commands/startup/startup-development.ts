@@ -1,10 +1,10 @@
 import express from 'express';
-import {Nothing} from '../../../business/models/nothing';
-import {IInitializeDatabaseConnection} from '../../../data/commands/i-initialize-database-connection';
-import {IPresentationSettings} from '../../i-presentation-settings';
-import {CreateDevelopmentContainer} from '../ioc/create-development-container';
-import {ResolveService} from '../ioc/resolve-service';
-import {IStartup} from './i-startup';
+import { Nothing } from '../../../business/models/nothing';
+import { IInitializeDatabaseConnection } from '../../../data/commands/i-initialize-database-connection';
+import { IPresentationSettings } from '../../i-presentation-settings';
+import { CreateDevelopmentContainer } from '../ioc/create-development-container';
+import { ResolveService } from '../ioc/resolve-service';
+import { IStartup } from './i-startup';
 
 export class StartupDevelopment implements IStartup {
     private readonly express = express();

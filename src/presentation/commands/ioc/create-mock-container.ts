@@ -1,35 +1,35 @@
-import {asClass, asFunction, AwilixContainer, createContainer, InjectionMode} from 'awilix';
-import {CreateEvent} from '../../../business/commands/create-event';
-import {InitializeDatabaseConnection} from '../../../data/commands/initialize-database-connection';
-import {DataAutomapper} from '../../../data/mapping/data-automapper';
-import {EventRepository} from '../../../data/repositories/event-repository';
-import {ICreateContainer} from './i-create-container';
+import { asClass, asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
+import { CreateEvent } from '../../../business/commands/create-event';
+import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
+import { DataAutomapper } from '../../../data/mapping/data-automapper';
+import { EventRepository } from '../../../data/repositories/event-repository';
+import { ICreateContainer } from './i-create-container';
 
 export class CreateMockContainer implements ICreateContainer {
     private readonly settingsPath: string = `../../../../setting/${process.env.environment}.json`;
 
     private readonly settings: ReadonlyArray<any> = [
-        {dataSettings: asFunction(() => require(this.settingsPath).data).classic()},
-        {presentationSettings: asFunction(() => require(this.settingsPath).presentation).classic()},
+        { dataSettings: asFunction(() => require(this.settingsPath).data).classic()},
+        { presentationSettings: asFunction(() => require(this.settingsPath).presentation).classic()},
     ];
 
     private readonly mappers: ReadonlyArray<any> = [
-        {dataMapper: asClass(DataAutomapper).transient().classic()},
+        { dataMapper: asClass(DataAutomapper).transient().classic()},
     ];
 
     private readonly businessCommands: ReadonlyArray<any> = [
-        {createEvent: asClass(CreateEvent).transient().classic()},
+        { createEvent: asClass(CreateEvent).transient().classic()},
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
-        {eventRepository: asClass(EventRepository).transient().classic()},
+        { eventRepository: asClass(EventRepository).transient().classic()},
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
-        {initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
+        { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
     ];
 
-    private container: AwilixContainer = createContainer({injectionMode: InjectionMode.CLASSIC});
+    private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC});
 
     execute(): AwilixContainer {
         this.register(this.buildRegistrations());

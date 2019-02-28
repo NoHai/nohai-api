@@ -1,8 +1,8 @@
-import {IStartup} from './i-startup';
-import {StartupDevelopment} from './startup-development';
-import {StartupMock} from './startup-mock';
-import {StartupProduction} from './startup-production';
-import {StartupStaging} from './startup-staging';
+import { IStartup } from './i-startup';
+import { StartupDevelopment } from './startup-development';
+import { StartupMock } from './startup-mock';
+import { StartupProduction } from './startup-production';
+import { StartupStaging } from './startup-staging';
 
 export class StartupFactory {
     make(): IStartup {
