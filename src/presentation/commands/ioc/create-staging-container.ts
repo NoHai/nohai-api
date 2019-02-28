@@ -6,7 +6,7 @@ import { EventRepository } from '../../../data/repositories/event-repository';
 import { ICreateContainer } from './i-create-container';
 
 export class CreateStagingContainer implements ICreateContainer {
-    private readonly settingsPath: string = `../../../../setting/${process.env.environment}.json`;
+    private readonly settingsPath: string = `../../../../../setting/${process.env.environment}.json`;
 
     private readonly settings: ReadonlyArray<any> = [
         { dataSettings: asFunction(() => require(this.settingsPath).data).classic()},
