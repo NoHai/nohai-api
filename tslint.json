@@ -45,7 +45,8 @@
             "check-type-operator",
             "check-preblock",
             "check-postbrace"
-        ]
+        ],
+        "prefer-const": true
     },
     "jsRules": {
         "max-line-length": {
