@@ -10,8 +10,9 @@
     "staging:watch": "set environment=staging&& nodemon ./dist/index.js",
     "production": "set environment=production&& node ./dist/index.js",
     "production:watch": "set environment=production&& nodemon ./dist/index.js",
-    "lint": "tslint --fix --force --project tsconfig.json --config tslint.json",
-    "lint:watch": "onchange -v \"src/**/*.*\" -- tslint --fix --force --project tsconfig.json \"{{changed}}\"",
+    "lint": "tslint --project tsconfig.json --config tslint.json",
+    "lint:fix": "tslint --fix --force --project tsconfig.json --config tslint.json",
+    "lint:watch": "onchange -v \"src/**/*.*\" -- tslint --force --project tsconfig.json \"{{changed}}\"",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
