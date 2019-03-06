@@ -13,9 +13,13 @@
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "lint:fix": "tslint --fix --force --project tsconfig.json --config tslint.json",
     "lint:watch": "onchange -v \"src/**/*.*\" -- tslint --force --project tsconfig.json \"{{changed}}\"",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test": "jest"
+    "build:mock": "copyfiles -f src/presentation/settings/mock.json dist/presentation/settings&& tsc",
+    "build:mock:watch": "copyfiles -f src/presentation/settings/mock.json dist/presentation/settings&& tsc --watch",
+    "build:dev": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings&& tsc",
+    "build:dev:watch": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings&& tsc --watch",
+    "build:staging": "copyfiles -f src/presentation/settings/staging.json dist/presentation/settings&& tsc",
+    "build:production": "copyfiles -f src/presentation/settings/production.json dist/presentation/settings&& tsc",
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -42,9 +46,12 @@
     "typeorm": "^0.2.14"
   },
   "devDependencies": {
+    "@types/sinon": "^7.0.9",
+    "copyfiles": "^2.1.0",
+    "nodemon": "^1.18.9",
     "onchange": "^5.2.0",
+    "sinon": "^7.2.7",
     "tslint": "^5.12.1",
-    "typescript": "^3.2.4",
-    "nodemon": "^1.18.9"
+    "typescript": "^3.2.4"
   }
 }
