@@ -2,20 +2,25 @@
   "name": "nohai-api",
   "version": "1.0.0",
   "description": "The backend part of the NoHai application.",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
-    "dev": "set environment=development&& node ./dist/index.js",
-    "dev:watch": "set environment=development&& nodemon ./dist/index.js",
-    "staging": "set environment=staging&& node ./dist/index.js",
-    "staging:watch": "set environment=staging&& nodemon ./dist/index.js",
-    "production": "set environment=production&& node ./dist/index.js",
-    "production:watch": "set environment=production&& nodemon ./dist/index.js",
+    "dev": "set environment=development&& node ./dist/src/index.js",
+    "dev:watch": "set environment=development&& nodemon ./dist/src/index.js",
+    "staging": "set environment=staging&& node ./dist/src/index.js",
+    "staging:watch": "set environment=staging&& nodemon ./dist/src/index.js",
+    "production": "set environment=production&& node ./dist/src/index.js",
+    "production:watch": "set environment=production&& nodemon ./dist/src/index.js",
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "lint:fix": "tslint --fix --force --project tsconfig.json --config tslint.json",
     "lint:watch": "onchange -v \"src/**/*.*\" -- tslint --force --project tsconfig.json \"{{changed}}\"",
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:mock": "copyfiles -f src/presentation/settings/mock.json dist/presentation/settings&& tsc",
+    "build:mock:watch": "copyfiles -f src/presentation/settings/mock.json dist/presentation/settings&& tsc --watch",
+    "build:dev": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings&& tsc",
+    "build:dev:watch": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings&& tsc --watch",
+    "build:staging": "copyfiles -f src/presentation/settings/staging.json dist/presentation/settings&& tsc",
+    "build:production": "copyfiles -f src/presentation/settings/production.json dist/presentation/settings&& tsc",
+    "test": "jest",
+    "test-watch": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -30,18 +35,24 @@
   "dependencies": {
     "@types/express": "^4.16.1",
     "@types/glob": "^7.1.1",
+    "@types/jest": "^24.0.9",
     "@types/mongodb": "^3.1.19",
     "awilix": "^4.2.0",
     "express": "^4.16.4",
+    "jest": "^24.1.0",
     "mongodb": "^3.1.13",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.3.3",
+    "ts-jest": "^24.0.0",
     "typeorm": "^0.2.14"
   },
   "devDependencies": {
+    "@types/sinon": "^7.0.9",
+    "copyfiles": "^2.1.0",
+    "nodemon": "^1.18.9",
     "onchange": "^5.2.0",
+    "sinon": "^7.2.7",
     "tslint": "^5.12.1",
-    "typescript": "^3.2.4",
-    "nodemon": "^1.18.9"
+    "typescript": "^3.2.4"
   }
 }
