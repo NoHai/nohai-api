@@ -40,13 +40,13 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run lint
-      - run: npm run lint
-
       - type: shell
         name: Code Climate before build
         command: |
           ./cc-test-reporter before-build
+
+      # run lint
+      - run: npm run lint
       
       # run generate prod files 
       - run: npm run build:production
