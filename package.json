@@ -19,7 +19,8 @@
     "build:dev:watch": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings&& tsc --watch",
     "build:staging": "copyfiles -f src/presentation/settings/staging.json dist/presentation/settings&& tsc",
     "build:production": "copyfiles -f src/presentation/settings/production.json dist/presentation/settings&& tsc",
-    "test": "jest --watchAll"
+    "test": "jest",
+    "test-watch": "jest --watchAll"
   },
   "repository": {
     "type": "git",
