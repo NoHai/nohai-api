@@ -25,6 +25,10 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
 
+      - type: shell
+        name: Code Climate before build
+        command: |
+          ./cc-test-reporter before-build
 
       # Download and cache dependencies
       - restore_cache:
@@ -42,11 +46,6 @@ jobs:
 
       # run lint
       - run: npm run lint
-
-      - type: shell
-        name: Code Climate before build
-        command: |
-          ./cc-test-reporter before-build
       
       # run generate prod files 
       - run: npm run build:production
@@ -57,4 +56,4 @@ jobs:
       - type: shell
         name: Code Climate after build
         command: |
-          ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+          ./cc-test-reporter after-build --debug --exit-code $?
