@@ -6,7 +6,7 @@
       "port": 27017,
       "username": "root",
       "password": "",
-      "database": "development",
+      "database": "mock",
       "useNewUrlParser": true,
       "synchronize": true,
       "logging": false,
