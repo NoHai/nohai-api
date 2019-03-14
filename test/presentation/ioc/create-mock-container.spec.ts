@@ -35,5 +35,9 @@ describe('create-mock-container', () => {
         it('IInitializeDatabaseConnection is registered', () => {
             actual.resolve('initializeDatabaseConnection');
         });
+
+        it('express is registered', () => {
+            actual.resolve('express');
+        });
     });
 });

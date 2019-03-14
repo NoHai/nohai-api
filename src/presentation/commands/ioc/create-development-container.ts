@@ -1,4 +1,5 @@
 import { asClass, asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
+import express from 'express';
 import { CreateEvent } from '../../../business/commands/create-event';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { DataAutomapper } from '../../../data/mapping/data-automapper';
@@ -29,6 +30,10 @@ export class CreateDevelopmentContainer implements ICreateContainer {
         { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
     ];
 
+    private readonly presentationNetworking: ReadonlyArray<any> = [
+        { express: asFunction(() => express()).singleton().classic()},
+    ];
+
     private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC});
 
     execute(): AwilixContainer {
@@ -41,7 +46,8 @@ export class CreateDevelopmentContainer implements ICreateContainer {
             .concat(this.mappers)
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
-            .concat(this.presentationCommands);
+            .concat(this.presentationCommands)
+            .concat(this.presentationNetworking);
     }
 
     private register(registrations: ReadonlyArray<any>): void {

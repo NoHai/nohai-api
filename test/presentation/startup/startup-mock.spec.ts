@@ -1,46 +1,73 @@
-// import express from 'express';
-// import { of } from 'rxjs';
-// import { InitializeDatabaseConnection } from '../../../src/data/commands/initialize-database-connection';
-// import { stub, assert } from 'sinon';
-// import { StartupMock } from '../../../src/presentation/commands/startup/startup-mock';
+import { InitializeDatabaseConnection } from '../../../src/data/commands/initialize-database-connection';
+import { reset, fake, stub, assert } from 'sinon';
+import { IDataSettings } from '../../../src/data/i-data-settings';
+import { IStartup } from '../../../src/presentation/commands/startup/i-startup';
+import { StartupMock } from '../../../src/presentation/commands/startup/startup-mock';
+import { ResolveService } from '../../../src/presentation/commands/ioc/resolve-service';
+import { of } from 'rxjs';
+import { IPresentationSettings } from '../../../src/presentation/i-presentation-settings';
 
 describe('startup-mock', () => {
     process.env.environment = 'mock';
-    // const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute').returns(of({}));
-    // const log = stub(console, 'log');
-    // const listen = stub(express(), 'listen') ;
-    // const get = stub(express(), 'get');
-    //
-    // const instance = new StartupMock();
+
+    const listen = fake((_: number, callback: any) => callback());
+    const get = fake((_: string, callback: any) => callback({}, {send}));
+    const send = fake();
+    const resolveService = stub(ResolveService.prototype, 'execute');
+    const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
+    const log = stub(console, 'log');
+
+    let instance: IStartup;
 
     beforeEach(() => {
-        // instance.execute();
+        setupResolveService('express', {listen, get});
+        setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings));
+        initializeDatabaseConnection.returns(of({}));
+        instance = new StartupMock();
     });
 
-    it('express is initialized', () => {
-    });
-
-    it('resolveService it initialized', () => {
+    afterEach(() => {
+        reset();
     });
 
     describe('constructor', () => {
+        it('presentationSettings is initialized', () => {
+            assert.calledWith(resolveService, 'presentationSettings');
+        });
+
+        it('initializeDatabaseConnection is initialized', () => {
+            assert.calledWith(resolveService, 'initializeDatabaseConnection');
+        });
     });
 
     describe('execute', () => {
+        beforeEach(() => {
+            instance.execute();
+        });
+
         it('execute from initialize database connection is invoked', () => {
-            // assert.calledOnce(initializeDatabaseConnection);
+            assert.calledOnce(initializeDatabaseConnection);
         });
 
         it('listen from express is invoked', () => {
-            // assert.calledOnce(listen);
+            assert.calledWith(listen, 9999);
         });
 
-        it('log from console is invoked', () => {
-            // assert.calledWith(log, 'NoHai application started on mock environment.');
+        it('listen log is written', () => {
+            assert.calledWith(log, 'NoHai application started on mock environment.');
         });
 
-        it('get from express is invoked', () => {
-            // assert.calledOnce(get);
+        it('get from server is invoked', () => {
+            assert.calledOnce(get);
+        });
+
+        it('get response is written', () => {
+            assert.calledWith(send, 'NoHai application.');
         });
     });
+
+    const setupResolveService = (key: string, result: any) => {
+        resolveService.withArgs(key).returns(result);
+    };
 });
