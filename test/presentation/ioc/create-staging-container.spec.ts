@@ -1,9 +1,21 @@
 import { AwilixContainer } from 'awilix';
+import { CreateCommonContainer } from '../../../src/presentation/commands/ioc/create-common-container';
+import { stub, reset } from 'sinon';
 import { CreateStagingContainer } from '../../../src/presentation/commands/ioc/create-staging-container';
 
-describe('create-staging-container', () => {
-    process.env.environment = 'mock';
+describe('create-production-container', () => {
+    process.env.environment = 'staging';
     const instance = new CreateStagingContainer();
+    const commonExecute = stub(CreateCommonContainer.prototype, 'execute');
+    const expected = {};
+
+    beforeEach(() => {
+        commonExecute.returns(expected as any);
+    });
+
+    afterEach(() => {
+        reset();
+    });
 
     describe('execute', () => {
         let actual: AwilixContainer;
@@ -12,32 +24,8 @@ describe('create-staging-container', () => {
             actual = instance.execute();
         });
 
-        it('IDataSettings is registered', () => {
-            actual.resolve('dataSettings');
-        });
-
-        it('IPresentationSettings is registered', () => {
-            actual.resolve('presentationSettings');
-        });
-
-        it('IDataAutomapper is registered', () => {
-            actual.resolve('dataMapper');
-        });
-
-        it('ICreateEvent is registered', () => {
-            actual.resolve('createEvent');
-        });
-
-        it('IEventRepository is registered', () => {
-            actual.resolve('eventRepository');
-        });
-
-        it('IInitializeDatabaseConnection is registered', () => {
-            actual.resolve('initializeDatabaseConnection');
-        });
-
-        it('express is registered', () => {
-            actual.resolve('express');
+        it('returns result returned by common execute', () => {
+            expect(actual).toEqual(expected);
         });
     });
 });

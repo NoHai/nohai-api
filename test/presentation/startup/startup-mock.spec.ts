@@ -32,6 +32,10 @@ describe('startup-mock', () => {
     });
 
     describe('constructor', () => {
+        it('express is initialized', () => {
+            assert.calledWith(resolveService, 'express');
+        });
+
         it('presentationSettings is initialized', () => {
             assert.calledWith(resolveService, 'presentationSettings');
         });
