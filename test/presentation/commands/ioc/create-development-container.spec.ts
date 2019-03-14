@@ -1,11 +1,11 @@
-import { AwilixContainer } from 'awilix';
-import { CreateCommonContainer } from '../../../src/presentation/commands/ioc/create-common-container';
-import { CreateMockContainer } from '../../../src/presentation/commands/ioc/create-mock-container';
+﻿import { AwilixContainer } from 'awilix';
+import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
+import { CreateDevelopmentContainer } from '../../../../src/presentation/commands/ioc/create-development-container';
 import { stub, reset } from 'sinon';
 
-describe('create-mock-container', () => {
-    process.env.environment = 'mock';
-    const instance = new CreateMockContainer();
+describe('create-development-container', () => {
+    process.env.environment = 'development';
+    const instance = new CreateDevelopmentContainer();
     const commonExecute = stub(CreateCommonContainer.prototype, 'execute');
     const expected = {};
 

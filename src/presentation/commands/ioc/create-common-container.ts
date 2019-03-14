@@ -1,21 +1,31 @@
-import { asClass, asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
+import { asClass, asFunction, asValue, AwilixContainer, createContainer, InjectionMode } from 'awilix';
 import express from 'express';
+import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
+import { IDataSettings } from '../../../data/i-data-settings';
 import { DataAutomapper } from '../../../data/mapping/data-automapper';
 import { EventRepository } from '../../../data/repositories/event-repository';
+import { IPresentationSettings } from '../../i-presentation-settings';
 import { ICreateContainer } from './i-create-container';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly settingsPath: string = `../../settings/${process.env.environment}.json`;
+    private readonly allSettings: any = require(this.settingsPath);
+    private readonly dataSettings: IDataSettings = this.allSettings.data;
+    private readonly presentationSettings: IPresentationSettings = this.allSettings.presentation;
 
     private readonly settings: ReadonlyArray<any> = [
-        { dataSettings: asFunction(() => require(this.settingsPath).data).classic()},
-        { presentationSettings: asFunction(() => require(this.settingsPath).presentation).classic()},
+        { dataSettings: asValue(this.dataSettings)},
+        { presentationSettings: asValue(this.presentationSettings)},
     ];
 
     private readonly mappers: ReadonlyArray<any> = [
         { dataMapper: asClass(DataAutomapper).transient().classic()},
+    ];
+
+    private readonly dataDatabaseConnection: ReadonlyArray<any> = [
+        { createConnection: asFunction(() => createConnection).transient().classic()},
     ];
 
     private readonly businessCommands: ReadonlyArray<any> = [
@@ -48,6 +58,7 @@ export class CreateCommonContainer implements ICreateContainer {
     private buildRegistrations(): ReadonlyArray<any> {
         return this.settings
             .concat(this.mappers)
+            .concat(this.dataDatabaseConnection)
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
             .concat(this.presentationCommands)

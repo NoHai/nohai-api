@@ -1,11 +1,11 @@
-﻿import { InitializeDatabaseConnection } from '../../../src/data/commands/initialize-database-connection';
+﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { reset, fake, stub, assert } from 'sinon';
-import { IDataSettings } from '../../../src/data/i-data-settings';
-import { IStartup } from '../../../src/presentation/commands/startup/i-startup';
-import { StartupDevelopment } from '../../../src/presentation/commands/startup/startup-development';
-import { ResolveService } from '../../../src/presentation/commands/ioc/resolve-service';
+import { IDataSettings } from '../../../../src/data/i-data-settings';
+import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
+import { StartupDevelopment } from '../../../../src/presentation/commands/startup/startup-development';
+import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { of } from 'rxjs';
-import { IPresentationSettings } from '../../../src/presentation/i-presentation-settings';
+import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
 describe('startup-development', () => {
     process.env.environment = 'development';
@@ -22,7 +22,7 @@ describe('startup-development', () => {
     beforeEach(() => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings));
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
         initializeDatabaseConnection.returns(of({}));
         instance = new StartupDevelopment();
     });

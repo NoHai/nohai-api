@@ -1,6 +1,6 @@
-import { AwilixContainer } from 'awilix';
+﻿import { AwilixContainer } from 'awilix';
 import { fake, assert } from 'sinon';
-import { ResolveService } from '../../../src/presentation/commands/ioc/resolve-service';
+import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 
 describe('resolve-service', () => {
     const expectedService: any = {};

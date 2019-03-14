@@ -1,7 +1,7 @@
-import { AwilixContainer } from 'awilix';
-import { CreateCommonContainer } from '../../../src/presentation/commands/ioc/create-common-container';
+﻿import { AwilixContainer } from 'awilix';
+import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
 import { stub, reset } from 'sinon';
-import { CreateStagingContainer } from '../../../src/presentation/commands/ioc/create-staging-container';
+import { CreateStagingContainer } from '../../../../src/presentation/commands/ioc/create-staging-container';
 
 describe('create-production-container', () => {
     process.env.environment = 'staging';

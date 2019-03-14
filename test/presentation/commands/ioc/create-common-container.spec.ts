@@ -1,5 +1,5 @@
-import { AwilixContainer } from 'awilix';
-import { CreateCommonContainer } from '../../../src/presentation/commands/ioc/create-common-container';
+﻿import { AwilixContainer } from 'awilix';
+import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
 
 describe('create-common-container', () => {
     process.env.environment = 'mock';
@@ -38,6 +38,10 @@ describe('create-common-container', () => {
 
         it('express is registered', () => {
             actual.resolve('express');
+        });
+
+        it('createConnection is registered', () => {
+            actual.resolve('createConnection');
         });
     });
 });

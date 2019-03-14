@@ -1,14 +1,14 @@
-import { InitializeDatabaseConnection } from '../../../src/data/commands/initialize-database-connection';
+﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { reset, fake, stub, assert } from 'sinon';
-import { IDataSettings } from '../../../src/data/i-data-settings';
-import { IStartup } from '../../../src/presentation/commands/startup/i-startup';
-import { StartupMock } from '../../../src/presentation/commands/startup/startup-mock';
-import { ResolveService } from '../../../src/presentation/commands/ioc/resolve-service';
+import { IDataSettings } from '../../../../src/data/i-data-settings';
+import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
+import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { of } from 'rxjs';
-import { IPresentationSettings } from '../../../src/presentation/i-presentation-settings';
+import { StartupProduction } from '../../../../src/presentation/commands/startup/startup-production';
+import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
-describe('startup-mock', () => {
-    process.env.environment = 'mock';
+describe('startup-production', () => {
+    process.env.environment = 'production';
 
     const listen = fake((_: number, callback: any) => callback());
     const get = fake((_: string, callback: any) => callback({}, {send}));
@@ -24,7 +24,7 @@ describe('startup-mock', () => {
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings));
         initializeDatabaseConnection.returns(of({}));
-        instance = new StartupMock();
+        instance = new StartupProduction();
     });
 
     afterEach(() => {
@@ -59,7 +59,7 @@ describe('startup-mock', () => {
         });
 
         it('listen log is written', () => {
-            assert.calledWith(log, 'NoHai application started on mock environment.');
+            assert.calledWith(log, 'NoHai application started on production environment.');
         });
 
         it('get from server is invoked', () => {

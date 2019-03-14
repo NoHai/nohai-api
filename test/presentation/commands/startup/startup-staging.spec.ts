@@ -1,11 +1,11 @@
-﻿import { InitializeDatabaseConnection } from '../../../src/data/commands/initialize-database-connection';
+﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { reset, fake, stub, assert } from 'sinon';
-import { IDataSettings } from '../../../src/data/i-data-settings';
-import { IStartup } from '../../../src/presentation/commands/startup/i-startup';
-import { ResolveService } from '../../../src/presentation/commands/ioc/resolve-service';
+import { IDataSettings } from '../../../../src/data/i-data-settings';
+import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
+import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { of } from 'rxjs';
-import { StartupStaging } from '../../../src/presentation/commands/startup/startup-staging';
-import { IPresentationSettings } from '../../../src/presentation/i-presentation-settings';
+import { StartupStaging } from '../../../../src/presentation/commands/startup/startup-staging';
+import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
 describe('startup-staging', () => {
     process.env.environment = 'staging';
