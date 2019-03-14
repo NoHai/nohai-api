@@ -22,7 +22,7 @@ describe('startup-staging', () => {
     beforeEach(() => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings));
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
         initializeDatabaseConnection.returns(of({}));
         instance = new StartupStaging();
     });
