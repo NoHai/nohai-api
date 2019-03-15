@@ -13,6 +13,7 @@ describe('startup-mock', () => {
     const listen = fake((_: number, callback: any) => callback());
     const get = fake((_: string, callback: any) => callback({}, {send}));
     const send = fake();
+    const use = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
     const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
     const log = stub(console, 'log');
@@ -20,7 +21,7 @@ describe('startup-mock', () => {
     let instance: IStartup;
 
     beforeEach(() => {
-        setupResolveService('express', {listen, get});
+        setupResolveService('express', {listen, get, use});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
         initializeDatabaseConnection.returns(of({}));
