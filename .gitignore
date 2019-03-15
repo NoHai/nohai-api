@@ -612,3 +612,6 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/node,rider,intellij,intellij+all,visualstudio,visualstudiocode
+
+# Build folder
+dist
