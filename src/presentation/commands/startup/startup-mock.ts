@@ -1,4 +1,3 @@
-import express from 'express';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeDatabaseConnection } from '../../../data/commands/i-initialize-database-connection';
 import { IPresentationSettings } from '../../i-presentation-settings';
@@ -7,12 +6,13 @@ import { ResolveService } from '../ioc/resolve-service';
 import { IStartup } from './i-startup';
 
 export class StartupMock implements IStartup {
-    private readonly express = express();
     private readonly resolveService = new ResolveService(new CreateMockContainer().execute());
+    private readonly express: any;
     private readonly presentationSettings: IPresentationSettings;
     private readonly initializeDatabase: IInitializeDatabaseConnection;
 
     constructor() {
+        this.express = this.resolveService.execute('express');
         this.presentationSettings = this.resolveService.execute('presentationSettings');
         this.initializeDatabase = this.resolveService.execute('initializeDatabaseConnection');
     }
@@ -24,7 +24,7 @@ export class StartupMock implements IStartup {
             console.log('NoHai application started on mock environment.');
         });
 
-        this.express.get('/', (_, response: any) => {
+        this.express.get('/', (_: any, response: any) => {
             response.send('NoHai application.');
         });
 
