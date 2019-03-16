@@ -1,6 +1,7 @@
 ﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { reset, fake, stub, assert } from 'sinon';
 import { IDataSettings } from '../../../../src/data/i-data-settings';
+import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
 import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { StartupDevelopment } from '../../../../src/presentation/commands/startup/startup-development';
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
@@ -13,8 +14,10 @@ describe('startup-development', () => {
     const listen = fake((_: number, callback: any) => callback());
     const get = fake((_: string, callback: any) => callback({}, {send}));
     const send = fake();
+    const use = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
     const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
+    const initializeGraph = stub(InitializeGraph.prototype, 'execute');
     const log = stub(console, 'log');
 
     let instance: IStartup;
@@ -23,7 +26,10 @@ describe('startup-development', () => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
+        setupResolveService('initializeGraph', new InitializeGraph({use}));
+
         initializeDatabaseConnection.returns(of({}));
+        initializeGraph.returns(of({}));
         instance = new StartupDevelopment();
     });
 
@@ -43,6 +49,10 @@ describe('startup-development', () => {
         it('initializeDatabaseConnection is initialized', () => {
             assert.calledWith(resolveService, 'initializeDatabaseConnection');
         });
+
+        it('initializeGraph is initialized', () => {
+            assert.calledWith(resolveService, 'initializeGraph');
+        });
     });
 
     describe('execute', () => {
@@ -52,6 +62,10 @@ describe('startup-development', () => {
 
         it('execute from initialize database connection is invoked', () => {
             assert.calledOnce(initializeDatabaseConnection);
+        });
+
+        it('execute from initialize graph is invoked', () => {
+            assert.calledOnce(initializeGraph);
         });
 
         it('listen from express is invoked', () => {
