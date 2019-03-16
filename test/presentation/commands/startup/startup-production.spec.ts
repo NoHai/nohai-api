@@ -1,6 +1,7 @@
 ﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { reset, fake, stub, assert } from 'sinon';
 import { IDataSettings } from '../../../../src/data/i-data-settings';
+import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
 import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { of } from 'rxjs';
@@ -15,6 +16,7 @@ describe('startup-production', () => {
     const send = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
     const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
+    const initializeGraph = stub(InitializeGraph.prototype, 'execute');
     const log = stub(console, 'log');
 
     let instance: IStartup;
@@ -23,7 +25,9 @@ describe('startup-production', () => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
+        setupResolveService('initializeGraph', new InitializeGraph({use: fake()}));
         initializeDatabaseConnection.returns(of({}));
+        initializeGraph.returns(of({}));
         instance = new StartupProduction();
     });
 
@@ -52,6 +56,10 @@ describe('startup-production', () => {
 
         it('execute from initialize database connection is invoked', () => {
             assert.calledOnce(initializeDatabaseConnection);
+        });
+
+        it('execute from initialize graph is invoked', () => {
+            assert.calledOnce(initializeGraph);
         });
 
         it('listen from express is invoked', () => {
