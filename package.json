@@ -27,7 +27,7 @@
     "copy:settings:dev": "copyfiles -f src/presentation/settings/development.json dist/presentation/settings",
     "copy:settings:staging": "copyfiles -f src/presentation/settings/staging.json dist/presentation/settings",
     "copy:settings:production": "copyfiles -f src/presentation/settings/production.json dist/presentation/settings",
-    "copy:graph": "copyfiles -f src/presentation/graph/*.gql dist/presentation/graph"
+    "copy:graph": "copyfiles -f src/presentation/graph/*.gql dist/presentation/graph&& copyfiles -f src/presentation/graph/results/*.gql dist/presentation/graph/results&& copyfiles -f src/presentation/graph/parameters/*.gql dist/presentation/graph/parameters&& copyfiles -f src/presentation/graph/inputs/*.gql dist/presentation/graph/inputs"
   },
   "repository": {
     "type": "git",

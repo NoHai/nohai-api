@@ -1,0 +1,7 @@
+﻿"""A result model used to return a paged collection of events from server."""
+type Events implements Pagination {
+    pageIndex: Int!
+    pageSize: Int!
+    totalCount: Int!
+    items: [Event]!
+}

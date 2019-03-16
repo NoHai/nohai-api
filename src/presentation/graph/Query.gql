@@ -1,3 +1,4 @@
+"""One of the three root graph nodes. It's used for fetching data from server."""
 type Query {
-    hello: String
+    events(parameter: PEvents!): Events!
 }

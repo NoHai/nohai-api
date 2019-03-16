@@ -1,0 +1,4 @@
+﻿"""A result model used to return an event from server."""
+type Event {
+    name: String!
+}

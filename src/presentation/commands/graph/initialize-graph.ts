@@ -7,10 +7,18 @@ import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
 
 export class InitializeGraph implements IInitializeGraph {
+    private static readonly rootPath = `${__dirname}/../../graph`;
+    private static readonly parametersPath = `${InitializeGraph.rootPath}/parameters`;
+    private static readonly inputsPath = `${InitializeGraph.rootPath}/inputs`;
+    private static readonly resultsPath = `${InitializeGraph.rootPath}/results`;
+
     private static buildSchema(): GraphQLSchema {
-        const query: any = fs.readFileSync(`${__dirname}/../../graph/Query.gql`).toString();
-        const mutation: any = fs.readFileSync(`${__dirname}/../../graph/Mutation.gql`).toString();
-        return buildSchema(`${query}${mutation}`);
+        const nodes: ReadonlyArray<string> = InitializeGraph.readNodes(InitializeGraph.inputsPath)
+            .concat(InitializeGraph.readNodes(InitializeGraph.parametersPath))
+            .concat(InitializeGraph.readNodes(InitializeGraph.resultsPath))
+            .concat(InitializeGraph.readNodes(InitializeGraph.rootPath));
+
+        return buildSchema(nodes.join());
     }
 
     private static buildHandler(schema: GraphQLSchema): any {
@@ -19,6 +27,18 @@ export class InitializeGraph implements IInitializeGraph {
             rootValue: { hello: () => 'Hello world!'},
             schema,
         });
+    }
+
+    private static readNodes(folderPath: string): string[] {
+        const nodes: string[] = [];
+
+        fs.readdirSync(folderPath, { withFileTypes: true})
+            .filter((file) => file.isFile())
+            .forEach((file) => {
+                nodes.push(fs.readFileSync(`${folderPath}/${file.name}`).toString());
+            });
+
+        return nodes;
     }
 
     constructor(private readonly express: any) {

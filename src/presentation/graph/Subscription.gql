@@ -1,0 +1,4 @@
+"""One of the three root graph nodes. It's used for pushing data from server to client (usually using web sockets)."""
+type Subscription {
+    eventCreated: String
+}
