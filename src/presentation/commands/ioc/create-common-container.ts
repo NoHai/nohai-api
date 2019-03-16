@@ -7,6 +7,7 @@ import { IDataSettings } from '../../../data/i-data-settings';
 import { DataAutomapper } from '../../../data/mapping/data-automapper';
 import { EventRepository } from '../../../data/repositories/event-repository';
 import { IPresentationSettings } from '../../i-presentation-settings';
+import { InitializeGraph } from '../graph/initialize-graph';
 import { ICreateContainer } from './i-create-container';
 
 export class CreateCommonContainer implements ICreateContainer {
@@ -38,6 +39,7 @@ export class CreateCommonContainer implements ICreateContainer {
 
     private readonly presentationCommands: ReadonlyArray<any> = [
         { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
+        { initializeGraph: asClass(InitializeGraph).transient().classic()},
     ];
 
     private readonly presentationNetworking: ReadonlyArray<any> = [

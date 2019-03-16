@@ -36,6 +36,10 @@ describe('create-common-container', () => {
             actual.resolve('initializeDatabaseConnection');
         });
 
+        it('initializeGraph is registered', () => {
+            actual.resolve('initializeGraph');
+        });
+
         it('express is registered', () => {
             actual.resolve('express');
         });

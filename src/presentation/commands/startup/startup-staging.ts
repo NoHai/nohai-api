@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeDatabaseConnection } from '../../../data/commands/i-initialize-database-connection';
 import { IPresentationSettings } from '../../i-presentation-settings';
@@ -17,7 +18,7 @@ export class StartupStaging implements IStartup {
         this.initializeDatabase = this.resolveService.execute('initializeDatabaseConnection');
     }
 
-    execute(): Nothing {
+    execute(): Observable<Nothing> {
         this.initializeDatabase.execute().subscribe();
 
         this.express.listen(this.presentationSettings.port, () => {
@@ -28,6 +29,6 @@ export class StartupStaging implements IStartup {
             response.send('NoHai application.');
         });
 
-        return new Nothing();
+        return of(new Nothing());
     }
 }

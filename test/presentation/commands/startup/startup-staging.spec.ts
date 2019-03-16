@@ -46,8 +46,8 @@ describe('startup-staging', () => {
     });
 
     describe('execute', () => {
-        beforeEach(() => {
-            instance.execute();
+        beforeEach(async () => {
+            return instance.execute().toPromise();
         });
 
         it('execute from initialize database connection is invoked', () => {
