@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { buildSchema, GraphQLSchema } from 'graphql';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
 
@@ -21,14 +22,6 @@ export class InitializeGraph implements IInitializeGraph {
         return buildSchema(nodes.join());
     }
 
-    private static buildHandler(schema: GraphQLSchema): any {
-        return expressGraphql({
-            graphiql: true,
-            rootValue: { hello: () => 'Hello world!'},
-            schema,
-        });
-    }
-
     private static readNodes(folderPath: string): string[] {
         const nodes: string[] = [];
 
@@ -41,13 +34,23 @@ export class InitializeGraph implements IInitializeGraph {
         return nodes;
     }
 
-    constructor(private readonly express: any) {
+    constructor(private readonly express: any, private readonly createEvent: ICreateEvent) {
     }
 
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
-            .pipe(map((schema) => InitializeGraph.buildHandler(schema)))
+            .pipe(map((schema) => this.buildHandler(schema)))
             .pipe(tap((graphHandler) => this.express.use('/graphql', graphHandler)))
             .pipe(map(() => new Nothing()));
+    }
+
+    private buildHandler(schema: GraphQLSchema): any {
+        return expressGraphql({
+            graphiql: true,
+            rootValue: {
+                createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
+            },
+            schema,
+        });
     }
 }

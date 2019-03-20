@@ -26,7 +26,7 @@ describe('startup-mock', () => {
         setupResolveService('express', {listen, get, use});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
-        setupResolveService('initializeGraph', new InitializeGraph({use}));
+        setupResolveService('initializeGraph', new InitializeGraph({use}, {execute: fake()}));
         initializeDatabaseConnection.returns(of({}));
         initializeGraph.returns(of({}));
         instance = new StartupMock();
