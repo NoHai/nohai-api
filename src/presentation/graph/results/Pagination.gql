@@ -1,0 +1,7 @@
+﻿"""This interface is implemented by any collection result model."""
+interface Pagination {
+    pageIndex: Int!
+    pageSize: Int!
+    totalCount: Int!
+    items: [PaginationItem]!
+}

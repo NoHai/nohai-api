@@ -1,0 +1,5 @@
+﻿"""A parameter model used for fetching/filtering events from server."""
+input EventsParameter {
+    name: String
+    pagination: PaginationParameter!
+}

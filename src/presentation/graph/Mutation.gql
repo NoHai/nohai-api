@@ -1,0 +1,4 @@
+﻿"""One of the three root graph nodes. It's used for posting data to server."""
+type Mutation {
+    createEvent(input: EventInput!): Event!
+}
