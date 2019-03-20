@@ -4,7 +4,6 @@ import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
-import { DataAutomapper } from '../../../data/mapping/data-automapper';
 import { EventRepository } from '../../../data/repositories/event-repository';
 import { IPresentationSettings } from '../../i-presentation-settings';
 import { InitializeGraph } from '../graph/initialize-graph';
@@ -19,10 +18,6 @@ export class CreateCommonContainer implements ICreateContainer {
     private readonly settings: ReadonlyArray<any> = [
         { dataSettings: asValue(this.dataSettings)},
         { presentationSettings: asValue(this.presentationSettings)},
-    ];
-
-    private readonly mappers: ReadonlyArray<any> = [
-        { dataMapper: asClass(DataAutomapper).transient().classic()},
     ];
 
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -59,7 +54,6 @@ export class CreateCommonContainer implements ICreateContainer {
 
     private buildRegistrations(): ReadonlyArray<any> {
         return this.settings
-            .concat(this.mappers)
             .concat(this.dataDatabaseConnection)
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
