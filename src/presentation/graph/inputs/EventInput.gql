@@ -1,5 +1,5 @@
 ﻿"""An input model used for posting an event to server."""
-input IEvent {
+input EventInput {
     """The name of the event."""
     name: String!
 }
