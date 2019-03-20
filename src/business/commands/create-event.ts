@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Event } from '../models/event';
+import { Event } from '../models/results/event';
 import { IEventRepository } from '../repositories/i-event-repository';
 import { ICreateEvent } from './i-create-event';
 

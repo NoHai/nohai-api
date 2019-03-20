@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { Event as EventEntity } from '../../../src/data/entities/event';
-import { Event as EventModel } from '../../../src/business/models/event';
+import { Event as EventModel } from '../../../src/business/models/results/event';
 import { assert, stub } from 'sinon';
 import { DataAutomapper } from '../../../src/data/mapping/data-automapper';
 import { EventRepository } from '../../../src/data/repositories/event-repository';

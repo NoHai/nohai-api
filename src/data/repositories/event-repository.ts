@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Event as EventModel } from '../../business/models/event';
+import { Event as EventModel } from '../../business/models/results/event';
 import { IEventRepository } from '../../business/repositories/i-event-repository';
 import { Event as EventEntity } from '../entities/event';
 import { IDataAutomapper } from '../mapping/i-data-automapper';

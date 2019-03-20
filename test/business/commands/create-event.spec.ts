@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { CreateEvent } from '../../../src/business/commands/create-event';
 import { createStubInstance, assert } from 'sinon';
 import { EventRepository } from '../../../src/data/repositories/event-repository';
-import { Event } from '../../../src/business/models/event';
+import { Event } from '../../../src/business/models/results/event';
 
 describe('create-event', () => {
     const model = new Event();
