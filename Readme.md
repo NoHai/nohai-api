@@ -31,11 +31,15 @@ Build and start the application:
 
 #### Mock environment
 * `npm run mock:build` - executes the build for **mock environment**
-* `npm run mock:build:watch` - executes the build for **mock environment** in watch mode (the settings file is copied only once so, if you changed it, you have to re-run this command)
+* `npm run mock:build:watch` - executes the build for **mock environment** in watch mode
 * `npm run mock` - starts the application for **mock environment**
 * `npm run mock:watch` - starts the application for **mock environment** in watch mode
-* `npm run mock:all` - lints the code with fixing, builds and starts the application for **mock environment** (a single command to rule them all, usually used in development for starting the app faster)
+* `npm run mock:all` - lints the code with fixing, builds and starts the application for **mock environment**
 * `npm run mock:copy:settings` - copies the **src/presentation/settings/mock.json** file to **dist/presentation/settings** folder
+
+> When you run `npm run mock:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command
+
+> The command `npm run mock:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
 
 #### Development environment
 * `npm run dev:build` - executes the build for **development environment**
@@ -45,6 +49,10 @@ Build and start the application:
 * `npm run dev:all` - lints the code with fixing, builds and starts the application for **development environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run dev:copy:settings` - copies the **src/presentation/settings/development.json** file to **dist/presentation/settings** folder
 
+> When you run `npm run dev:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command
+
+> The command `npm run dev:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+
 #### Staging environment
 * `npm run staging:build` - executes the build for **staging environment**
 * `npm run staging` - starts the application for **staging environment**
@@ -52,12 +60,16 @@ Build and start the application:
 * `npm run staging:all` - lints the code with fixing, builds and starts the application for **staging environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run staging:copy:settings` - copies the **src/presentation/settings/staging.json** file to **dist/presentation/settings** folder
 
+> The command `npm run staging:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+
 #### Production environment
 * `npm run production:build` - executes the build for **production environment**
 * `npm run production` - starts the application for **production environment**
 * `npm run production:watch` - starts the application for **production environment** in watch mode
 * `npm run production:all` - lints the code with fixing, builds and starts the application for **production environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run production:copy:settings` - copies the **src/presentation/settings/production.json** file to **dist/presentation/settings** folder
+
+> The command `npm run production:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
 
 ## Main dependencies
 * [Awilix](https://github.com/jeffijoe/awilix#readme)
