@@ -24,10 +24,14 @@ Build and start the application:
 ## Commands
 * `npm run lint` - lints the code
 * `npm run lint:fix` - lints and fixes the code
-* `npm run lint:watch` - lints the code (with no fixing) in watch mode
+* `npm run lint:watch` - lints the code in watch mode
 * `npm run test` - runs all unit tests
 * `npm run test:watch` - runs all unit tests in watch mode
-* `npm run copy:graph` - copies recursively all the GraphQL schema files from **src/presentation/graph** to **dist/presentation/graph** folder 
+* `npm run copy:graph` - copies recursively all the GraphQL schema files to output directory
+
+> The command `npm run lint:watch` does not fix the founds.
+
+> When you run `npm run copy:graph`, all the GraphQL schema files are recursively copied from **src/presentation/graph** into **dist/presentation/graph** folder.
 
 #### Mock environment
 * `npm run mock:build` - executes the build for **mock environment**
