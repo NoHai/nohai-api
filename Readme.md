@@ -27,63 +27,70 @@ Build and start the application:
 * `npm run lint` - lints the code
 * `npm run lint:fix` - lints and fixes the code
 * `npm run lint:watch` - lints the code in watch mode
+
+> The command `npm run lint:watch` does not fix the founds.
+
 * `npm run test` - runs all unit tests
 * `npm run test:watch` - runs all unit tests in watch mode
 * `npm run copy:graph` - copies recursively all the GraphQL schema files to output directory
-
-> The command `npm run lint:watch` does not fix the founds.
 
 > When you run `npm run copy:graph`, all the GraphQL schema files are recursively copied from `src/presentation/graph` into `dist/presentation/graph` folder.
 
 #### Mock environment
 * `npm run mock:build` - executes the build for **mock environment**
 * `npm run mock:build:watch` - executes the build for **mock environment** in watch mode
+
+> When you run `npm run mock:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command.
+
 * `npm run mock` - starts the application for **mock environment**
 * `npm run mock:watch` - starts the application for **mock environment** in watch mode
 * `npm run mock:all` - lints the code with fixing, builds and starts the application for **mock environment**
+
+> The command `npm run mock:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
+
 * `npm run mock:copy:settings` - copies the **mock settings file** to output directory
 
 > When you run `npm run mock:copy:settings` the settings file is copied from `src/presentation/settings/mock.json` into `dist/presentation/settings` folder.
 
-> When you run `npm run mock:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command.
-
-> The command `npm run mock:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
-
 #### Development environment
 * `npm run dev:build` - executes the build for **development environment**
 * `npm run dev:build:watch` - executes the build for **development environment** in watch mode
-* `npm run dev` - starts the application for **development environment**
-* `npm run dev:watch` - starts the application for **development environment** in watch mode
-* `npm run dev:all` - lints the code with fixing, builds and starts the application for **development environment**
-* `npm run dev:copy:settings` - copies the **development settings file** to output directory 
-
-> When you run `npm run dev:copy:settings` the settings file is copied from `src/presentation/settings/development.json` into `dist/presentation/settings` folder.
 
 > When you run `npm run dev:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command.
 
+* `npm run dev` - starts the application for **development environment**
+* `npm run dev:watch` - starts the application for **development environment** in watch mode
+* `npm run dev:all` - lints the code with fixing, builds and starts the application for **development environment**
+
 > The command `npm run dev:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
+
+* `npm run dev:copy:settings` - copies the **development settings file** to output directory 
+
+> When you run `npm run dev:copy:settings` the settings file is copied from `src/presentation/settings/development.json` into `dist/presentation/settings` folder.
 
 #### Staging environment
 * `npm run staging:build` - executes the build for **staging environment**
 * `npm run staging` - starts the application for **staging environment**
 * `npm run staging:watch` - starts the application for **staging environment** in watch mode
 * `npm run staging:all` - lints the code with fixing, builds and starts the application for **staging environment**
+
+> The command `npm run staging:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
+
 * `npm run staging:copy:settings` - copies the **staging settings file** to output directory
 
 > When you run `npm run staging:copy:settings` the settings file is copied from `src/presentation/settings/staging.json` into `dist/presentation/settings` folder.
-
-> The command `npm run staging:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 #### Production environment
 * `npm run production:build` - executes the build for **production environment**
 * `npm run production` - starts the application for **production environment**
 * `npm run production:watch` - starts the application for **production environment** in watch mode
 * `npm run production:all` - lints the code with fixing, builds and starts the application for **production environment**
+
+> The command `npm run production:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
+
 * `npm run production:copy:settings` - copies the **production settings file** to output directory
 
 > When you run `npm run production:copy:settings` the settings file is copied from `src/presentation/settings/production.json` into `dist/presentation/settings` folder.
-
-> The command `npm run production:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 ## Main dependencies
 * [Awilix](https://github.com/jeffijoe/awilix#readme)
