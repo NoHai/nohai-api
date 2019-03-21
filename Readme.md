@@ -2,6 +2,8 @@
 Backend for NoHai, mostly a [C.R.U.D.](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) application. It's written in typescript and it uses [GraphQL](https://graphql.org/), [MongoDB](https://www.mongodb.com/), [Jest](https://jestjs.io/) and [Sinon](https://sinonjs.org/).  
 
 ## Run
+> You need [Node.js](https://nodejs.org/en/) version 10.15.3 to be installed, before you can run the application.
+
 > You need [MongoDB](https://www.mongodb.com/) to be installed, before you can run the application.
 
 > As a MongoDB UI tool, you can use [MongoDB Compass](https://www.mongodb.com/products/compass).
