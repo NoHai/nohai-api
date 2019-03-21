@@ -49,7 +49,7 @@ Build and start the application:
 
 #### Development environment
 * `npm run dev:build` - executes the build for **development environment**
-* `npm run dev:build:watch` - executes the build for **development environment** in watch mode (the settings file is copied only once so, if you changed it, you have to re-run this command)
+* `npm run dev:build:watch` - executes the build for **development environment** in watch mode
 * `npm run dev` - starts the application for **development environment**
 * `npm run dev:watch` - starts the application for **development environment** in watch mode
 * `npm run dev:all` - lints the code with fixing, builds and starts the application for **development environment**
