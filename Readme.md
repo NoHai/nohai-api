@@ -19,7 +19,7 @@ Build and start the application:
 
 * `npm run environment:all` (**environment** can be **mock** or **dev** or **staging** or **production**)
 
-> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/
+> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/.
 
 ## Commands
 * `npm run lint` - lints the code
@@ -37,9 +37,9 @@ Build and start the application:
 * `npm run mock:all` - lints the code with fixing, builds and starts the application for **mock environment**
 * `npm run mock:copy:settings` - copies the **src/presentation/settings/mock.json** file to **dist/presentation/settings** folder
 
-> When you run `npm run mock:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command
+> When you run `npm run mock:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command.
 
-> The command `npm run mock:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+> The command `npm run mock:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 #### Development environment
 * `npm run dev:build` - executes the build for **development environment**
@@ -49,9 +49,9 @@ Build and start the application:
 * `npm run dev:all` - lints the code with fixing, builds and starts the application for **development environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run dev:copy:settings` - copies the **src/presentation/settings/development.json** file to **dist/presentation/settings** folder
 
-> When you run `npm run dev:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command
+> When you run `npm run dev:build:watch` the settings file is copied only once. So, if you did some changes to the settings file (`mock.json` or `development.json` or `staging.json` or `production.json`), you have to re-run this command.
 
-> The command `npm run dev:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+> The command `npm run dev:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 #### Staging environment
 * `npm run staging:build` - executes the build for **staging environment**
@@ -60,7 +60,7 @@ Build and start the application:
 * `npm run staging:all` - lints the code with fixing, builds and starts the application for **staging environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run staging:copy:settings` - copies the **src/presentation/settings/staging.json** file to **dist/presentation/settings** folder
 
-> The command `npm run staging:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+> The command `npm run staging:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 #### Production environment
 * `npm run production:build` - executes the build for **production environment**
@@ -69,7 +69,7 @@ Build and start the application:
 * `npm run production:all` - lints the code with fixing, builds and starts the application for **production environment** (a single command to rule them all, usually used in development for starting the app faster)
 * `npm run production:copy:settings` - copies the **src/presentation/settings/production.json** file to **dist/presentation/settings** folder
 
-> The command `npm run production:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster
+> The command `npm run production:all` is kid of a *single command to rule them all*, usually it's used in development for starting the app faster.
 
 ## Main dependencies
 * [Awilix](https://github.com/jeffijoe/awilix#readme)
