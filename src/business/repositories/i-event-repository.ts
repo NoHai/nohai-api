@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
-import { Event } from '../models/event';
+import { EventInput } from '../models/inputs/event-input';
+import { Event as EventResult } from '../models/results/event';
 
 export interface IEventRepository {
-    insert(event: Event): Observable<Event>;
+    insert(input: EventInput): Observable<EventResult>;
 }

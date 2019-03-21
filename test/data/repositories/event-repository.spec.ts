@@ -1,39 +1,40 @@
 import { of } from 'rxjs';
 import { Event as EventEntity } from '../../../src/data/entities/event';
-import { Event as EventModel } from '../../../src/business/models/event';
+import { Event as EventResult } from '../../../src/business/models/results/event';
 import { assert, stub } from 'sinon';
-import { DataAutomapper } from '../../../src/data/mapping/data-automapper';
+import { EventFactory } from '../../../src/data/factories/event-factory';
 import { EventRepository } from '../../../src/data/repositories/event-repository';
 
 describe('event-repository', () => {
 
     describe('insert', () => {
-        const eventEntity = new EventEntity();
-        const eventModel = new EventModel();
-        const map = stub(DataAutomapper.prototype, 'map').returns(of(eventEntity));
-        const save = stub(EventEntity.prototype, 'save').returns(of(eventEntity).toPromise());
-        const instance = new EventRepository(new DataAutomapper());
+        const entity = new EventEntity();
+        const model = new EventResult();
+        const makeEntity = stub(EventFactory, 'makeEntity').withArgs(model).returns(entity);
+        const makeResult = stub(EventFactory, 'makeResult').withArgs(entity).returns(model);
+        const save = stub(EventEntity.prototype, 'save').returns(of(entity).toPromise());
+        const instance = new EventRepository();
 
-        let actual: EventModel;
+        let actual: EventResult;
 
         beforeAll(async () => {
-            actual = await instance.insert(eventModel).toPromise();
+            actual = await instance.insert(model).toPromise();
         });
 
-        it('invokes data mapper for event model to event entity', async () => {
-            assert.calledWith(map, eventModel);
+        it('invokes EventFactory.makeEntity for event model to event entity mapping', async () => {
+            assert.calledWith(makeEntity, model);
         });
 
         it('saves the entity', async () => {
             assert.calledOnce(save);
         });
 
-        it('invokes data mapper for event entity to event model', async () => {
-            assert.calledWith(map, eventEntity);
+        it('invokes EventFactory.makeResult for event entity to event result mapping', async () => {
+            assert.calledWith(makeResult, entity);
         });
 
         it('returns object returned by mapper', async () => {
-            expect(actual).toEqual(eventModel);
+            expect(actual).toEqual(model);
         });
     });
 

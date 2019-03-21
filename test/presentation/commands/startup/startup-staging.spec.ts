@@ -25,7 +25,7 @@ describe('startup-staging', () => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
-        setupResolveService('initializeGraph', new InitializeGraph({use: fake()}));
+        setupResolveService('initializeGraph', new InitializeGraph({use: fake()}, {execute: fake()}));
         initializeDatabaseConnection.returns(of({}));
         initializeGraph.returns(of({}));
         instance = new StartupStaging();

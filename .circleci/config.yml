@@ -46,9 +46,9 @@ jobs:
 
       # run lint
       - run: npm run lint
-      
-      # run generate prod files 
-      - run: npm run build:production
+
+      # run generate prod files
+      - run: npm run production:build
 
       # run tests!
       - run: npm test

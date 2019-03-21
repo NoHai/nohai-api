@@ -26,7 +26,7 @@ describe('startup-development', () => {
         setupResolveService('express', {listen, get});
         setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
-        setupResolveService('initializeGraph', new InitializeGraph({use}));
+        setupResolveService('initializeGraph', new InitializeGraph({use}, {execute: fake()}));
 
         initializeDatabaseConnection.returns(of({}));
         initializeGraph.returns(of({}));

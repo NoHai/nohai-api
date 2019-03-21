@@ -20,10 +20,6 @@ describe('create-common-container', () => {
             actual.resolve('presentationSettings');
         });
 
-        it('IDataAutomapper is registered', () => {
-            actual.resolve('dataMapper');
-        });
-
         it('ICreateEvent is registered', () => {
             actual.resolve('createEvent');
         });

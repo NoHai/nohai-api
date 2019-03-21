@@ -7,7 +7,7 @@ describe('initialize-graph', () => {
     let instance: InitializeGraph;
 
     beforeEach(() => {
-        instance = new InitializeGraph({use});
+        instance = new InitializeGraph({use}, {execute: fake()});
     });
 
     afterEach(() => {
