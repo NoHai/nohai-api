@@ -17,7 +17,7 @@ Install all the node dependencies:
 
 Build and start the application:
 
-* `npm run environment:all` (**environment** can be **mock** or **dev** or **staging** or **production**)
+* `npm run environment:all` (**environment** can be `mock`, `dev`, `staging` or `production`)
 
 > The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/.
 
