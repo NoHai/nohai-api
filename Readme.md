@@ -1,5 +1,5 @@
 # NoHai backend
-Backend for NoHai, mostly a C.R.U.D. application. It's written in typescript and it uses [GraphQL](https://graphql.org/), [MongoDB](https://www.mongodb.com/), [Jest](https://jestjs.io/) and [Sinon](https://sinonjs.org/).  
+Backend for NoHai, mostly a [C.R.U.D.](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) application. It's written in typescript and it uses [GraphQL](https://graphql.org/), [MongoDB](https://www.mongodb.com/), [Jest](https://jestjs.io/) and [Sinon](https://sinonjs.org/).  
 
 ## Run
 > You need [MongoDB](https://www.mongodb.com/) to be installed, before you can run the application.
