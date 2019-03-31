@@ -21,7 +21,7 @@ Build and start the application:
 
 * `npm run environment:all` (**environment** can be `mock`, `dev`, `staging` or `production`)
 
-> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/.
+> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/ (it can be accesed only after running command: `npm run environment:all`).
 
 ## Migrations
 
