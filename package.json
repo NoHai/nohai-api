@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/NoHai/nohai-api#readme",
   "dependencies": {
-    "awilix": "^4.2.0",
+    "awilix": "^4.2.1",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.1.1",
