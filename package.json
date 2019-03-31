@@ -29,7 +29,7 @@
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "lint:fix": "tslint --fix --force --project tsconfig.json --config tslint.json",
     "lint:watch": "onchange -v \"src/**/*.*\" -- tslint --force --project tsconfig.json \"{{changed}}\"",
-    "test": "jest --coverage",
+    "test": "jest --coverage --maxWorkers 4",
     "test:watch": "jest --watchAll",
     "copy:graph": "copyfiles -f src/presentation/graph/*.gql dist/presentation/graph&& copyfiles -f src/presentation/graph/results/*.gql dist/presentation/graph/results&& copyfiles -f src/presentation/graph/parameters/*.gql dist/presentation/graph/parameters&& copyfiles -f src/presentation/graph/inputs/*.gql dist/presentation/graph/inputs"
   },
