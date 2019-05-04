@@ -1,19 +1,22 @@
 {
   "data": {
     "typeorm": {
-      "type": "mongodb",
+      "type": "mysql",
       "host": "localhost",
-      "port": 27017,
+      "port": 3306,
       "username": "root",
-      "password": "",
+      "password": "nohai",
       "database": "production",
       "useNewUrlParser": true,
-      "synchronize": true,
+      "synchronize": false,
+      "migrationsRun": true,
       "logging": false,
       "entities": [
         "dist/data/entities/event.js"
       ],
-      "migrations": [],
+      "migrations": [
+        "dist/data/migrations/*.js"
+      ],
       "subscribers": [],
       "cli": {
         "entitiesDir": "src/data/entities",

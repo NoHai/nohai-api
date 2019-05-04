@@ -2,6 +2,7 @@ import { asClass, asFunction, asValue, AwilixContainer, createContainer, Injecti
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
+import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
 import { EventRepository } from '../../../data/repositories/event-repository';
@@ -24,6 +25,11 @@ export class CreateCommonContainer implements ICreateContainer {
         { createConnection: asFunction(() => createConnection).transient().classic()},
     ];
 
+    private readonly dataCommands: ReadonlyArray<any> = [
+        { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
+        { createDatabase: asClass(CreateDatabase).transient().classic()},
+    ];
+
     private readonly businessCommands: ReadonlyArray<any> = [
         { createEvent: asClass(CreateEvent).transient().classic()},
     ];
@@ -33,7 +39,6 @@ export class CreateCommonContainer implements ICreateContainer {
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
-        { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
         { initializeGraph: asClass(InitializeGraph).transient().classic()},
     ];
 
@@ -55,6 +60,7 @@ export class CreateCommonContainer implements ICreateContainer {
     private buildRegistrations(): ReadonlyArray<any> {
         return this.settings
             .concat(this.dataDatabaseConnection)
+            .concat(this.dataCommands)
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
             .concat(this.presentationCommands)

@@ -1,7 +1,7 @@
-﻿import { AwilixContainer } from 'awilix';
-import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
+ import { AwilixContainer } from 'awilix';
+ import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
 
-describe('create-common-container', () => {
+ describe('create-common-container', () => {
     process.env.environment = 'mock';
     const instance = new CreateCommonContainer();
 
@@ -42,6 +42,10 @@ describe('create-common-container', () => {
 
         it('createConnection is registered', () => {
             actual.resolve('createConnection');
+        });
+
+        it('createDatabase is registered', () => {
+            actual.resolve('createDatabase');
         });
     });
 });
