@@ -1,11 +1,12 @@
-import { BaseEntity, Entity, ObjectIdColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('events')
 export class Event extends BaseEntity {
 
-    @ObjectIdColumn()
+    @PrimaryGeneratedColumn('uuid')
     id!: string;
 
+    @Column()
     title!: string;
 
     constructor(init?: Partial<Event>) {

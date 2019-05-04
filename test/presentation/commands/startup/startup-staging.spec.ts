@@ -1,10 +1,11 @@
-﻿import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
-import { reset, fake, stub, assert } from 'sinon';
+import { of } from 'rxjs';
+import { assert, fake, reset, stub } from 'sinon';
+import { ICreateDatabase } from '../../../../src/data/commands/i-create-database';
+import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../../src/data/i-data-settings';
 import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
-import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
-import { of } from 'rxjs';
+import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { StartupStaging } from '../../../../src/presentation/commands/startup/startup-staging';
 import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
@@ -12,7 +13,7 @@ describe('startup-staging', () => {
     process.env.environment = 'staging';
 
     const listen = fake((_: number, callback: any) => callback());
-    const get = fake((_: string, callback: any) => callback({}, {send}));
+    const get = fake((_: string, callback: any) => callback({ }, { send}));
     const send = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
     const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
@@ -22,12 +23,12 @@ describe('startup-staging', () => {
     let instance: IStartup;
 
     beforeEach(() => {
-        setupResolveService('express', {listen, get});
-        setupResolveService('presentationSettings', {port: 9999} as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}));
-        setupResolveService('initializeGraph', new InitializeGraph({use: fake()}, {execute: fake()}));
-        initializeDatabaseConnection.returns(of({}));
-        initializeGraph.returns(of({}));
+        setupResolveService('express', { listen, get});
+        setupResolveService('presentationSettings', { port: 9999} as IPresentationSettings);
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({ } as IDataSettings, { }, { } as ICreateDatabase));
+        setupResolveService('initializeGraph', new InitializeGraph({ use: fake()}, { execute: fake()}));
+        initializeDatabaseConnection.returns(of({ }));
+        initializeGraph.returns(of({ }));
         instance = new StartupStaging();
     });
 

@@ -23,6 +23,20 @@ Build and start the application:
 
 > The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/.
 
+## Migrations
+
+> You need to install `typeorm` globally before: `npm install typeorm -g`.
+Also, be sure that the globally installed, typeorm version matches with the 
+one from `pagkage.json`.
+
+Migrations are checked and ran on each application startup. To add a 
+new migration you need to:
+1. Go into `src/data/migrations` folder. 
+
+2. Execute `typeorm migration:create -n YourMigrationNameGoesHere`. 
+
+> A new migration file will be created in the `src/data/migrations` folder.
+
 ## Commands
 * `npm run lint` - lints the code
 * `npm run lint:fix` - lints and fixes the code
