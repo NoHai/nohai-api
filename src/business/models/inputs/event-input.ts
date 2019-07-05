@@ -1,8 +1,8 @@
 export class EventInput {
     title!: string;
     description!: string;
-    location!: any;
-    sport!: any;
+    location!: string;
+    sport!: string;
     participantsNumber!: number;
     cost!: number;
 
