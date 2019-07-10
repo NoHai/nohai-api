@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateEventTable1556985848812 implements MigrationInterface {
+export class CreateUserTable1562744381759 implements MigrationInterface {
 
     async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(new Table({
@@ -11,36 +11,39 @@ export class CreateEventTable1556985848812 implements MigrationInterface {
                     type: 'uuid',
                 },
                 {
-                    name: 'title',
+                    name: 'first_Name',
                     type: 'varchar',
                 },
                 {
-                    name: 'description',
+                    name: 'last_name',
                     type: 'varchar',
                 },
                 {
-                    name: 'location',
-                    type: 'varchar',
+                    name: 'date_of_birth',
+                    type: 'date',
                 },
                 {
-                    name: 'sport',
-                    type: 'varchar',
-                },
-                {
-                    name: 'participants_number',
+                    name: 'height',
                     type: 'int',
                 },
                 {
-                    name: 'cost',
-                    type: 'decimal(9,2)',
+                    name: 'weight',
+                    type: 'int',
+                },
+                {
+                    name: 'picture',
+                    type: 'varchar',
+                },
+                {
+                    name: 'city_id',
+                    type: 'number',
                 },
             ],
-            name: `event`,
+            name: 'user',
         }), true);
     }
 
     async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('event', true, true);
+        queryRunner.dropTable('user');
     }
-
 }

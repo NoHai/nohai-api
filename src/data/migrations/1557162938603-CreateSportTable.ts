@@ -4,12 +4,11 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
 
     async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(new Table({
-            name: 'sport',
             columns: [
                 {
+                    isPrimary: true,
                     name: 'id',
                     type: 'uuid',
-                    isPrimary: true,
                 },
                 {
                     name: 'name',
@@ -24,6 +23,7 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
                     type: 'int',
                 },
             ],
+            name: 'sport',
         }), true);
 
     }
@@ -31,5 +31,4 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
     async down(queryRunner: QueryRunner): Promise<any> {
         queryRunner.dropTable('sport');
     }
-
 }

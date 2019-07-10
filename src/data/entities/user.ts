@@ -22,10 +22,13 @@ export class User extends BaseEntity {
     weight!: number;
 
     @Column()
-    city!: string;
-
-    @Column()
     picture!: any;
 
-    // TODO : city must be another class or something, and we need to add sports and levels to the user
+    @Column()
+    cityId!: number;
+
+    constructor(init?: Partial<User>) {
+        super();
+        Object.assign(this, init);
+    }
 }

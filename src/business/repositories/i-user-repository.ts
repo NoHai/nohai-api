@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
-import { User } from '../../data/entities/user';
+import { UserInput } from '../models/inputs/user-input';
+import { User as UserResult } from '../models/results/user';
 
 export interface IUserRepository {
-    insert(event: User): Observable<User>;
+    insert(event: UserInput): Observable<UserResult>;
 }
