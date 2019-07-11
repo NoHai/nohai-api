@@ -5,7 +5,7 @@ export class User {
     height!: number;
     weight!: number;
     picture!: any;
-    city_id!: number;
+    city!: any;
 
     constructor(init?: Partial<User>) {
         Object.assign(this, init);

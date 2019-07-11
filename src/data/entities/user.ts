@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { City } from './city';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -24,8 +25,9 @@ export class User extends BaseEntity {
     @Column()
     picture!: any;
 
-    @Column()
-    cityId!: number;
+    @OneToOne(() => City)
+    @JoinColumn()
+    city!: City;
 
     constructor(init?: Partial<User>) {
         super();
