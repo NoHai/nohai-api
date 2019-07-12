@@ -8,7 +8,7 @@ export class CreateUserTable1562744381759 implements MigrationInterface {
                 {
                     isPrimary: true,
                     name: 'id',
-                    type: 'uuid',
+                    type: 'varbinary(16)',
                 },
                 {
                     name: 'first_Name',
@@ -36,7 +36,7 @@ export class CreateUserTable1562744381759 implements MigrationInterface {
                 },
                 {
                     name: 'city_id',
-                    type: 'number',
+                    type: 'int',
                 },
             ],
             name: 'user',

@@ -8,7 +8,7 @@ export class CreateEventTable1556985848812 implements MigrationInterface {
                 {
                     isPrimary: true,
                     name: 'id',
-                    type: 'uuid',
+                    type: 'varbinary(16)',
                 },
                 {
                     name: 'title',
