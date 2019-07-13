@@ -8,6 +8,12 @@ export class User extends BaseEntity {
     id!: string;
 
     @Column()
+    login!: string;
+
+    @Column()
+    password!: string;
+
+    @Column()
     firstName!: string;
 
     @Column()
@@ -29,7 +35,7 @@ export class User extends BaseEntity {
     @JoinColumn()
     city!: City;
 
-    constructor(init?: Partial<User>) {
+    constructor(init?: any) {
         super();
         Object.assign(this, init);
     }

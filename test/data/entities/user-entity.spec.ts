@@ -1,17 +1,18 @@
-import { User as UserEntity } from '../../../src/data/entities/user';
 import { City } from '../../../src/data/entities/city';
+import { User as UserEntity } from '../../../src/data/entities/user';
 
 describe('user', () => {
-    const init: Partial<UserEntity> = {
+    const init: any = {
         id: 'Random id here.',
-        firstName: 'First name here.', 
-        lastName: 'Last name here', 
-        dateOfBirth:  new Date('1989-05-02'),
+        firstName: 'First name here.',
+        lastName: 'Last name here',
+        dateOfBirth: new Date('1989-05-02'),
         height: 165,
         weight: 58,
         picture: '',
-        city:  new City()
-        
+        city: new City(),
+        login: 'Login here.',
+        password: 'Password here.',
     };
 
     let instance: UserEntity;
@@ -23,6 +24,14 @@ describe('user', () => {
     describe('constructor', () => {
         it('id is set', () => {
             expect(instance.id).toEqual(init.id);
+        });
+
+        it('#login is set', () => {
+            expect(instance.login).toEqual(init.login);
+        });
+
+        it('#password is set', () => {
+            expect(instance.password).toEqual(init.password);
         });
 
         it('first name is set', () => {
