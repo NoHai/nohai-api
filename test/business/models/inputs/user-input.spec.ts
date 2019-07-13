@@ -3,13 +3,13 @@ import { City } from '../../../../src/data/entities/city';
 
 describe('user-input', () => {
     const init: Partial<UserInput> = {
-        firstName: 'First name here.', 
-        lastName: 'Last name here', 
-        dateOfBirth:  new Date('1989-05-02'),
+        firstName: 'First name here.',
+        lastName: 'Last name here',
+        dateOfBirth: new Date('1989-05-02'),
         height: 165,
         weight: 58,
         picture: '',
-        city:  new City()
+        city: new City()
     };
 
     let instance: UserInput;
@@ -19,32 +19,32 @@ describe('user-input', () => {
     });
 
     describe('constructor', () => {
-        it('first name is set', () => {
+        it('#firstName is set', () => {
             expect(instance.firstName).toEqual(init.firstName);
         });
 
-        it('last name is set', () => {
+        it('#lastName is set', () => {
             expect(instance.lastName).toEqual(init.lastName);
         });
 
-        it('date of birth is set', () => {
-            expect(instance.dateOfBirth).toEqual(init.dateOfBirth)
-        })
+        it('#dateOfBirth is set', () => {
+            expect(instance.dateOfBirth).toEqual(init.dateOfBirth);
+        });
 
-        it('height is set', () => {
-            expect(instance.height).toEqual(init.height)
-        })
+        it('#height is set', () => {
+            expect(instance.height).toEqual(init.height);
+        });
 
-        it('weight is set', () => {
-            expect(instance.weight).toEqual(init.weight)
-        })
+        it('#weight is set', () => {
+            expect(instance.weight).toEqual(init.weight);
+        });
 
-        it('picture is set', () => {
-            expect(instance.picture).toEqual(init.picture)
-        })
+        it('#picture is set', () => {
+            expect(instance.picture).toEqual(init.picture);
+        });
 
-        it('city is set', () => {
-            expect(instance.city).toEqual(init.city)
-        })
+        it('#city is set', () => {
+            expect(instance.city).toEqual(init.city);
+        });
     });
 });

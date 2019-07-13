@@ -8,7 +8,7 @@ describe('user', () => {
         height: 165,
         weight: 58,
         picture: '',
-        city:  'Sibiu'
+        city:  'Sibiu',
     };
 
     let instance: UserModel;

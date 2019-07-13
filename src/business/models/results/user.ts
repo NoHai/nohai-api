@@ -1,13 +1,8 @@
-export class User {
-    firstName!: string;
-    lastName!: string;
-    dateOfBirth!: Date;
-    height!: number;
-    weight!: number;
-    picture!: any;
-    city!: any;
+import { UserInput } from '../inputs/user-input';
 
-    constructor(init?: Partial<User>) {
+export class User extends UserInput {
+    constructor(init?: any) {
+        super(init);
         Object.assign(this, init);
     }
 }
