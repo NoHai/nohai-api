@@ -4,18 +4,19 @@ import { Nothing } from '../../../business/models/nothing';
 import { IInitializeDatabaseConnection } from '../../../data/commands/i-initialize-database-connection';
 import { IPresentationSettings } from '../../i-presentation-settings';
 import { IInitializeGraph } from '../graph/i-initialize-graph';
-import { CreateProductionContainer } from '../ioc/create-production-container';
+import { ICreateContainer } from '../ioc/i-create-container';
 import { ResolveService } from '../ioc/resolve-service';
 import { IStartup } from './i-startup';
 
 export abstract class StartupCommon implements IStartup {
     protected readonly express: any;
-    protected readonly resolveService = new ResolveService(new CreateProductionContainer().execute());
+    protected readonly resolveService: ResolveService;
     protected readonly presentationSettings: IPresentationSettings;
     protected readonly initializeDatabase: IInitializeDatabaseConnection;
     protected readonly initializeGraph: IInitializeGraph;
 
-    constructor() {
+    protected constructor(createContainer: ICreateContainer) {
+        this.resolveService = new ResolveService(createContainer.execute());
         this.express = this.resolveService.execute('express');
         this.presentationSettings = this.resolveService.execute('presentationSettings');
         this.initializeDatabase = this.resolveService.execute('initializeDatabaseConnection');
