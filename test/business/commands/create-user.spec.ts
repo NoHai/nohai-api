@@ -1,12 +1,12 @@
 import { of } from 'rxjs';
+import { assert, createStubInstance } from 'sinon';
 import { CreateUser } from '../../../src/business/commands/create-user';
-import { createStubInstance, assert } from 'sinon';
-import { UserInput } from '../../../src/business/models/inputs/user-input';
+import { CredentialsInput } from '../../../src/business/models/inputs/credentials-input';
 import { UserRepository } from '../../../src/data/repositories/user-repository';
 
-describe('create-event', () => {
-    const input = new UserInput();
-    const repository = createStubInstance(UserRepository, {insert: of(input)});
+describe('create-user', () => {
+    const input = new CredentialsInput();
+    const repository = createStubInstance(UserRepository, { insert: of(input)});
     const instance = new CreateUser(repository);
 
     describe('execute', () => {

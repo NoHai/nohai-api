@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { UserInput } from '../models/inputs/user-input';
-import { User as UserResult } from '../models/results/user';
+import { CredentialsInput } from '../models/inputs/credentials-input';
+import { Credentials } from '../models/results/credentials';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateUser } from './i-create-user';
 
@@ -8,7 +8,7 @@ export class CreateUser implements ICreateUser {
     constructor(private eventRepository: IUserRepository) {
     }
 
-    execute(input: UserInput): Observable<UserResult> {
+    execute(input: CredentialsInput): Observable<Credentials> {
         return this.eventRepository.insert(input);
     }
 }
