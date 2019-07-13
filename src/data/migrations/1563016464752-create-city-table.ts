@@ -8,7 +8,7 @@ export class CreateCityTable1563016464752 implements MigrationInterface {
                 {
                     isPrimary: true,
                     name: 'id',
-                    type: 'varbinary(16)',
+                    type: 'varchar(36)',
                 },
                 {
                     name: 'name',
@@ -16,7 +16,7 @@ export class CreateCityTable1563016464752 implements MigrationInterface {
                 },
                 {
                     name: 'county_id',
-                    type: 'varbinary(16)',
+                    type: 'varchar(36)',
                 },
             ],
             name: 'city',

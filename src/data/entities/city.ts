@@ -4,14 +4,14 @@ import { County } from './county';
 @Entity('city')
 export class City extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id!: string;
 
     @Column()
     name!: string;
 
+    @JoinColumn({ name: 'county_id' })
     @OneToOne(() => County, (county) => county.id)
-    @JoinColumn()
     county!: County;
 
     constructor(init?: Partial<City>) {

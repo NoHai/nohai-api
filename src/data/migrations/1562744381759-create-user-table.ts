@@ -8,7 +8,7 @@ export class CreateUserTable1562744381759 implements MigrationInterface {
                 {
                     isPrimary: true,
                     name: 'id',
-                    type: 'varbinary(16)',
+                    type: 'varchar(36)',
                 },
                 {
                     name: 'first_name',

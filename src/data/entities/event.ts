@@ -18,7 +18,7 @@ export class Event extends BaseEntity {
     @Column()
     sport!: string;
 
-    @Column()
+    @Column({ name: 'participants_number' })
     participantsNumber!: number;
 
     @Column()

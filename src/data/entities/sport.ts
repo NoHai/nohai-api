@@ -12,6 +12,6 @@ export class Sport extends BaseEntity {
     @Column()
     description!: string;
 
-    @Column()
+    @Column({ name: 'default_participants_number' })
     defaultParticipantsNumber!: number;
 }

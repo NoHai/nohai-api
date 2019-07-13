@@ -19,7 +19,7 @@ export class User extends BaseEntity {
     @Column()
     lastName!: string;
 
-    @Column()
+    @Column({ name: 'date_of_birth' })
     dateOfBirth!: Date;
 
     @Column()

@@ -8,7 +8,7 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
                 {
                     isPrimary: true,
                     name: 'id',
-                    type: 'varbinary(16)',
+                    type: 'varchar(36)',
                 },
                 {
                     name: 'name',
