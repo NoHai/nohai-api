@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { UserInput } from '../models/inputs/user-input';
-import { User as UserResult } from '../models/results/user';
+import { CredentialsInput } from '../models/inputs/credentials-input';
+import { Credentials } from '../models/results/credentials';
 
 export interface IUserRepository {
-    insert(event: UserInput): Observable<UserResult>;
+    insert(event: CredentialsInput): Observable<Credentials>;
 }

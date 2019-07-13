@@ -1,40 +1,46 @@
 import { of } from 'rxjs';
-import { User as UserEntity } from '../../../src/data/entities/user';
-import { User as UserResult } from '../../../src/business/models/results/user';
 import { assert, stub } from 'sinon';
+import { CredentialsInput } from '../../../src/business/models/inputs/credentials-input';
+import { Credentials } from '../../../src/business/models/results/credentials';
+import { User as UserEntity } from '../../../src/data/entities/user';
+import { CredentialsFactory } from '../../../src/data/factories/credentials-factory';
 import { UserFactory } from '../../../src/data/factories/user-factory';
 import { UserRepository } from '../../../src/data/repositories/user-repository';
 
 describe('user-repository', () => {
 
     describe('insert', () => {
-        const entity = new UserEntity();
-        const model = new UserResult();
-        const makeEntity = stub(UserFactory, 'makeEntity').withArgs(model).returns(entity);
-        const makeResult = stub(UserFactory, 'makeResult').withArgs(entity).returns(model);
-        const save = stub(UserEntity.prototype, 'save').returns(of(entity).toPromise());
         const instance = new UserRepository();
+        const entity = new UserEntity();
 
-        let actual: UserResult;
+        describe('#insert', () => {
+            const input = new CredentialsInput();
+            const model = new Credentials();
+            const makeEntity = stub(UserFactory.entity, 'fromCredentialsInput').withArgs(input).returns(entity);
+            const makeResult = stub(CredentialsFactory.result, 'fromUserEntity').withArgs(entity).returns(model);
+            const save = stub(UserEntity.prototype, 'save').returns(of(entity).toPromise());
 
-        beforeAll(async () => {
-            actual = await instance.insert(model).toPromise();
-        });
+            let actual: Credentials;
 
-        it('invokes UserFactory.makeEntity for event model to event entity mapping', async () => {
-            assert.calledWith(makeEntity, model);
-        });
+            beforeAll(async () => {
+                actual = await instance.insert(input).toPromise();
+            });
 
-        it('saves the entity', async () => {
-            assert.calledOnce(save);
-        });
+            it('invokes #UserFactory.entity.fromCredentialsInput', async () => {
+                assert.calledWith(makeEntity, input);
+            });
 
-        it('invokes UserFactory.makeResult for event entity to event result mapping', async () => {
-            assert.calledWith(makeResult, entity);
-        });
+            it('saves the entity', async () => {
+                assert.calledOnce(save);
+            });
 
-        it('returns object returned by mapper', async () => {
-            expect(actual).toEqual(model);
+            it('invokes #CredentialsFactory.result.fromUserEntity', async () => {
+                assert.calledWith(makeResult, entity);
+            });
+
+            it('returns result from #UserFactory.result.fromUserEntity', async () => {
+                expect(actual).toEqual(model);
+            });
         });
     });
 
