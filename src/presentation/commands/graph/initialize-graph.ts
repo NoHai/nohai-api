@@ -53,6 +53,7 @@ export class InitializeGraph implements IInitializeGraph {
             rootValue: {
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
+                updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
             },
             schema,
         });

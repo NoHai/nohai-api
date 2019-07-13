@@ -1,9 +1,9 @@
-﻿"""A result model used to return an event from server."""
-type Event {
+"""An input model used for updating an event to server."""
+input UpdateEventInput {
     "The id of the event."
     id: String!
 
-    "The title of the event."
+    "The name of the event."
     title: String!
 
     "The description of the event."
@@ -16,7 +16,7 @@ type Event {
     sport: String
 
     "The participants number of the event."
-    participantsNumber: Int
+    participantsNumber: Int 
 
     "The cost per person of the event."
     cost: Float

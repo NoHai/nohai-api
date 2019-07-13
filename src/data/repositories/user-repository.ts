@@ -13,3 +13,4 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 }
+

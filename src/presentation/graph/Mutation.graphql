@@ -4,4 +4,6 @@ type Mutation {
     createUser(input: CredentialsInput!): Credentials!
     """It's used to create a new event."""
     createEvent(input: EventInput!): Event!
+    """It's used to update an existing event."""
+    updateEvent(input: UpdateEventInput!): Event!
 }
