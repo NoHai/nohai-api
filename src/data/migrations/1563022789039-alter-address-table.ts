@@ -1,8 +1,8 @@
-import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
 
-export class alterAddressTable1563022789039 implements MigrationInterface {
+export class AlterAddressTable1563022789039 implements MigrationInterface {
 
-    public async up(queryRunner: QueryRunner): Promise<any> {
+    async up(queryRunner: QueryRunner): Promise<any> {
         const countyForeignKey = new TableForeignKey({
             columnNames: ['county_id'],
             referencedColumnNames: ['id'],
@@ -22,7 +22,7 @@ export class alterAddressTable1563022789039 implements MigrationInterface {
         await queryRunner.createForeignKey('address', cityForeignKey);
     }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {
+    async down(queryRunner: QueryRunner): Promise<any> {
         const table = await queryRunner.getTable('address');
         const countyForeignKey = table!.foreignKeys.find((fk) => fk.columnNames.indexOf('county_id') !== -1);
         const cityForeignKey = table!.foreignKeys.find((fk) => fk.columnNames.indexOf('city_id') !== -1);
