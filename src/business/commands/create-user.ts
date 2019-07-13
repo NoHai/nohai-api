@@ -5,10 +5,10 @@ import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateUser } from './i-create-user';
 
 export class CreateUser implements ICreateUser {
-    constructor(private eventRepository: IUserRepository) {
+    constructor(private userRepository: IUserRepository) {
     }
 
     execute(input: CredentialsInput): Observable<Credentials> {
-        return this.eventRepository.insert(input);
+        return this.userRepository.insert(input);
     }
 }

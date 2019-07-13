@@ -4,7 +4,7 @@ import { City } from './city';
 @Entity('user')
 export class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id!: string;
 
     @Column()
@@ -13,10 +13,10 @@ export class User extends BaseEntity {
     @Column()
     password!: string;
 
-    @Column()
+    @Column({ name: 'first_name' })
     firstName!: string;
 
-    @Column()
+    @Column({ name: 'last_name' })
     lastName!: string;
 
     @Column({ name: 'date_of_birth' })
@@ -32,7 +32,7 @@ export class User extends BaseEntity {
     picture!: string;
 
     @OneToOne(() => City)
-    @JoinColumn()
+    @JoinColumn({ name: 'city_id' })
     city!: City;
 
     constructor(init?: any) {

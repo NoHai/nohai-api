@@ -7,6 +7,7 @@ import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
 import { EventRepository } from '../../../data/repositories/event-repository';
+import { UserRepository } from '../../../data/repositories/user-repository';
 import { IPresentationSettings } from '../../i-presentation-settings';
 import { InitializeGraph } from '../graph/initialize-graph';
 import { ICreateContainer } from './i-create-container';
@@ -38,6 +39,7 @@ export class CreateCommonContainer implements ICreateContainer {
 
     private readonly businessRepositories: ReadonlyArray<any> = [
         { eventRepository: asClass(EventRepository).transient().classic() },
+        { userRepository: asClass(UserRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
