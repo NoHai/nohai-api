@@ -1,7 +1,8 @@
-import { BaseEntity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { City } from './city';
 import { County } from './county';
 
+@Entity('address')
 export class Address extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: string;
