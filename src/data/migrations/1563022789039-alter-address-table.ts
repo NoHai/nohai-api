@@ -5,16 +5,16 @@ export class AlterAddressTable1563022789039 implements MigrationInterface {
     async up(queryRunner: QueryRunner): Promise<any> {
         const countyForeignKey = new TableForeignKey({
             columnNames: ['county_id'],
+            onDelete: 'CASCADE',
             referencedColumnNames: ['id'],
             referencedTableName: 'county',
-            onDelete: 'CASCADE',
 
         });
         const cityForeignKey = new TableForeignKey({
             columnNames: ['city_id'],
+            onDelete: 'CASCADE',
             referencedColumnNames: ['id'],
             referencedTableName: 'city',
-            onDelete: 'CASCADE',
 
         });
 
