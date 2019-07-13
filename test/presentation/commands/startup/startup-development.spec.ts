@@ -24,10 +24,11 @@ describe('startup-development', () => {
     let instance: IStartup;
 
     beforeEach(() => {
+        const fakeCommand = { execute: fake()};
         setupResolveService('express', { listen, get});
         setupResolveService('presentationSettings', { port: 9999} as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({ } as IDataSettings, { }, { } as ICreateDatabase));
-        setupResolveService('initializeGraph', new InitializeGraph({ use}, { execute: fake()}));
+        setupResolveService('initializeGraph', new InitializeGraph({ use}, fakeCommand, fakeCommand));
 
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));

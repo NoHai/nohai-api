@@ -8,7 +8,7 @@ import { StartupStaging } from '../../../../src/presentation/commands/startup/st
 describe('startup-factory', () => {
     let instance: StartupFactory;
 
-    beforeEach(function() {
+    beforeEach(() => {
         instance = new StartupFactory();
     });
 

@@ -20,6 +20,10 @@
             actual.resolve('presentationSettings');
         });
 
+        it('ICreateUser is registered', () => {
+            actual.resolve('createUser');
+        });
+
         it('ICreateEvent is registered', () => {
             actual.resolve('createEvent');
         });

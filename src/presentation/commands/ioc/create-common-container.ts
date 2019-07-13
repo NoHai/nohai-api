@@ -2,6 +2,7 @@ import { asClass, asFunction, asValue, AwilixContainer, createContainer, Injecti
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
+import { CreateUser } from '../../../business/commands/create-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
@@ -17,36 +18,37 @@ export class CreateCommonContainer implements ICreateContainer {
     private readonly presentationSettings: IPresentationSettings = this.allSettings.presentation;
 
     private readonly settings: ReadonlyArray<any> = [
-        { dataSettings: asValue(this.dataSettings)},
-        { presentationSettings: asValue(this.presentationSettings)},
+        { dataSettings: asValue(this.dataSettings) },
+        { presentationSettings: asValue(this.presentationSettings) },
     ];
 
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
-        { createConnection: asFunction(() => createConnection).transient().classic()},
+        { createConnection: asFunction(() => createConnection).transient().classic() },
     ];
 
     private readonly dataCommands: ReadonlyArray<any> = [
-        { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic()},
-        { createDatabase: asClass(CreateDatabase).transient().classic()},
+        { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic() },
+        { createDatabase: asClass(CreateDatabase).transient().classic() },
     ];
 
     private readonly businessCommands: ReadonlyArray<any> = [
-        { createEvent: asClass(CreateEvent).transient().classic()},
+        { createEvent: asClass(CreateEvent).transient().classic() },
+        { createUser: asClass(CreateUser).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
-        { eventRepository: asClass(EventRepository).transient().classic()},
+        { eventRepository: asClass(EventRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
-        { initializeGraph: asClass(InitializeGraph).transient().classic()},
+        { initializeGraph: asClass(InitializeGraph).transient().classic() },
     ];
 
     private readonly presentationNetworking: ReadonlyArray<any> = [
-        { express: asFunction(() => express()).singleton().classic()},
+        { express: asFunction(() => express()).singleton().classic() },
     ];
 
-    private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC});
+    private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC });
 
     execute(): AwilixContainer {
         this.register(this.buildRegistrations());
