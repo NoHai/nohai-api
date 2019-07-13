@@ -1,48 +1,20 @@
-import { User as UserEntity } from '../../../src/data/entities/user';
-import { UserInput } from '../../../src/business/models/inputs/user-input';
+import { CredentialsInput } from '../../../src/business/models/inputs/credentials-input';
 import { UserFactory } from '../../../src/data/factories/user-factory';
-import { User as UserResult } from '../../../src/business/models/results/user';
 
-describe('event-factory', () => {
-    describe('makeEntity', () => {
-        const input = new UserInput({
-            firstName: 'Random input first name here.',
-            lastName: 'Random entity last name here.'
+describe('user-factory', () => {
+    describe('#entity.fromCredentialsInput', () => {
+        const credentialsInput = new CredentialsInput({ login: 'Login here.', password: 'Password here.' });
+
+        it('#login is set', () => {
+            const actual = UserFactory.entity.fromCredentialsInput(credentialsInput);
+
+            expect(actual.login).toEqual(credentialsInput.login);
         });
 
-        let actual: UserEntity;
+        it('#password is set', () => {
+            const actual = UserFactory.entity.fromCredentialsInput(credentialsInput);
 
-        beforeEach(() => {
-            actual = UserFactory.makeEntity(input);
+            expect(actual.password).toEqual(credentialsInput.password);
         });
-
-        it('first name is set', () => {
-            expect(actual.firstName).toEqual(input.firstName);
-        });
-
-        it('last name is set', () => {
-            expect(actual.lastName).toEqual(input.lastName);
-        });
-    });
-
-    describe('makeResult', () => {
-        const entity = new UserEntity({
-            firstName: 'Random entity first name here.',
-            lastName: 'Random entity last name here.',
-        });
-
-        let actual: UserResult;
-
-        beforeEach(() => {
-            actual = UserFactory.makeResult(entity);
-        });
-
-        it('first name is set', () => {
-            expect(actual.firstName).toEqual(entity.firstName);
-        });
-
-        it('last name is set', () => {
-            expect(actual.lastName).toEqual(entity.lastName);
-        })
     });
 });
