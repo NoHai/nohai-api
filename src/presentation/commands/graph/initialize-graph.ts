@@ -4,6 +4,7 @@ import { buildSchema, GraphQLSchema } from 'graphql';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
+import { ICreateUser } from '../../../business/commands/i-create-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
 
@@ -34,7 +35,9 @@ export class InitializeGraph implements IInitializeGraph {
         return nodes;
     }
 
-    constructor(private readonly express: any, private readonly createEvent: ICreateEvent) {
+    constructor(private readonly express: any,
+                private readonly createEvent: ICreateEvent,
+                private readonly createUser: ICreateUser) {
     }
 
     execute(): Observable<Nothing> {
@@ -49,6 +52,7 @@ export class InitializeGraph implements IInitializeGraph {
             graphiql: true,
             rootValue: {
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
+                createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
             },
             schema,
         });
