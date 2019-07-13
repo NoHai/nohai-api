@@ -6,7 +6,7 @@ export class EventInput {
     participantsNumber!: number;
     cost!: number;
 
-    constructor(init?: Partial<EventInput>) {
+    constructor(init?: any) {
         Object.assign(this, init);
     }
 }
