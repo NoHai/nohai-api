@@ -11,7 +11,7 @@ export class CreateUserTable1562744381759 implements MigrationInterface {
                     type: 'varbinary(16)',
                 },
                 {
-                    name: 'first_Name',
+                    name: 'first_name',
                     type: 'varchar',
                 },
                 {
