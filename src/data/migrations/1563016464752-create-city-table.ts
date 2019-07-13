@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateSportTable1557162938603 implements MigrationInterface {
+export class createCityTable1563016464752 implements MigrationInterface {
 
     async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(new Table({
@@ -15,20 +15,16 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
                     type: 'varchar',
                 },
                 {
-                    name: 'description',
-                    type: 'varchar',
-                },
-                {
-                    name: 'default_participants_number',
-                    type: 'int',
+                    name: 'county_id',
+                    type: 'varbinary(16)',
                 },
             ],
-            name: 'sport',
+            name: 'city',
         }), true);
 
     }
 
     async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('sport');
+        await queryRunner.dropTable('city');
     }
 }
