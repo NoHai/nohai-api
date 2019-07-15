@@ -1,4 +1,4 @@
-﻿import { reset, fake, assert } from 'sinon';
+import { assert, fake, reset } from 'sinon';
 import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
 
 describe('initialize-graph', () => {
@@ -7,7 +7,7 @@ describe('initialize-graph', () => {
     let instance: InitializeGraph;
 
     beforeEach(() => {
-        instance = new InitializeGraph({use}, {execute: fake()});
+        instance = new InitializeGraph({ use }, { execute: fake() }, { execute: fake() });
     });
 
     afterEach(() => {

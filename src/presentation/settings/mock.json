@@ -9,10 +9,10 @@
       "database": "mock",
       "useNewUrlParser": true,
       "synchronize": false,
-      "migrationstyRun": true,
+      "migrationsRun": true,
       "logging": false,
       "entities": [
-        "dist/data/entities/event.js"
+        "dist/data/entities/*.js"
       ],
       "migrations": [
         "dist/data/migrations/*.js"

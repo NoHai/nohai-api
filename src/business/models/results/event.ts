@@ -1,7 +1,10 @@
-﻿export class Event {
-    title!: string;
+ import { EventInput } from '../inputs/event-input';
 
-    constructor(init?: Partial<Event>) {
+ export class Event extends EventInput {
+     id!: string;
+
+    constructor(init?: any) {
+        super(init);
         Object.assign(this, init);
     }
 }

@@ -10,6 +10,8 @@ Backend for NoHai, mostly a [C.R.U.D.](https://en.wikipedia.org/wiki/Create,_rea
 
 > As a MongoDB UI tool, you can use [MongoDB Compass](https://www.mongodb.com/products/compass).
 
+> You need to install `typeorm` globally before: `yarn global add typeorm -g`.
+
 Clone the repo and enter into the cloned directory:
 
 * `git clone git@github.com:NoHai/nohai-api.git`
@@ -23,7 +25,7 @@ Build and start the application:
 
 * `yarn run environment:all` (**environment** can be `mock`, `dev`, `staging` or `production`)
 
-> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/.
+> The [GraphiQL](https://github.com/graphql/graphiql) interface can be accessed on: http://localhost:5000/graphql/ (it can be accesed only after running command: `yarn run environment:all`).
 
 ## Migrations
 

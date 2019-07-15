@@ -1,5 +1,23 @@
 ﻿"""A result model used to return an event from server."""
 type Event {
+    "The id of the event."
+    id: String!
+
     "The title of the event."
     title: String!
+
+    "The description of the event."
+    description: String
+
+    "The location of the event."
+    location: String
+
+    "The sport at the event."
+    sport: String
+
+    "The participants number of the event."
+    participantsNumber: Int
+
+    "The cost per person of the event."
+    cost: Float
 }

@@ -1,12 +1,14 @@
 import { of } from 'rxjs';
 import { CreateEvent } from '../../../src/business/commands/create-event';
 import { createStubInstance, assert } from 'sinon';
-import { EventInput } from '../../../src/business/models/inputs/event-input';
+import { Event } from '../../../src/business/models/results/event';
 import { EventRepository } from '../../../src/data/repositories/event-repository';
+import { UpdateEventInput } from '../../../src/business/models/inputs/update-event-input';
 
 describe('create-event', () => {
-    const input = new EventInput();
-    const repository = createStubInstance(EventRepository, {insert: of(input)});
+    const input = new Event();
+    const updateInput = new UpdateEventInput()
+    const repository = createStubInstance(EventRepository, {insert: of(input) , update: of(updateInput)});
     const instance = new CreateEvent(repository);
 
     describe('execute', () => {

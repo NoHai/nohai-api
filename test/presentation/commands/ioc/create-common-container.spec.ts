@@ -1,7 +1,7 @@
- import { AwilixContainer } from 'awilix';
- import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
+import { AwilixContainer } from 'awilix';
+import { CreateCommonContainer } from '../../../../src/presentation/commands/ioc/create-common-container';
 
- describe('create-common-container', () => {
+describe('create-common-container', () => {
     process.env.environment = 'mock';
     const instance = new CreateCommonContainer();
 
@@ -20,12 +20,20 @@
             actual.resolve('presentationSettings');
         });
 
+        it('ICreateUser is registered', () => {
+            actual.resolve('createUser');
+        });
+
         it('ICreateEvent is registered', () => {
             actual.resolve('createEvent');
         });
 
         it('IEventRepository is registered', () => {
             actual.resolve('eventRepository');
+        });
+
+        it('IUserRepository is registered', () => {
+            actual.resolve('userRepository');
         });
 
         it('IInitializeDatabaseConnection is registered', () => {
