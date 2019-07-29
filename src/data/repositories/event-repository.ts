@@ -8,7 +8,6 @@ import { IEventRepository } from '../../business/repositories/i-event-repository
 import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 
-
 export class EventRepository implements IEventRepository {
     insert(input: EventInput): Observable<EventResult> {
         return of(EventFactory.makeEntity(input))
