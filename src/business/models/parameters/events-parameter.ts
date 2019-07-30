@@ -1,7 +1,7 @@
 export class EventsParameter {
     title!: string;
-    pageSize!:number;
-     
+    pageSize!: number;
+
     constructor(init?: any) {
         Object.assign(this, init);
     }
