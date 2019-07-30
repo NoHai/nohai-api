@@ -1,0 +1,7 @@
+"""A result model used to return the JWT's after a success authentication."""
+type Tokens {
+    "A JWT used for authentication and authorization."
+    accessToken: String!,
+    "A JWT used for refresh an expired access token."
+    refreshToken: String!
+}
