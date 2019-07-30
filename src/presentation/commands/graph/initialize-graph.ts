@@ -4,6 +4,7 @@ import { buildSchema, GraphQLSchema } from 'graphql';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
+import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
@@ -26,7 +27,7 @@ export class InitializeGraph implements IInitializeGraph {
     private static readNodes(folderPath: string): string[] {
         const nodes: string[] = [];
 
-        fs.readdirSync(folderPath, { withFileTypes: true})
+        fs.readdirSync(folderPath, { withFileTypes: true })
             .filter((file) => file.isFile())
             .forEach((file) => {
                 nodes.push(fs.readFileSync(`${folderPath}/${file.name}`).toString());
@@ -37,7 +38,8 @@ export class InitializeGraph implements IInitializeGraph {
 
     constructor(private readonly express: any,
                 private readonly createEvent: ICreateEvent,
-                private readonly createUser: ICreateUser) {
+                private readonly createUser: ICreateUser,
+                private readonly createTokens: ICreateTokens) {
     }
 
     execute(): Observable<Nothing> {
@@ -51,6 +53,7 @@ export class InitializeGraph implements IInitializeGraph {
         return expressGraphql({
             graphiql: true,
             rootValue: {
+                auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),

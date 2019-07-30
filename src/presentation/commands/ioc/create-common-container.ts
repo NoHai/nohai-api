@@ -2,11 +2,13 @@ import { asClass, asFunction, asValue, AwilixContainer, createContainer, Injecti
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
+import { CreateTokens } from '../../../business/commands/create-tokens';
 import { CreateUser } from '../../../business/commands/create-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
 import { EventRepository } from '../../../data/repositories/event-repository';
+import { TokensRepository } from '../../../data/repositories/tokens-repository';
 import { UserRepository } from '../../../data/repositories/user-repository';
 import { IPresentationSettings } from '../../i-presentation-settings';
 import { InitializeGraph } from '../graph/initialize-graph';
@@ -35,11 +37,13 @@ export class CreateCommonContainer implements ICreateContainer {
     private readonly businessCommands: ReadonlyArray<any> = [
         { createEvent: asClass(CreateEvent).transient().classic() },
         { createUser: asClass(CreateUser).transient().classic() },
+        { createTokens: asClass(CreateTokens).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
         { eventRepository: asClass(EventRepository).transient().classic() },
         { userRepository: asClass(UserRepository).transient().classic() },
+        { tokensRepository: asClass(TokensRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
