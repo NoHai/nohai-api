@@ -8,7 +8,6 @@ export class UserFactory {
         fromCredentialsInput: (input: CredentialsInput) => new UserEntity(input),
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
         fromUserResult: (user: UserResult) => new UserEntity(user),
-        fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
     };
 
     static result = {
