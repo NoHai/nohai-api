@@ -8,6 +8,7 @@ import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
+const cors = require('cors');
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -45,7 +46,7 @@ export class InitializeGraph implements IInitializeGraph {
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
             .pipe(map((schema) => this.buildHandler(schema)))
-            .pipe(tap((graphHandler) => this.express.use('/graphql', graphHandler)))
+            .pipe(tap((graphHandler) => this.express.use('/graphql', cors(), graphHandler)))
             .pipe(map(() => new Nothing()));
     }
 
