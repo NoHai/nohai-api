@@ -1,0 +1,21 @@
+"""A result model used to return an user from server."""
+type User {
+    "The id of the user."
+    id: String!
+
+    "The first name of the user."
+    firstName: String
+
+    "The last name of the user."
+    lastName: String
+
+    "The date of birth of the user."
+    dateOfBirth: String
+
+    "The height of the user."
+    
+    height: Int 
+
+    "The weight of the user."
+    weight: Int 
+}
