@@ -1,3 +1,4 @@
+import cors from 'cors';
 import expressGraphql from 'express-graphql';
 import * as fs from 'fs';
 import { buildSchema, GraphQLSchema } from 'graphql';
@@ -8,7 +9,6 @@ import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
-const cors = require('cors');
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
