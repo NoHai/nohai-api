@@ -6,8 +6,8 @@ import { User as UserEntity } from '../entities/user';
 export class UserFactory {
     static entity = {
         fromCredentialsInput: (input: CredentialsInput) => new UserEntity(input),
-        fromUserResult: (user: UserResult) => new UserEntity(user),
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
+        fromUserResult: (user: UserResult) => new UserEntity(user),
     };
 
     static result = {
