@@ -7,6 +7,7 @@ import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
+import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
 
@@ -40,7 +41,8 @@ export class InitializeGraph implements IInitializeGraph {
     constructor(private readonly express: any,
                 private readonly createEvent: ICreateEvent,
                 private readonly createUser: ICreateUser,
-                private readonly createTokens: ICreateTokens) {
+                private readonly createTokens: ICreateTokens,
+                private readonly updateUser: IUpdateUser) {
     }
 
     execute(): Observable<Nothing> {
@@ -58,6 +60,7 @@ export class InitializeGraph implements IInitializeGraph {
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
+                updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
             },
             schema,
         });

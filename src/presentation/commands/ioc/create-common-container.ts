@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
 import { CreateTokens } from '../../../business/commands/create-tokens';
 import { CreateUser } from '../../../business/commands/create-user';
+import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
@@ -38,6 +39,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { createEvent: asClass(CreateEvent).transient().classic() },
         { createUser: asClass(CreateUser).transient().classic() },
         { createTokens: asClass(CreateTokens).transient().classic() },
+        { updateUser: asClass(UpdateUser).transient().classic()},
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

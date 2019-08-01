@@ -2,4 +2,7 @@
 type Query {
     "It's used to fetch events from server."
     events(parameter: EventsParameter!): Events!
+
+    "It's used to fetch the event by id from server."
+    eventById(id: Int!): Event!
 }

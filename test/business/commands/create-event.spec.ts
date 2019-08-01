@@ -23,5 +23,5 @@ describe('create-event', () => {
 
             expect(actual).toEqual(input);
         });
-    });
+    });[]
 });
