@@ -7,6 +7,8 @@ import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
+import { IGetEventById } from '../../../business/commands/i-get-event-by-id';
+import { IGetEvents } from '../../../business/commands/i-get-events';
 import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
@@ -42,8 +44,10 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createEvent: ICreateEvent,
                 private readonly createUser: ICreateUser,
                 private readonly createTokens: ICreateTokens,
-                private readonly updateUser: IUpdateUser) {
-    }
+                private readonly updateUser: IUpdateUser,
+                private readonly eventById: IGetEventById,
+                private readonly events: IGetEvents) {
+}
 
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
@@ -59,6 +63,8 @@ export class InitializeGraph implements IInitializeGraph {
                 auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
+                eventById: (context: any) => this.eventById.execute(context.input).toPromise(),
+                events: (context: any) => this.events.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
             },

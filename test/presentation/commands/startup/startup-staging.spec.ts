@@ -31,11 +31,13 @@ describe('startup-staging', () => {
             { },
             { } as ICreateDatabase));
         setupResolveService('initializeGraph', new InitializeGraph(
-            { use: fake() },
-            fakeCommand,
-            fakeCommand,
-            fakeCommand,
-            fakeCommand));
+                                                { use: fake() },
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand));
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));
         instance = new StartupStaging();

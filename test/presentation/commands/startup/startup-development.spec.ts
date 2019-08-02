@@ -36,6 +36,8 @@ describe('startup-development', () => {
                                                         fakeCommand,
                                                         fakeCommand,
                                                         fakeCommand,
+                                                        fakeCommand,
+                                                        fakeCommand,
                                                         fakeCommand));
 
         initializeDatabaseConnection.returns(of({ }));

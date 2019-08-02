@@ -7,7 +7,7 @@ export class GetEventById implements IGetEventById {
     constructor(private eventRepository: IEventRepository) {
     }
 
-    execute(id: any): Observable<EventResult> {
+    execute(id: string): Observable<EventResult> {
         return this.eventRepository.getById(id);
     }
 }
