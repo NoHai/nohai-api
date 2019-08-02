@@ -4,5 +4,5 @@ type Query {
     events(parameter: EventsParameter!): Events!
 
     "It's used to fetch the event by id from server."
-    eventById(id: Int!): Event!
+    eventById(id: String!): Event
 }

@@ -13,7 +13,7 @@ describe('startup-development', () => {
     process.env.environment = 'development';
 
     const listen = fake((_: number, callback: any) => callback());
-    const get = fake((_: string, callback: any) => callback({ }, { send}));
+    const get = fake((_: string, callback: any) => callback({}, { send }));
     const send = fake();
     const use = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
@@ -24,11 +24,21 @@ describe('startup-development', () => {
     let instance: IStartup;
 
     beforeEach(() => {
-        const fakeCommand = { execute: fake()};
-        setupResolveService('express', { listen, get});
-        setupResolveService('presentationSettings', { port: 9999} as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({ } as IDataSettings, { }, { } as ICreateDatabase));
-        setupResolveService('initializeGraph', new InitializeGraph({ use}, fakeCommand, fakeCommand));
+        const fakeCommand = { execute: fake() };
+        setupResolveService('express', { listen, get });
+        setupResolveService('presentationSettings', { port: 9999 } as IPresentationSettings);
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection(
+                                                                        { } as IDataSettings,
+                                                                        { },
+                                                                        { } as ICreateDatabase));
+        setupResolveService('initializeGraph', new InitializeGraph(
+                                                        { use },
+                                                        fakeCommand,
+                                                        fakeCommand,
+                                                        fakeCommand,
+                                                        fakeCommand,
+                                                        fakeCommand,
+                                                        fakeCommand));
 
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));

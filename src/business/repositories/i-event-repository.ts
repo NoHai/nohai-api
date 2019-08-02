@@ -8,5 +8,5 @@ export interface IEventRepository {
     insert(input: EventInput): Observable<EventResult>;
     update(input: UpdateEventInput): Observable<EventResult>;
     get(parameter: EventsParameter): Observable<EventResult[]>;
-    getById(id: any): Observable<EventResult>;
+    getById(id: string): Observable<EventResult>;
 }

@@ -27,10 +27,20 @@ describe('startup-mock', () => {
         const fakeCommand = { execute: fake() };
         setupResolveService('express', { listen, get, use });
         setupResolveService('presentationSettings', { port: 9999 } as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}, {} as ICreateDatabase));
-        setupResolveService('initializeGraph', new InitializeGraph({ use }, fakeCommand, fakeCommand));
-        initializeDatabaseConnection.returns(of({}));
-        initializeGraph.returns(of({}));
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection(
+                                                                            { } as IDataSettings,
+                                                                            { },
+                                                                            { } as ICreateDatabase));
+        setupResolveService('initializeGraph', new InitializeGraph(
+                                                            { use },
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand));
+        initializeDatabaseConnection.returns(of({ }));
+        initializeGraph.returns(of({ }));
         instance = new StartupMock();
     });
 
