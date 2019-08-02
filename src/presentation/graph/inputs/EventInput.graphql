@@ -1,5 +1,8 @@
 ﻿"""An input model used for posting an event to server."""
 input EventInput {
+    "The owner of the event."
+    owner: String!
+
     "The name of the event."
     title: String!
 
@@ -17,4 +20,13 @@ input EventInput {
 
     "The cost per person of the event."
     cost: Float
+
+    "The date of the event."
+    date: String
+
+    "The hour of the event."
+    hour: String
+
+    "Duration of the event."
+    duration: Int
 }

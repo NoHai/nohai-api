@@ -24,6 +24,18 @@ export class Event extends BaseEntity {
     @Column()
     cost!: number;
 
+    @Column()
+    date!: string;
+
+    @Column()
+    hour!: string;
+
+    @Column()
+    owner!: string;
+
+    @Column()
+    duration!: number;
+
     constructor(init?: Partial<Event>) {
         super();
         Object.assign(this, init);

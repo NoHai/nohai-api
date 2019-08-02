@@ -3,6 +3,9 @@ type Event {
     "The id of the event."
     id: String!
 
+    "The owner of the event."
+    owner: String!
+
     "The title of the event."
     title: String!
 
@@ -20,4 +23,13 @@ type Event {
 
     "The cost per person of the event."
     cost: Float
+
+    "The date of the event."
+    date: String
+
+    "The hour of the event."
+    hour: String
+
+    "Duration of the event."
+    duration: Int
 }
