@@ -13,7 +13,7 @@ describe('startup-staging', () => {
     process.env.environment = 'staging';
 
     const listen = fake((_: number, callback: any) => callback());
-    const get = fake((_: string, callback: any) => callback({}, { send }));
+    const get = fake((_: string, callback: any) => callback({ }, { send }));
     const send = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
     const initializeDatabaseConnection = stub(InitializeDatabaseConnection.prototype, 'execute');
@@ -26,10 +26,18 @@ describe('startup-staging', () => {
         const fakeCommand = { execute: fake() };
         setupResolveService('express', { listen, get });
         setupResolveService('presentationSettings', { port: 9999 } as IPresentationSettings);
-        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection({} as IDataSettings, {}, {} as ICreateDatabase));
-        setupResolveService('initializeGraph', new InitializeGraph({ use: fake() }, fakeCommand, fakeCommand));
-        initializeDatabaseConnection.returns(of({}));
-        initializeGraph.returns(of({}));
+        setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection(
+            { } as IDataSettings,
+            { },
+            { } as ICreateDatabase));
+        setupResolveService('initializeGraph', new InitializeGraph(
+            { use: fake() },
+            fakeCommand,
+            fakeCommand,
+            fakeCommand,
+            fakeCommand));
+        initializeDatabaseConnection.returns(of({ }));
+        initializeGraph.returns(of({ }));
         instance = new StartupStaging();
     });
 
