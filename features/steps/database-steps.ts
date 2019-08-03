@@ -1,7 +1,8 @@
 import { Given } from 'cucumber';
 
-import { Database } from '../support/database';
+import { User } from '../../src/data/entities/user';
 
 Given('Admin user exists', async () => {
-    return Database.execute('INSERT INTO mock.user (id, login, password) VALUES (1, "admin", "admin")');
+    const user = new User({ login: 'admin', password: 'admin' });
+    return user.save();
 });
