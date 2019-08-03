@@ -50,7 +50,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly events: IGetEvents,
                 private readonly sports: IGetSports,
                 ) {
-}
+    }
 
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
