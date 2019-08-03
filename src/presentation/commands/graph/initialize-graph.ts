@@ -47,7 +47,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
                 private readonly events: IGetEvents) {
-}
+    }
 
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
