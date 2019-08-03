@@ -9,6 +9,7 @@ import { GetEvents } from '../../../business/commands/get-events';
 import { GetSports } from '../../../business/commands/get-sports';
 import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
+import { CreatePagination } from '../../../data/commands/create-pagination';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { EventRepository } from '../../../data/repositories/event-repository';
 import { SportRepository } from '../../../data/repositories/sport-repository';
@@ -25,6 +26,7 @@ export class CreateCommonContainer implements ICreateContainer {
     private readonly dataCommands: ReadonlyArray<any> = [
         { initializeDatabaseConnection: asClass(InitializeDatabaseConnection).transient().classic() },
         { createDatabase: asClass(CreateDatabase).transient().classic() },
+        { createPagination: asClass(CreatePagination).transient().classic() },
     ];
 
     private readonly businessCommands: ReadonlyArray<any> = [
