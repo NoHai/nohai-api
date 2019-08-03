@@ -55,7 +55,8 @@ export class InitializeGraph implements IInitializeGraph {
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
             .pipe(map((schema) => this.buildHandler(schema)))
-            .pipe(tap((graphHandler) => this.express.use('/graphql', cors(), graphHandler)))
+            .pipe(tap(() => this.express.use(cors({ origin: '*' }))))
+            .pipe(tap((graphHandler) => this.express.use('/graphql', graphHandler)))
             .pipe(map(() => new Nothing()));
     }
 
