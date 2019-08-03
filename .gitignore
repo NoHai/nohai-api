@@ -611,3 +611,6 @@ healthchecksdb
 
 # Build folder
 dist
+
+# Cucumber html report generator
+!features/coverage/
