@@ -17,11 +17,16 @@
       "migrations": [
         "dist/data/migrations/*.js"
       ],
+      "seeds": [
+        "dist/data/seeds/*.js"
+      ],
+      "factories": [],
       "subscribers": [],
       "cli": {
         "entitiesDir": "src/data/entities",
         "migrationsDir": "src/data/migrations",
-        "subscribersDir": "src/data/subscribers"
+        "subscribersDir": "src/data/subscribers",
+        "seedsDir": "src/data/seeds"
       }
     }
   },

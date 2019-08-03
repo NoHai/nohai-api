@@ -6,11 +6,13 @@ import { CreateTokens } from '../../../business/commands/create-tokens';
 import { CreateUser } from '../../../business/commands/create-user';
 import { GetEventById } from '../../../business/commands/get-event-by-id';
 import { GetEvents } from '../../../business/commands/get-events';
+import { GetSports } from '../../../business/commands/get-sports';
 import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
 import { IDataSettings } from '../../../data/i-data-settings';
 import { EventRepository } from '../../../data/repositories/event-repository';
+import { SportRepository } from '../../../data/repositories/sport-repository';
 import { TokensRepository } from '../../../data/repositories/tokens-repository';
 import { UserRepository } from '../../../data/repositories/user-repository';
 import { IPresentationSettings } from '../../i-presentation-settings';
@@ -44,12 +46,14 @@ export class CreateCommonContainer implements ICreateContainer {
         { updateUser: asClass(UpdateUser).transient().classic() },
         { eventById: asClass(GetEventById).transient().classic() },
         { events: asClass(GetEvents).transient().classic() },
+        { sports: asClass(GetSports).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
         { eventRepository: asClass(EventRepository).transient().classic() },
         { userRepository: asClass(UserRepository).transient().classic() },
         { tokensRepository: asClass(TokensRepository).transient().classic() },
+        { sportRepository: asClass(SportRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
