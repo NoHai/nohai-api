@@ -8,6 +8,6 @@ type Mutation {
     createEvent(input: EventInput!): Event!
     """It's used to update an existing event."""
     updateEvent(input: UpdateEventInput!): Event!
-     """It's used to update an existing user."""
+    """It's used to update an existing user."""
     updateUser(input: UpdateUserInput!): User!
 }
