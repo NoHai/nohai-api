@@ -7,7 +7,6 @@ import { InitializeGraph } from '../../../../src/presentation/commands/graph/ini
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { StartupProduction } from '../../../../src/presentation/commands/startup/startup-production';
-import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
 describe('startup-production', () => {
     process.env.environment = 'production';
@@ -25,13 +24,12 @@ describe('startup-production', () => {
     beforeEach(() => {
         const fakeCommand = { execute: fake() };
         setupResolveService('express', { listen, get });
-        setupResolveService('presentationSettings', { port: 9999 } as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection(
-                                                                        { } as IDataSettings,
                                                                         { },
                                                                         { } as ICreateDatabase));
         setupResolveService('initializeGraph', new InitializeGraph(
                                                     { use: fake() },
+                                                    fakeCommand,
                                                     fakeCommand,
                                                     fakeCommand,
                                                     fakeCommand,
@@ -50,10 +48,6 @@ describe('startup-production', () => {
     describe('constructor', () => {
         it('express is initialized', () => {
             assert.calledWith(resolveService, 'express');
-        });
-
-        it('presentationSettings is initialized', () => {
-            assert.calledWith(resolveService, 'presentationSettings');
         });
 
         it('initializeDatabaseConnection is initialized', () => {

@@ -2,12 +2,10 @@ import { of } from 'rxjs';
 import { assert, fake, reset, stub } from 'sinon';
 import { ICreateDatabase } from '../../../../src/data/commands/i-create-database';
 import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
-import { IDataSettings } from '../../../../src/data/i-data-settings';
 import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
 import { StartupStaging } from '../../../../src/presentation/commands/startup/startup-staging';
-import { IPresentationSettings } from '../../../../src/presentation/i-presentation-settings';
 
 describe('startup-staging', () => {
     process.env.environment = 'staging';
@@ -25,13 +23,12 @@ describe('startup-staging', () => {
     beforeEach(() => {
         const fakeCommand = { execute: fake() };
         setupResolveService('express', { listen, get });
-        setupResolveService('presentationSettings', { port: 9999 } as IPresentationSettings);
         setupResolveService('initializeDatabaseConnection', new InitializeDatabaseConnection(
-            { } as IDataSettings,
             { },
             { } as ICreateDatabase));
         setupResolveService('initializeGraph', new InitializeGraph(
                                                 { use: fake() },
+                                                fakeCommand,
                                                 fakeCommand,
                                                 fakeCommand,
                                                 fakeCommand,
@@ -50,10 +47,6 @@ describe('startup-staging', () => {
     describe('constructor', () => {
         it('express is initialized', () => {
             assert.calledWith(resolveService, 'express');
-        });
-
-        it('presentationSettings is initialized', () => {
-            assert.calledWith(resolveService, 'presentationSettings');
         });
 
         it('initializeDatabaseConnection is initialized', () => {

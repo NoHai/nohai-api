@@ -10,26 +10,14 @@ import { GetSports } from '../../../business/commands/get-sports';
 import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
 import { InitializeDatabaseConnection } from '../../../data/commands/initialize-database-connection';
-import { IDataSettings } from '../../../data/i-data-settings';
 import { EventRepository } from '../../../data/repositories/event-repository';
 import { SportRepository } from '../../../data/repositories/sport-repository';
 import { TokensRepository } from '../../../data/repositories/tokens-repository';
 import { UserRepository } from '../../../data/repositories/user-repository';
-import { IPresentationSettings } from '../../i-presentation-settings';
 import { InitializeGraph } from '../graph/initialize-graph';
 import { ICreateContainer } from './i-create-container';
 
 export class CreateCommonContainer implements ICreateContainer {
-    private readonly settingsPath: string = `../../settings/${process.env.environment}.json`;
-    private readonly allSettings: any = require(this.settingsPath);
-    private readonly dataSettings: IDataSettings = this.allSettings.data;
-    private readonly presentationSettings: IPresentationSettings = this.allSettings.presentation;
-
-    private readonly settings: ReadonlyArray<any> = [
-        { dataSettings: asValue(this.dataSettings) },
-        { presentationSettings: asValue(this.presentationSettings) },
-    ];
-
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
         { createConnection: asFunction(() => createConnection).transient().classic() },
     ];
@@ -76,8 +64,7 @@ export class CreateCommonContainer implements ICreateContainer {
     }
 
     private buildRegistrations(): ReadonlyArray<any> {
-        return this.settings
-            .concat(this.dataDatabaseConnection)
+        return this.dataDatabaseConnection
             .concat(this.dataCommands)
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
