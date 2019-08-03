@@ -1,0 +1,6 @@
+mutation($input: CredentialsInput!) {
+    auth(input: $input) {
+        accessToken
+        refreshToken
+    }
+}
