@@ -9,6 +9,7 @@ import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { IGetEventById } from '../../../business/commands/i-get-event-by-id';
 import { IGetEvents } from '../../../business/commands/i-get-events';
+import { IGetSports } from '../../../business/commands/i-get-sports';
 import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
@@ -46,7 +47,9 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createTokens: ICreateTokens,
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
-                private readonly events: IGetEvents) {
+                private readonly events: IGetEvents,
+                private readonly sports: IGetSports,
+                ) {
 }
 
     execute(): Observable<Nothing> {
@@ -65,6 +68,7 @@ export class InitializeGraph implements IInitializeGraph {
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
                 eventById: (context: any) => this.eventById.execute(context.input).toPromise(),
                 events: (context: any) => this.events.execute(context.input).toPromise(),
+                sports: (context: any) => this.sports.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
             },

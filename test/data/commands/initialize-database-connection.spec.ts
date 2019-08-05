@@ -15,7 +15,7 @@ describe('initialize-database-connection', () => {
 
     beforeEach(() => {
         reset();
-        instance = new InitializeDatabaseConnection(settings, createConnection, createDatabase);
+        instance = new InitializeDatabaseConnection(createConnection, createDatabase);
     });
 
     describe('#execute', () => {
@@ -28,7 +28,7 @@ describe('initialize-database-connection', () => {
         });
 
         it('invokes #createConnection with right parameter', async () => {
-            assert.calledWith(createConnection, settings.typeorm);
+            assert.calledWith(createConnection);
         });
     });
 });

@@ -1,0 +1,14 @@
+"""A result model used to return a sport from server."""
+type Sport {
+    "The id of the event."
+    id: String!
+
+    "The name of the sport."
+    name: String!
+
+    "The description of the sport."
+    description: String!
+
+    "The default number of participants."
+    defaultParticipantsNumber: Int!
+}
