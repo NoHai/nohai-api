@@ -2,7 +2,6 @@ import { of } from 'rxjs';
 import { assert, fake, reset, stub } from 'sinon';
 import { ICreateDatabase } from '../../../../src/data/commands/i-create-database';
 import { InitializeDatabaseConnection } from '../../../../src/data/commands/initialize-database-connection';
-import { IDataSettings } from '../../../../src/data/i-data-settings';
 import { InitializeGraph } from '../../../../src/presentation/commands/graph/initialize-graph';
 import { ResolveService } from '../../../../src/presentation/commands/ioc/resolve-service';
 import { IStartup } from '../../../../src/presentation/commands/startup/i-startup';
@@ -10,8 +9,8 @@ import { StartupProduction } from '../../../../src/presentation/commands/startup
 
 describe('startup-production', () => {
     process.env.environment = 'production';
-
-    const listen = fake((_: number, callback: any) => callback());
+    process.env.NOHAI_PORT = '9999';
+    const listen = fake((_: string, callback: any) => callback());
     const get = fake((_: string, callback: any) => callback({}, { send }));
     const send = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
@@ -69,7 +68,7 @@ describe('startup-production', () => {
         });
 
         it('listen from express is invoked', () => {
-            assert.calledWith(listen, 9999);
+            assert.calledWith(listen, '9999');
         });
 
         it('listen log is written', () => {

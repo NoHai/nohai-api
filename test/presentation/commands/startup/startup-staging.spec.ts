@@ -9,8 +9,8 @@ import { StartupStaging } from '../../../../src/presentation/commands/startup/st
 
 describe('startup-staging', () => {
     process.env.environment = 'staging';
-
-    const listen = fake((_: number, callback: any) => callback());
+    process.env.NOHAI_PORT = '9999';
+    const listen = fake((_: string, callback: any) => callback());
     const get = fake((_: string, callback: any) => callback({ }, { send }));
     const send = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
@@ -68,7 +68,7 @@ describe('startup-staging', () => {
         });
 
         it('listen from express is invoked', () => {
-            assert.calledWith(listen, 9999);
+            assert.calledWith(listen, '9999');
         });
 
         it('listen log is written', () => {

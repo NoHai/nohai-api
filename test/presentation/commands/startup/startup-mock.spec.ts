@@ -9,9 +9,9 @@ import { StartupMock } from '../../../../src/presentation/commands/startup/start
 
 describe('startup-mock', () => {
     process.env.environment = 'mock';
-
-    const listen = fake((_: number, callback: any) => callback());
-    const get = fake((_: string, callback: any) => callback({}, { send }));
+    process.env.NOHAI_PORT = '9999';
+    const listen = fake((_: string, callback: any) => callback());
+    const get = fake((_: string, callback: any) => callback({ }, { send }));
     const send = fake();
     const use = fake();
     const resolveService = stub(ResolveService.prototype, 'execute');
@@ -73,7 +73,7 @@ describe('startup-mock', () => {
         });
 
         it('listen from express is invoked', () => {
-            assert.calledWith(listen, 9999);
+            assert.calledWith(listen, '9999');
         });
 
         it('listen log is written', () => {

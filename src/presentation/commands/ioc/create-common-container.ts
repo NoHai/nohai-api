@@ -1,4 +1,4 @@
-import { asClass, asFunction, asValue, AwilixContainer, createContainer, InjectionMode } from 'awilix';
+import { asClass, asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
 import express from 'express';
 import { createConnection } from 'typeorm';
 import { CreateEvent } from '../../../business/commands/create-event';
