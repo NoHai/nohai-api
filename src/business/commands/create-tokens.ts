@@ -3,7 +3,6 @@ import { Observable, of, zip } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
-import { IPresentationSettings } from '../../presentation/i-presentation-settings';
 import { CredentialsInput } from '../models/inputs/credentials-input';
 import { Tokens } from '../models/results/tokens';
 import { User } from '../models/results/user';
@@ -16,8 +15,7 @@ export class CreateTokens implements ICreateTokens {
         return of(uuid().toString());
     }
 
-    constructor(private readonly presentationSettings: IPresentationSettings,
-                private readonly tokensRepository: ITokensRepository,
+    constructor(private readonly tokensRepository: ITokensRepository,
                 private readonly userRepository: IUserRepository) {
     }
 
@@ -38,7 +36,7 @@ export class CreateTokens implements ICreateTokens {
     }
 
     private sign(accessToken: any): string {
-        return sign(accessToken, this.presentationSettings.jwtSecret, {
+        return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
             algorithm: 'HS256',
             encoding: 'UTF8',
         });

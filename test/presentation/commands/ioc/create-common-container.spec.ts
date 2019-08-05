@@ -12,14 +12,6 @@ describe('create-common-container', () => {
             actual = instance.execute();
         });
 
-        it('IDataSettings is registered', () => {
-            actual.resolve('dataSettings');
-        });
-
-        it('IPresentationSettings is registered', () => {
-            actual.resolve('presentationSettings');
-        });
-
         it('ICreateUser is registered', () => {
             actual.resolve('createUser');
         });

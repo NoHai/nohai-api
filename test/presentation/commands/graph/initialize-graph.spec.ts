@@ -14,6 +14,7 @@ describe('initialize-graph', () => {
             { execute: fake() },
             { execute: fake() },
             { execute: fake() },
+            { execute: fake() },
             { execute: fake() });
     });
 

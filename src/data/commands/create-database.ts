@@ -2,23 +2,20 @@ import { createConnection as createMysqlConnection } from 'mysql';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Nothing } from '../../business/models/nothing';
-import { IDataSettings } from '../i-data-settings';
 import { ICreateDatabase } from './i-create-database';
 
 export class CreateDatabase implements ICreateDatabase {
-    constructor(private readonly dataSettings: IDataSettings) {
-    }
 
     execute(): Observable<Nothing> {
-        return of(`CREATE DATABASE IF NOT EXISTS ${this.dataSettings.typeorm.database}`)
+        return of(`CREATE DATABASE IF NOT EXISTS ${process.env.TYPEORM_DATABASE}`)
             .pipe(switchMap((query) => this.executeQuery(query, this.buildConnection())));
     }
 
     private buildConnection(): any {
         return createMysqlConnection({
-            host: this.dataSettings.typeorm.host,
-            password: this.dataSettings.typeorm.password,
-            user: this.dataSettings.typeorm.username,
+            host: process.env.TYPEORM_HOST,
+            password: process.env.TYPEORM_PASSWORD,
+            user: process.env.TYPEORM_USERNAME,
         });
     }
 

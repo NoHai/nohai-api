@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { from } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
-class Request1 {
+class RequestSupport {
 
     get lastResponse(): any {
         return this.lastResponseField;
@@ -16,9 +16,10 @@ class Request1 {
 
     async post(query: string, variables: any = {}): Promise<any> {
         return from(axios.post('http://localhost:5000/graphql/', { query, variables }))
+            .pipe(catchError((error) => of(error.response)))
             .pipe(tap((response) => this.lastResponseField = response))
             .toPromise();
     }
 }
 
-export const Request = new Request1();
+export const Request = new RequestSupport();

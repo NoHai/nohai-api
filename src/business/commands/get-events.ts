@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { EventsParameter } from '../models/parameters/events-parameter';
-import { Event as EventResult } from '../models/results/event';
+import { Pagination } from '../models/results/pagination';
 import { IEventRepository } from '../repositories/i-event-repository';
 import { IGetEvents } from './i-get-events';
 
@@ -8,7 +8,7 @@ export class GetEvents implements IGetEvents {
     constructor(private eventRepository: IEventRepository) {
     }
 
-    execute(input: EventsParameter): Observable<EventResult[]> {
+    execute(input: EventsParameter): Observable<Pagination> {
         return this.eventRepository.get(input);
     }
 }

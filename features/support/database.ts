@@ -1,41 +1,25 @@
-import { createConnection as createMysqlConnection } from 'mysql';
-import { Observable } from 'rxjs';
-import { Nothing } from '../../src/business/models/nothing';
+import { from } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { createConnection } from 'typeorm';
 
-class Database1 {
-    private connection: any = undefined;
+import { CreateDatabase } from '../../src/data/commands/create-database';
 
-    initialize(): void {
-        this.connection = createMysqlConnection({
-            host: this.allSettings().data.typeorm.host,
-            password: this.allSettings().data.typeorm.password,
-            user: this.allSettings().data.typeorm.username,
-        });
+class DatabaseSupport {
+    private connection: any;
+
+    async initialize(): Promise<any> {
+        return new CreateDatabase().execute()
+            .pipe(switchMap(() => from(createConnection())))
+            .pipe(tap((connection) => this.connection = connection))
+            .toPromise();
     }
 
-    async execute(query: string): Promise<any> {
-        return this.executeQuery(query).toPromise();
+    async clean(): Promise<any> {
     }
 
-    private executeQuery(queryString: string): Observable<Nothing> {
-        return Observable.create((observer: any) => {
-            this.connection.query(queryString, (error: any) => {
-                if (error) {
-                    observer.error(error);
-                }
-                observer.next(new Nothing());
-                observer.complete();
-            });
-        });
-    }
-
-    private allSettings(): any {
-        return require(this.settingsPath());
-    }
-
-    private settingsPath(): string {
-        return `../../src/presentation/settings/${process.env.environment}.json`;
+    dispose(): void {
+        this.connection.close();
     }
 }
 
-export const Database = new Database1();
+export const Database = new DatabaseSupport();
