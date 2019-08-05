@@ -55,7 +55,8 @@ export class InitializeGraph implements IInitializeGraph {
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
             .pipe(map((schema) => this.buildHandler(schema)))
-            .pipe(tap((graphHandler) => this.express.use('/graphql', cors(), graphHandler)))
+            .pipe(tap(() => this.express.use(cors({ origin: '*' }))))
+            .pipe(tap((graphHandler) => this.express.use('/graphql', graphHandler)))
             .pipe(map(() => new Nothing()));
     }
 
@@ -67,7 +68,7 @@ export class InitializeGraph implements IInitializeGraph {
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
                 eventById: (context: any) => this.eventById.execute(context.input).toPromise(),
-                events: (context: any) => this.events.execute(context.input).toPromise(),
+                events: (context: any) => this.events.execute(context.parameter).toPromise(),
                 sports: (context: any) => this.sports.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),

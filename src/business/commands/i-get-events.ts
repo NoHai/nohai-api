@@ -1,6 +1,6 @@
 import { EventsParameter } from '../models/parameters/events-parameter';
-import { Event } from '../models/results/event';
+import { Pagination } from '../models/results/pagination';
 import { IObservableCommand } from './core/i-observable-command';
 
-export interface IGetEvents extends IObservableCommand<EventsParameter, Event[]> {
+export interface IGetEvents extends IObservableCommand<EventsParameter, Pagination> {
 }
