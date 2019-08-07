@@ -1,14 +1,17 @@
+import { Address } from '../../../data/entities/address';
+
 export class EventInput {
     owner!: string;
     title!: string;
     description!: string;
-    location!: string;
+    address!: Address;
     sport!: string;
-    participantsNumber!: number;
+    freeSpots!: number;
     cost!: number;
     date!: string;
     hour!: string;
     duration!: number;
+    level!: number;
 
     constructor(init?: any) {
         Object.assign(this, init);

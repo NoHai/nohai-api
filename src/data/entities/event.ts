@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Address } from './address';
 
 @Entity('event')
 export class Event extends BaseEntity {
@@ -12,14 +13,15 @@ export class Event extends BaseEntity {
     @Column()
     description!: string;
 
-    @Column()
-    location!: string;
+    @JoinColumn({ name: 'address_id' })
+    @OneToOne(() => Address, (address) => address.id)
+    address!: Address;
 
     @Column()
     sport!: string;
 
-    @Column({ name: 'participants_number' })
-    participantsNumber!: number;
+    @Column({ name: 'free_spots' })
+    freeSpots!: number;
 
     @Column()
     cost!: number;
@@ -35,6 +37,9 @@ export class Event extends BaseEntity {
 
     @Column()
     duration!: number;
+
+    @Column()
+    level!: number;
 
     constructor(init?: Partial<Event>) {
         super();

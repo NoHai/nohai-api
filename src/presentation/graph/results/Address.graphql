@@ -1,0 +1,13 @@
+type Address {
+    "The id of the event."
+    id: String!
+
+    "The owner of the event."
+    city: String!
+
+    "The title of the event."
+    county: String!
+
+    "The street name."
+    streetName: String
+}
