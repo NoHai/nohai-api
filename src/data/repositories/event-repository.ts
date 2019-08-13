@@ -7,6 +7,7 @@ import { Event as EventResult } from '../../business/models/results/event';
 import { Pagination } from '../../business/models/results/pagination';
 import { IEventRepository } from '../../business/repositories/i-event-repository';
 import { CreatePagination } from '../commands/create-pagination';
+import { Address } from '../entities/address';
 import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 
