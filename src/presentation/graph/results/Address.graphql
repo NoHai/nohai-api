@@ -1,12 +1,12 @@
 type Address {
-    "The id of the event."
+    "The id of the address."
     id: String!
 
-    "The owner of the event."
-    city: String!
+    "The city of the address."
+    city: City!
 
-    "The title of the event."
-    county: String!
+    "The county of the address."
+    county: County!
 
     "The street name."
     streetName: String

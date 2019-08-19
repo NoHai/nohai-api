@@ -14,7 +14,7 @@ export class Event extends BaseEntity {
     description!: string;
 
     @JoinColumn({ name: 'address_id' })
-    @OneToOne(() => Address, (address) => address.id)
+    @OneToOne(() => Address, (address) => address.id, { cascade: true })
     address!: Address;
 
     @Column()

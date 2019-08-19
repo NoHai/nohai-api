@@ -2,19 +2,32 @@ import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { Event as EventResult } from '../../business/models/results/event';
 import { Event as EventEntity } from '../entities/event';
+import { AddressFactory } from './address-factory';
 
 export class EventFactory {
     static entity = {
-        fromEventInput: (input: EventInput): EventEntity => new EventEntity(input),
-        fromUpdateEventInput: (input: UpdateEventInput): EventEntity => new EventEntity(input),
+        fromEventInput: (event: EventInput): EventEntity => new EventEntity({
+            ...event,
+            address: AddressFactory.entity.fromAddressResult(event.address),
+        }),
+        fromUpdateEventInput: (event: UpdateEventInput): EventEntity => new EventEntity({
+            ...event,
+            address: AddressFactory.entity.fromAddressResult(event.address),
+        }),
     };
 
     static result = {
-        fromEventEntity: (entity: EventEntity): EventResult => new EventResult(entity),
+        fromEventEntity: (event: EventEntity): EventResult => new EventResult({
+            ...event,
+            address: AddressFactory.result.fromAddressEntity(event.address),
+        }),
     };
 
     static results = {
         fromEventEntities: (entities: EventEntity[]): EventResult[] =>
-            entities.map((entity) => new EventResult(entity)),
+            entities.map((event) => new EventResult({
+                ...event,
+                address: AddressFactory.result.fromAddressEntity(event.address),
+            })),
     };
 }

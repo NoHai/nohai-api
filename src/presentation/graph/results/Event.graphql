@@ -13,7 +13,7 @@ type Event {
     description: String
 
     "The location of the event."
-    address: Address!
+    address: Address
 
     "The sport at the event."
     sport: String

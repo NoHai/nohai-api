@@ -42,7 +42,8 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id));
+        return from(Event.findOneOrFail(id)).
+            pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
     private buildPagination(pagination: any): Pagination {
