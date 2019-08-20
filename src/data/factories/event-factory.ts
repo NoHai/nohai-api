@@ -1,6 +1,7 @@
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { Event as EventResult } from '../../business/models/results/event';
+import { Address } from '../entities/address';
 import { Event as EventEntity } from '../entities/event';
 import { AddressFactory } from './address-factory';
 
@@ -19,7 +20,7 @@ export class EventFactory {
     static result = {
         fromEventEntity: (event: EventEntity): EventResult => new EventResult({
             ...event,
-            address: AddressFactory.result.fromAddressEntity(event.address),
+            address: Address.findOneOrFail(event.address.id, { relations: ['city', 'county'] }),
         }),
     };
 
@@ -27,7 +28,7 @@ export class EventFactory {
         fromEventEntities: (entities: EventEntity[]): EventResult[] =>
             entities.map((event) => new EventResult({
                 ...event,
-                address: AddressFactory.result.fromAddressEntity(event.address),
+                address: Address.findOneOrFail(event.address.id, { relations: ['city', 'county'] }),
             })),
     };
 }

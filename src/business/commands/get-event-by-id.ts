@@ -8,6 +8,8 @@ export class GetEventById implements IGetEventById {
     }
 
     execute(id: string): Observable<EventResult> {
+        console.log(id);
+        console.log('fdsfdshfldshfkdshfd');
         return this.eventRepository.getById(id);
     }
 }

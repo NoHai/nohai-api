@@ -1,5 +1,5 @@
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { EventsParameter } from '../../business/models/parameters/events-parameter';
@@ -7,7 +7,6 @@ import { Event as EventResult } from '../../business/models/results/event';
 import { Pagination } from '../../business/models/results/pagination';
 import { IEventRepository } from '../../business/repositories/i-event-repository';
 import { CreatePagination } from '../commands/create-pagination';
-import { Address } from '../entities/address';
 import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 
@@ -42,8 +41,8 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id)).
-            pipe(map((event) => EventFactory.result.fromEventEntity(event)));
+        return from(Event.findOneOrFail(id, { relations: ['address'] }))
+            .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
     private buildPagination(pagination: any): Pagination {
@@ -56,6 +55,7 @@ export class EventRepository implements IEventRepository {
                 description: 'ASC',
                 id: 'DESC',
             },
+            relations: ['address'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
         };
