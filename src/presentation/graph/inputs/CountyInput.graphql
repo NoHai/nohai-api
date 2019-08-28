@@ -1,0 +1,5 @@
+"""An input model used giving the selected city."""
+input CountyInput {
+    "The id of the city."
+    id: String!
+}

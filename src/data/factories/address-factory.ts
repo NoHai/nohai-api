@@ -5,11 +5,13 @@ import { CountyFactory } from './county-factory';
 
 export class AddressFactory {
     static entity = {
-        fromAddressResult: (address: AddressResult) => new AddressEntity( {
-            ...address,
-            city: CityFactory.entity.fromCityResult(address.city),
-            county: CountyFactory.entity.fromCountyResult(address.county),
-        }),
+        fromAddressResult: (address: AddressResult) => {
+            return new AddressEntity({
+                ...address,
+                city: CityFactory.entity.fromCityResult(address.city),
+                county: CountyFactory.entity.fromCountyResult(address.county),
+            });
+        },
     };
 
     static result = {

@@ -1,5 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { County } from './county';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('city')
 export class City extends BaseEntity {
@@ -9,10 +8,6 @@ export class City extends BaseEntity {
 
     @Column()
     name!: string;
-
-    @JoinColumn({ name: 'county_id' })
-    @OneToOne(() => County, (county) => county.id)
-    county!: County;
 
     constructor(init?: Partial<City>) {
         super();

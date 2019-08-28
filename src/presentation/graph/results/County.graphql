@@ -3,5 +3,5 @@ type County {
     id: String!
 
     "The name of the county."
-    name: String!
+    name: String
 }

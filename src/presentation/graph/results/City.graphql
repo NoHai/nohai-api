@@ -3,11 +3,5 @@ type City {
     id: String!
 
     "The name of the city."
-    name: String!
-
-    "The county of the event."
-    county: County!
-
-    "The street name."
-    streetName: String
+    name: String
 }

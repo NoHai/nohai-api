@@ -35,5 +35,4 @@ export class CreateNotificationTokenTable1566291583011 implements MigrationInter
     async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.dropTable('notification_token');
     }
-
 }
