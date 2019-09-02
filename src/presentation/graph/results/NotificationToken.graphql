@@ -1,0 +1,11 @@
+"""A result model used to return an event from server."""
+type NotificationToken {
+    "The id of the event."
+    id: String!
+
+    "The user of the notification token."
+    userId: String!
+
+    "The token of the notification token."
+    token: String!
+}

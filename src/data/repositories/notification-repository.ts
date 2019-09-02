@@ -24,7 +24,6 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     insert(input: NotificationInput): Observable<NotificationResult> {
-        console.log(input);
         return of(NotificationFactory.entity.fromNotificationInput(input))
         .pipe(switchMap((entity) => entity.save()))
         .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));

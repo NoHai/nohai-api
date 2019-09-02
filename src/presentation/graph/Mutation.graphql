@@ -2,14 +2,22 @@
 type Mutation {
     """It's used to authenticate a user."""
     auth(input: CredentialsInput!): Tokens!
+
     """It's used to create a new user."""
     createUser(input: CredentialsInput!): Credentials!
+
     """It's used to create a new event."""
     createEvent(input: EventInput!): Event!
+
     """It's used to update an existing event."""
     updateEvent(input: UpdateEventInput!): Event!
+
      """It's used to update an existing user."""
     updateUser(input: UpdateUserInput!): User!
+
      """It's used to create a notification."""
     createNotification(input: NotificationInput!): Notification!
+
+    """It's used to create a notification token."""
+    createNotificationToken(input: NotificationTokenInput!): NotificationToken!
 }

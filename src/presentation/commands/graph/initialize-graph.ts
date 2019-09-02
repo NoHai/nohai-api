@@ -15,6 +15,8 @@ import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
 import { ICreateNotification } from '../../../business/commands/i-create-notification';
 import { IGetNotifications } from '../../../business/commands/i-get-notifications';
+import { ICreateNotificationToken } from '../../../business/commands/i-create-notification-token';
+import { IGetNotificationTokens } from '../../../business/commands/i-get-notification-tokens';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -53,6 +55,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly sports: IGetSports,
                 private readonly createNotification: ICreateNotification,
                 private readonly getNotifications: IGetNotifications,
+                private readonly createNotificationToken: ICreateNotificationToken,
+                private readonly getNotificationTokens: IGetNotificationTokens,
                 ) {
 }
 
@@ -78,6 +82,8 @@ export class InitializeGraph implements IInitializeGraph {
                 updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
                 createNotification: (context: any) => this.createNotification.execute(context.input).toPromise(),
                 getNotifications: (context: any) => this.getNotifications.execute(context.parameter).toPromise(),
+                createNotificationToken: (context: any) => this.createNotificationToken.execute(context.input).toPromise(),
+                getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context).toPromise(),
             },
             schema,
         });
