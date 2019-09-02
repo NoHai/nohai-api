@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Address } from './address';
+import { Sport } from './sport';
 
 @Entity('event')
 export class Event extends BaseEntity {
@@ -17,8 +18,9 @@ export class Event extends BaseEntity {
     @OneToOne(() => Address, (address) => address.id, { cascade: true })
     address!: Address;
 
-    @Column()
-    sport!: string;
+    @JoinColumn({ name: 'sport_id'})
+    @OneToOne(() => Sport, (sport) => sport.id, { cascade: true})
+    sport!: Sport;
 
     @Column({ name: 'free_spots' })
     freeSpots!: number;

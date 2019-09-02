@@ -1,11 +1,12 @@
 import { Address } from '../../../data/entities/address';
+import { Sport } from '../../../data/entities/sport';
 
 export class EventInput {
     owner!: string;
     title!: string;
     description!: string;
     address!: Address;
-    sport!: string;
+    sport!: Sport;
     freeSpots!: number;
     cost!: number;
     date!: string;

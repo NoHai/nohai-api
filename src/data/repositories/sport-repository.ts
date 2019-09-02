@@ -9,6 +9,6 @@ export class SportRepository implements ISportRepository {
     getAll(): Observable<SportResult> {
         return from(Sport.find())
             .pipe(switchMap((entities) => from(entities)))
-            .pipe(map((foundEntity) => SportFactory.result.fromUserEntity(foundEntity)));
+            .pipe(map((foundEntity) => SportFactory.result.fromSportEntity(foundEntity)));
     }
 }

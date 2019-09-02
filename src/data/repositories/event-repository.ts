@@ -30,7 +30,6 @@ export class EventRepository implements IEventRepository {
 
     get(parameter: EventsParameter): Observable<Pagination> {
         const itemsOptions = this.buildOptions(parameter);
-
         return this.createPagination
             .withEntity(Event)
             .withParameter(parameter.pagination)
@@ -40,7 +39,7 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id, { relations: ['address'] }))
+        return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
@@ -54,7 +53,7 @@ export class EventRepository implements IEventRepository {
                 description: 'ASC',
                 id: 'DESC',
             },
-            relations: ['address'],
+            relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
             filter: parameter.title,

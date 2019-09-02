@@ -3,6 +3,10 @@ import { Sport as SportEntity } from '../entities/sport';
 
 export class SportFactory {
     static result = {
-        fromUserEntity: (input: SportEntity) => new Sport(input),
+        fromSportEntity: (input: SportEntity) => new Sport(input),
+    };
+
+    static entity = {
+        fromSportResult: (sport: Sport) => new SportEntity(sport),
     };
 }

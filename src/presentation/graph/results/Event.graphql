@@ -16,7 +16,7 @@ type Event {
     address: Address
 
     "The sport at the event."
-    sport: String
+    sport: Sport
 
     "The participants number of the event."
     freeSpots: Int
