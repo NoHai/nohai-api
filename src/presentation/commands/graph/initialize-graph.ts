@@ -13,6 +13,8 @@ import { IGetSports } from '../../../business/commands/i-get-sports';
 import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
 import { IInitializeGraph } from './i-initialize-graph';
+import { ICreateNotification } from '../../../business/commands/i-create-notification';
+import { IGetNotifications } from '../../../business/commands/i-get-notifications';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -49,6 +51,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly eventById: IGetEventById,
                 private readonly events: IGetEvents,
                 private readonly sports: IGetSports,
+                private readonly createNotification: ICreateNotification,
+                private readonly getNotifications: IGetNotifications,
                 ) {
 }
 
@@ -67,11 +71,13 @@ export class InitializeGraph implements IInitializeGraph {
                 auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
                 createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
-                eventById: (context: any) => this.eventById.execute(context.input).toPromise(),
+                eventById: (context: any) => this.eventById.execute(context).toPromise(),
                 events: (context: any) => this.events.execute(context.parameter).toPromise(),
                 sports: (context: any) => this.sports.execute(context.input).toPromise(),
                 updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                 updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
+                createNotification: (context: any) => this.createNotification.execute(context.input).toPromise(),
+                getNotifications: (context: any) => this.getNotifications.execute(context.parameter).toPromise(),
             },
             schema,
         });

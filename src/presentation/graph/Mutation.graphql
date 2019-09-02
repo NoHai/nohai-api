@@ -10,4 +10,6 @@ type Mutation {
     updateEvent(input: UpdateEventInput!): Event!
      """It's used to update an existing user."""
     updateUser(input: UpdateUserInput!): User!
+     """It's used to create a notification."""
+    createNotification(input: NotificationInput!): Notification!
 }

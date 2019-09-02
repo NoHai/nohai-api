@@ -17,6 +17,9 @@ import { TokensRepository } from '../../../data/repositories/tokens-repository';
 import { UserRepository } from '../../../data/repositories/user-repository';
 import { InitializeGraph } from '../graph/initialize-graph';
 import { ICreateContainer } from './i-create-container';
+import { CreateNotification } from '../../../business/commands/create-notification';
+import { GetNotifications } from '../../../business/commands/get-notifications';
+import { NotificationRepository } from '../../../data/repositories/notification-repository';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -37,6 +40,8 @@ export class CreateCommonContainer implements ICreateContainer {
         { eventById: asClass(GetEventById).transient().classic() },
         { events: asClass(GetEvents).transient().classic() },
         { sports: asClass(GetSports).transient().classic() },
+        { createNotification: asClass(CreateNotification).transient().classic() },
+        { getNotifications: asClass(GetNotifications).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
@@ -44,6 +49,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { userRepository: asClass(UserRepository).transient().classic() },
         { tokensRepository: asClass(TokensRepository).transient().classic() },
         { sportRepository: asClass(SportRepository).transient().classic() },
+        { notificationRepository: asClass(NotificationRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [

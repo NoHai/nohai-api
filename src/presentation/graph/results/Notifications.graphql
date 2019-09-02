@@ -1,0 +1,7 @@
+"""A result model used to return a paged collection of notifications from server."""
+type Notifications implements Pagination {
+    pageIndex: Int!
+    pageSize: Int!
+    totalCount: Int!
+    items: [Notification]!
+}

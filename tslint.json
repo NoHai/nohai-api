@@ -33,6 +33,7 @@
         "no-irregular-whitespace": true,
         "no-trailing-whitespace": true,
         "object-literal-sort-keys": false,
+        "ordered-imports": false,
         "whitespace": [
             true,
             "check-branch",

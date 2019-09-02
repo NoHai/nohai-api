@@ -29,13 +29,11 @@ export class EventRepository implements IEventRepository {
     }
 
     get(parameter: EventsParameter): Observable<Pagination> {
-        const totalCountOptions = { title: parameter.title };
         const itemsOptions = this.buildOptions(parameter);
 
         return this.createPagination
             .withEntity(Event)
             .withParameter(parameter.pagination)
-            .withTotalCountOptions(totalCountOptions)
             .withItemsOptions(itemsOptions)
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
@@ -59,6 +57,7 @@ export class EventRepository implements IEventRepository {
             relations: ['address'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
+            filter: parameter.title,
         };
     }
 }

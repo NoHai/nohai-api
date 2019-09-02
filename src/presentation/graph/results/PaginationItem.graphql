@@ -1,2 +1,2 @@
 ﻿"""Union that defines all result types that cna be used with Pagination interface."""
-union PaginationItem = Event
+union PaginationItem = Event | Notification 

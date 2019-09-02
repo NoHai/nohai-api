@@ -1,7 +1,6 @@
 import { from } from 'rxjs';
 import { City as CityResult } from '../../business/models/results/city';
 import { City, City as CityEntity } from '../entities/city';
-import { CountyFactory } from './county-factory';
 
 export class CityFactory {
     static entity = {
