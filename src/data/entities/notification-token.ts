@@ -1,5 +1,4 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
-import { User } from './user';
 
 @Entity('notification_token')
 export class NotificationToken extends BaseEntity {

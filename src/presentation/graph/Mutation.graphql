@@ -23,4 +23,10 @@ type Mutation {
 
      """It's used to delete a notification token."""
     deleteNotificationToken(id: String!) : Int
+
+      """It's used to create a user events."""
+    createUserEvents(input: UserEventsInput!): UserEvents!
+
+     """It's used to delete a user events."""
+    deleteUserEvents(id: String!) : Int
 }

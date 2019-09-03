@@ -1,0 +1,11 @@
+ input UserEventsInput {
+    "The user id of the user events"
+    userId: String!
+
+    "The event id of the user events"
+    eventId: String
+
+    "The status of the user events."
+    status: Int
+ }
+ 
