@@ -23,6 +23,7 @@ import { NotificationRepository } from '../../../data/repositories/notification-
 import { CreateNotificationToken } from '../../../business/commands/create-notification-token';
 import { GetNotificationTokens } from '../../../business/commands/get-notification-tokens';
 import { NotificationTokenRepository } from '../../../data/repositories/notification-token-repository';
+import { DeleteNotificationToken } from '../../../business/commands/delete-notification-token';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -47,6 +48,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { getNotifications: asClass(GetNotifications).transient().classic() },
         { createNotificationToken: asClass(CreateNotificationToken).transient().classic() },
         { getNotificationTokens: asClass(GetNotificationTokens).transient().classic() },
+        { deleteNotificationToken : asClass(DeleteNotificationToken).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

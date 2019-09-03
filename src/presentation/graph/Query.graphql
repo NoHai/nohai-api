@@ -13,5 +13,5 @@ type Query {
     getNotifications(parameter: PaginationParameter!): Notifications!
 
      "It's used to fetch the notification tokens from server."
-    getNotificationTokens(userId: String!): NotificationToken!
+    getNotificationTokens(userId: String!): [NotificationToken]
 }

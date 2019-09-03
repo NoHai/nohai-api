@@ -7,8 +7,7 @@ export class NotificationToken extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @JoinColumn({ name: 'user_id'})
-    @OneToOne(() => User, (user) => user.id, { cascade: true})
+    @Column({ name: 'user_id'})
     userId!: string;
 
     @Column()

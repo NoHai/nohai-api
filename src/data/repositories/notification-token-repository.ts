@@ -20,7 +20,7 @@ export class NotificationTokenRepository implements INotificationTokenRepository
     }
 
     get(userId: string): Observable<NotificationTokenResult[]> {
-        return of(NotificationToken.find({ where : { userId}}))
+      return of(NotificationToken.find({ userId }))
             .pipe(switchMap((entities) => from(entities)))
             .pipe(map((entity) =>  NotificationTokenFactory.results.fromNotificationTokenEntities(entity)));
     }
