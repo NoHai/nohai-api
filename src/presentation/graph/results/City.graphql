@@ -1,0 +1,7 @@
+type City {
+    "The id of the city."
+    id: String!
+
+    "The name of the city."
+    name: String
+}

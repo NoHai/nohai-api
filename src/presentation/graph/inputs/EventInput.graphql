@@ -10,13 +10,13 @@ input EventInput {
     description: String
 
     "The location of the event."
-    location: String
+    address: AddressInput
 
     "The sport at the event."
     sport: String
 
     "The participants number of the event."
-    participantsNumber: Int 
+    freeSpots: Int 
 
     "The cost per person of the event."
     cost: Float
@@ -29,4 +29,7 @@ input EventInput {
 
     "Duration of the event."
     duration: Int
+
+    "Level of the sport."
+    level: Int
 }

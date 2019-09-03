@@ -20,12 +20,24 @@ describe('create-common-container', () => {
             actual.resolve('createEvent');
         });
 
+        it('ICreateNotification is registered', () => {
+            actual.resolve('createNotification');
+        });
+
+        it('IGetNotifications is registered', () => {
+            actual.resolve('getNotifications');
+        });
+
         it('IEventRepository is registered', () => {
             actual.resolve('eventRepository');
         });
 
         it('IUserRepository is registered', () => {
             actual.resolve('userRepository');
+        });
+
+        it('INotificationRepository is registered', () => {
+            actual.resolve('notificationRepository');
         });
 
         it('IInitializeDatabaseConnection is registered', () => {

@@ -1,5 +1,5 @@
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { EventsParameter } from '../../business/models/parameters/events-parameter';
@@ -18,6 +18,7 @@ export class EventRepository implements IEventRepository {
     insert(input: EventInput): Observable<EventResult> {
         return of(EventFactory.entity.fromEventInput(input))
             .pipe(switchMap((entity) => entity.save()))
+            .pipe(tap(console.log))
             .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));
     }
 
@@ -28,20 +29,18 @@ export class EventRepository implements IEventRepository {
     }
 
     get(parameter: EventsParameter): Observable<Pagination> {
-        const totalCountOptions = { title: parameter.title };
         const itemsOptions = this.buildOptions(parameter);
-
         return this.createPagination
             .withEntity(Event)
             .withParameter(parameter.pagination)
-            .withTotalCountOptions(totalCountOptions)
             .withItemsOptions(itemsOptions)
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id));
+        return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
+            .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
     private buildPagination(pagination: any): Pagination {
@@ -54,8 +53,10 @@ export class EventRepository implements IEventRepository {
                 description: 'ASC',
                 id: 'DESC',
             },
+            relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
+            filter: parameter.title,
         };
     }
 }

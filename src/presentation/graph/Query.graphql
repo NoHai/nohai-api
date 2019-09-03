@@ -8,4 +8,10 @@ type Query {
 
     "It's used to fetch the sports from server."
     sports: [Sport]
+
+    "It's used to fetch the notifications from server."
+    getNotifications(parameter: PaginationParameter!): Notifications!
+
+     "It's used to fetch the notification tokens from server."
+    getNotificationTokens(userId: String!): [NotificationToken]
 }

@@ -1,0 +1,11 @@
+"""An input model used for updating an event address to server."""
+input AddressInput {
+    "The name of the street."
+    streetName: String!
+
+    "The city in which the event takes place."
+    city:CityInput!
+
+    "The county in which the event takes place."
+    county:CountyInput!
+}

@@ -14,4 +14,9 @@ export class Sport extends BaseEntity {
 
     @Column({ name: 'default_participants_number' })
     defaultParticipantsNumber!: number;
+
+    constructor(init?: Partial<Sport>) {
+        super();
+        Object.assign(this, init);
+    }
 }

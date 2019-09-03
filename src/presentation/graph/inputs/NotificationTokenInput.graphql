@@ -1,0 +1,8 @@
+ input NotificationTokenInput {
+    "The user of the notification token"
+    userId: String
+
+    "The token of the notification token."
+    token: String!
+ }
+ 

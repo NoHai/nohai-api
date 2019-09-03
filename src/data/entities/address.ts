@@ -11,11 +11,11 @@ export class Address extends BaseEntity {
     streetName!: string;
 
     @JoinColumn({ name: 'city_id' })
-    @OneToOne(() => City, (city) => city.id)
+    @OneToOne(() => City, (city) => city.id, { cascade: true })
     city!: City;
 
     @JoinColumn({ name: 'county_id' })
-    @OneToOne(() => County, (county) => county.id)
+    @OneToOne(() => County, (county) => county.id, { cascade: true })
     county!: County;
 
     constructor(init?: Partial<Address>) {

@@ -1,0 +1,31 @@
+ input NotificationInput {
+     
+    "The title of the notification."
+    title: String!
+
+    "The body of the notification."
+    body: String
+
+    "The event id of the notification."
+    eventId: String
+
+    "The type of the notification."
+    notificationType: Int
+
+    "The sport at the event."
+    avatarUrl: String
+
+    "The notification user."
+    user: String
+
+    "The status of the user."
+    status: Int
+
+    "The created date of the notification."
+    createdDate: String
+
+    "The created user of the notification."
+    createdUser: String
+
+ }
+ 

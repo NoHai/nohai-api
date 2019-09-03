@@ -1,0 +1,7 @@
+type County {
+    "The id of the county."
+    id: String!
+
+    "The name of the county."
+    name: String
+}

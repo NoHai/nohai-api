@@ -1,0 +1,13 @@
+type Address {
+    "The id of the address."
+    id: String!
+
+    "The city of the address."
+    city: City!
+
+    "The county of the address."
+    county: County!
+
+    "The street name."
+    streetName: String
+}

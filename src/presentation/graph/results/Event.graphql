@@ -13,13 +13,13 @@ type Event {
     description: String
 
     "The location of the event."
-    location: String
+    address: Address
 
     "The sport at the event."
-    sport: String
+    sport: Sport
 
     "The participants number of the event."
-    participantsNumber: Int
+    freeSpots: Int
 
     "The cost per person of the event."
     cost: Float
@@ -32,4 +32,7 @@ type Event {
 
     "Duration of the event."
     duration: Int
+
+    "Level of the sport."
+    level: Int
 }
