@@ -3,10 +3,18 @@ import { EventInput } from '../../../src/business/models/inputs/event-input';
 import { EventFactory } from '../../../src/data/factories/event-factory';
 import { Event as EventResult } from '../../../src/business/models/results/event';
 import { UpdateEventInput } from '../../../src/business/models/inputs/update-event-input';
+import { Sport } from '../../../src/data/entities/sport';
+import { Address } from '../../../src/data/entities/address';
 
 describe('event-factory', () => {
+    const sport = new Sport();
+    sport.name = 'Random sport here';
+
+    const address = new Address();
+    address.streetName = 'Random street name here';
+
     describe('fromEventInput', () => {
-        const input = new EventInput({ title: 'Random input title here.'});
+        const input = new EventInput({ title: 'Random input title here.', address, sport});
 
         let actual: EventEntity;
 
@@ -15,12 +23,13 @@ describe('event-factory', () => {
         });
 
         it('title is set', () => {
+            console.log(actual);
             expect(actual.title).toEqual(input.title);
         });
     });
 
     describe('fromUpdateEventInput', () => {
-        const updateInput = new UpdateEventInput({ title: 'Random input title here.'});
+        const updateInput = new UpdateEventInput({ title: 'Random input title here.', address, sport});
 
         let actual: EventEntity;
 
@@ -34,7 +43,7 @@ describe('event-factory', () => {
     });
 
     describe('fromEventEntity', () => {
-        const entity = new EventEntity({ title: 'Random entity title here.'});
+        const entity = new EventEntity({ title: 'Random entity title here.', address, sport});
 
         let actual: EventResult;
 
@@ -48,7 +57,7 @@ describe('event-factory', () => {
     });
 
     describe('fromEventEntities', () => {
-        const entities = [new EventEntity({ title: 'Random entity title here.'})];
+        const entities = [new EventEntity({ title: 'Random entity title here.', address, sport})];
 
         let actual: EventResult [];
 

@@ -1,6 +1,10 @@
 import { User as UserModel } from '../../../../src/business/models/results/user';
+import { City } from '../../../../src/data/entities/city';
 
 describe('user', () => {
+    const city =  new City();
+    city.name = 'Sibiu';
+
     const init: Partial<UserModel> = {
         firstName: 'First name here.',
         lastName: 'Last name here', 
@@ -8,7 +12,7 @@ describe('user', () => {
         height: 165,
         weight: 58,
         picture: '',
-        city:  'Sibiu',
+        city,
     };
 
     let instance: UserModel;
