@@ -1,12 +1,20 @@
 ﻿import { Event as EventModel } from '../../../../src/business/models/results/event';
+import { Address } from '../../../../src/data/entities/address';
+import { Sport } from '../../../../src/data/entities/sport';
 
 describe('event', () => {
+    const sport = new Sport();
+    sport.name = 'Random sport here';
+
+    const address = new Address();
+    address.streetName = 'Random street name here';
+
     const init: Partial<EventModel> = {
         title: 'Random title here.',
         description: 'Random description here.',
-        location: 'Random location here.',
-        sport: 'Random sport here.',
-        participantsNumber: 1,
+        address,
+        sport,
+        freeSpots: 1,
         cost: 1,
     };
 
@@ -25,16 +33,16 @@ describe('event', () => {
             expect(instance.description).toEqual(init.description);
         });
 
-        it('#location is set', () => {
-            expect(instance.location).toEqual(init.location);
+        it('#address is set', () => {
+            expect(instance.address).toEqual(init.address);
         });
 
         it('#sport is set', () => {
             expect(instance.sport).toEqual(init.sport);
         });
 
-        it('#participantsNumber is set', () => {
-            expect(instance.participantsNumber).toEqual(init.participantsNumber);
+        it('#freeSpots is set', () => {
+            expect(instance.freeSpots).toEqual(init.freeSpots);
         });
 
         it('#cost is set', () => {

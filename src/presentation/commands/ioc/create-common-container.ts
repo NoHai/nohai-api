@@ -24,6 +24,10 @@ import { CreateNotificationToken } from '../../../business/commands/create-notif
 import { GetNotificationTokens } from '../../../business/commands/get-notification-tokens';
 import { NotificationTokenRepository } from '../../../data/repositories/notification-token-repository';
 import { DeleteNotificationToken } from '../../../business/commands/delete-notification-token';
+import { CreateUserEvents } from '../../../business/commands/create-user-events';
+import { DeleteUserEvents } from '../../../business/commands/delete-user-events';
+import { UserEventsRepository } from '../../../data/repositories/user-events-repository';
+import { GetUserById } from '../../../business/commands/get-user-by-id';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -49,6 +53,9 @@ export class CreateCommonContainer implements ICreateContainer {
         { createNotificationToken: asClass(CreateNotificationToken).transient().classic() },
         { getNotificationTokens: asClass(GetNotificationTokens).transient().classic() },
         { deleteNotificationToken : asClass(DeleteNotificationToken).transient().classic() },
+        { createUserEvents: asClass(CreateUserEvents).transient().classic() },
+        { deleteUserEvents: asClass(DeleteUserEvents).transient().classic() },
+        { getUserById: asClass(GetUserById).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
@@ -58,6 +65,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { sportRepository: asClass(SportRepository).transient().classic() },
         { notificationRepository: asClass(NotificationRepository).transient().classic() },
         { notificationTokenRepository: asClass(NotificationTokenRepository).transient().classic() },
+        { userEventsRepository: asClass(UserEventsRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [

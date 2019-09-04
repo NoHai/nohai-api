@@ -1,6 +1,5 @@
 import { from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { Credentials } from '../../business/models/results/credentials';
@@ -26,6 +25,13 @@ export class UserRepository implements IUserRepository {
         return of(UserFactory.entity.fromUserInput(input))
             .pipe(switchMap((entity) => entity.save()))
             .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
+    }
+
+    getById(id: string): Observable<UserResult> {
+        console.log(id);
+        return of(UserEntity.findOneOrFail(id, { relations: ['city']}))
+            .pipe(switchMap((entity) => from(entity)))
+            .pipe(map((entity) =>  UserFactory.result.fromUserEntity(entity)));
     }
 }
 

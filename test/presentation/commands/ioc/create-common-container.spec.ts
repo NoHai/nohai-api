@@ -16,8 +16,32 @@ describe('create-common-container', () => {
             actual.resolve('createUser');
         });
 
+        it('IGetUserById is registered', () => {
+            actual.resolve('getUserById');
+        });
+
+        it('ICreateTokens is registered', () => {
+            actual.resolve('createTokens');
+        });
+
+        it('IUpdateUser is registered', () => {
+            actual.resolve('updateUser');
+        });
+
+        it('IGetEventById is registered', () => {
+            actual.resolve('eventById');
+        });
+
         it('ICreateEvent is registered', () => {
             actual.resolve('createEvent');
+        });
+
+        it('IGetEvents is registered', () => {
+            actual.resolve('events');
+        });
+
+        it('ISports is registered', () => {
+            actual.resolve('sports');
         });
 
         it('ICreateNotification is registered', () => {
@@ -26,6 +50,26 @@ describe('create-common-container', () => {
 
         it('IGetNotifications is registered', () => {
             actual.resolve('getNotifications');
+        });
+
+        it('ICreateNotificationToken is registered', () => {
+            actual.resolve('createNotificationToken');
+        });
+
+        it('IGetNotificationTokens is registered', () => {
+            actual.resolve('getNotificationTokens');
+        });
+
+        it('IDeleteNotificationToken is registered', () => {
+            actual.resolve('deleteNotificationToken');
+        });
+
+        it('ICreateUserEvents is registered', () => {
+            actual.resolve('createUserEvents');
+        });
+
+        it('IDeleteUserEvents is registered', () => {
+            actual.resolve('deleteUserEvents');
         });
 
         it('IEventRepository is registered', () => {
@@ -38,6 +82,22 @@ describe('create-common-container', () => {
 
         it('INotificationRepository is registered', () => {
             actual.resolve('notificationRepository');
+        });
+
+        it('ITokensRepository is registered', () => {
+            actual.resolve('tokensRepository');
+        });
+
+        it('ISportRepository is registered', () => {
+            actual.resolve('sportRepository');
+        });
+
+        it('INotificationTokenRepository is registered', () => {
+            actual.resolve('notificationTokenRepository');
+        });
+
+        it('IUserEventsRepository is registered', () => {
+            actual.resolve('userEventsRepository');
         });
 
         it('IInitializeDatabaseConnection is registered', () => {

@@ -1,0 +1,14 @@
+"""A result model used to return an userEvents from server."""
+type UserEvents {
+    "The id of the event."
+    id: String!
+
+    "The user id of the user events."
+    userId: String!
+
+    "The event id of the user events."
+    eventId: String!
+
+    "The status of the user events."
+    status: Int
+}
