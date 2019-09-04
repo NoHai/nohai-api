@@ -1,3 +1,5 @@
+import { City } from '../../../data/entities/city';
+
 export class UserInput {
     firstName!: string;
     lastName!: string;
@@ -5,7 +7,7 @@ export class UserInput {
     height!: number;
     weight!: number;
     picture!: any;
-    city!: any;
+    city!: City;
 
     constructor(init?: any) {
         Object.assign(this, init);

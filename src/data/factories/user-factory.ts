@@ -2,6 +2,7 @@ import { CredentialsInput } from '../../business/models/inputs/credentials-input
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
+import { CityFactory } from './city-factory';
 
 export class UserFactory {
     static entity = {
@@ -11,6 +12,8 @@ export class UserFactory {
     };
 
     static result = {
-        fromUserEntity: (user: UserEntity) => new UserResult(user),
+        fromUserEntity: (user: UserEntity) => new UserResult({
+            ...user,
+            city: CityFactory.result.fromCityEntity(user.city)}),
     };
 }

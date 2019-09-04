@@ -20,6 +20,7 @@ import { IGetNotificationTokens } from '../../../business/commands/i-get-notific
 import { IDeleteNotificationToken } from '../../../business/commands/i-delete-notification-token';
 import { ICreateUserEvents } from '../../../business/commands/i-create-user-events';
 import { IDeleteUserEvents } from '../../../business/commands/i-delete-user-events';
+import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -63,6 +64,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly deleteNotificationToken: IDeleteNotificationToken,
                 private readonly createUserEvents: ICreateUserEvents,
                 private readonly deleteUserEvents: IDeleteUserEvents,
+                private readonly getUserById: IGetUserById,
                 ) {
 }
 
@@ -93,6 +95,7 @@ export class InitializeGraph implements IInitializeGraph {
                 deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
                 createUserEvents: (context: any) => this.createUserEvents.execute(context.input).toPromise(),
                 deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
+                getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
             },
             schema,
         });

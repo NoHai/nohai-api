@@ -10,4 +10,6 @@ export interface IUserRepository {
     byCredentials(credentials: CredentialsInput): Observable<User>;
 
     update(input: UpdateUserInput): Observable<User>;
+
+    getById(id: string): Observable<User>;
 }
