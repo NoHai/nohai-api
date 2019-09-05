@@ -1,7 +1,7 @@
 ﻿"""One of the three root graph nodes. It's used for posting data to server."""
 type Mutation {
     """It's used to authenticate a user."""
-    auth(input: CredentialsInput!): Tokens!
+    auth(input: CredentialsInput!): Tokens
 
     """It's used to create a new user."""
     createUser(input: CredentialsInput!): Credentials!
