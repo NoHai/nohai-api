@@ -39,8 +39,8 @@ export class AuthHelper {
         return of(uuid().toString());
     }
 
-     static comparePassords(inputPassword: string, credentials: any): Observable<boolean> {
-         return from(bcrypt.compare(inputPassword, credentials.password));
+     static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
+         return from(bcrypt.compare(inputPassword, hasedPassword));
     }
 
 }

@@ -9,10 +9,12 @@ import { IEventRepository } from '../../business/repositories/i-event-repository
 import { CreatePagination } from '../commands/create-pagination';
 import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
+import { UserContext } from '../../utilities/user-context';
 
 
 export class EventRepository implements IEventRepository {
-    constructor(private readonly createPagination: CreatePagination) {
+    constructor(private readonly createPagination: CreatePagination,
+                private readonly userContext: UserContext) {
     }
 
     insert(input: EventInput): Observable<EventResult> {
@@ -39,6 +41,7 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
+        console.log(this.userContext);
         return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }

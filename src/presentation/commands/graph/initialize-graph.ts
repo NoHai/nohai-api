@@ -21,6 +21,8 @@ import { IDeleteNotificationToken } from '../../../business/commands/i-delete-no
 import { ICreateUserEvents } from '../../../business/commands/i-create-user-events';
 import { IDeleteUserEvents } from '../../../business/commands/i-delete-user-events';
 import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
+import { UserContext } from '../../../utilities/user-context';
+import { ICreateUserContext } from './i-create-user-context';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -65,8 +67,10 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createUserEvents: ICreateUserEvents,
                 private readonly deleteUserEvents: IDeleteUserEvents,
                 private readonly getUserById: IGetUserById,
-                ) {
-}
+                private readonly createUserContext: ICreateUserContext,
+                private userContext: UserContext,
+    ) {
+    }
 
     execute(): Observable<Nothing> {
         return of(InitializeGraph.buildSchema())
@@ -77,27 +81,34 @@ export class InitializeGraph implements IInitializeGraph {
     }
 
     private buildHandler(schema: GraphQLSchema): any {
-        return expressGraphql({
-            graphiql: true,
-            rootValue: {
-                auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
-                createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
-                createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
-                eventById: (context: any) => this.eventById.execute(context).toPromise(),
-                events: (context: any) => this.events.execute(context.parameter).toPromise(),
-                sports: (context: any) => this.sports.execute(context.input).toPromise(),
-                updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
-                updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
-                createNotification: (context: any) => this.createNotification.execute(context.input).toPromise(),
-                getNotifications: (context: any) => this.getNotifications.execute(context.parameter).toPromise(),
-                createNotificationToken: (context: any) => this.createNotificationToken.execute(context.input).toPromise(),
-                getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
-                deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
-                createUserEvents: (context: any) => this.createUserEvents.execute(context.input).toPromise(),
-                deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
-                getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
-            },
-            schema,
+        return expressGraphql((request) => {
+            // console.log(request);
+            // this.createUserContext.execute(request.headers).subscribe();
+            return {
+                graphiql: true,
+                rootValue: {
+                    auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
+                    createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
+                    createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
+                    eventById: (context: any) => this.eventById.execute(context).toPromise(),
+                    events: (context: any) => this.events.execute(context.parameter).toPromise(),
+                    sports: (context: any) => this.sports.execute(context.input).toPromise(),
+                    updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
+                    updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
+                    createNotification: (context: any) => this.createNotification.execute(context.input).toPromise(),
+                    getNotifications: (context: any) => this.getNotifications.execute(context.parameter).toPromise(),
+                    createNotificationToken: (context: any) => this.createNotificationToken.execute(context.input).toPromise(),
+                    getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
+                    deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
+                    createUserEvents: (context: any) => this.createUserEvents.execute(context.input).toPromise(),
+                    deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
+                    getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
+                },
+                schema,
+                context: {
+                    authToken: request.headers.authorization,
+                },
+            };
         });
     }
 }

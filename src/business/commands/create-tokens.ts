@@ -19,7 +19,7 @@ export class CreateTokens implements ICreateTokens {
         return  this.userRepository.byCredentials(input)
                     .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
                     .pipe(catchError(() => throwError(Errors.NotRegisteredError)))
-                    .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials)))
+                    .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
                     .pipe(flatMap((passwordMatches) => passwordMatches === false
                                                      ? throwError(Errors.IncorrectPassowordError)
                                                      : this.saveToken(input)));
@@ -34,6 +34,7 @@ export class CreateTokens implements ICreateTokens {
                 .pipe(map((result) => new Tokens({ user: result[0], accessToken: result[1], refreshToken: result[2] })))
                 .pipe(flatMap((token) => this.tokensRepository.insert(token)));
     }
+
     private buildAccessToken(credentials: CredentialsInput): Observable<string> {
         return this.userRepository.byCredentials(credentials)
             .pipe(map((user) => ({ userId: user.id, firstName: user.firstName, lastName: user.lastName, expires: 'tomorrow' })))

@@ -3,7 +3,7 @@ import { City } from '../../../data/entities/city';
 export class UserInput {
     firstName!: string;
     lastName!: string;
-    dateOfBirth!: Date;
+    dateOfBirth!: string;
     height!: number;
     weight!: number;
     picture!: any;
