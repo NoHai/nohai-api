@@ -55,6 +55,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "express-graphql": "^0.8.0",
+    "firebase-admin": "^8.3.0",
     "graphql": "^14.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.3",
@@ -64,7 +65,8 @@
     "rxjs": "^6.5.1",
     "typeorm": "^0.2.18",
     "typeorm-seeding": "^1.0.0-rc.3",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "yarn": "^1.17.3"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
