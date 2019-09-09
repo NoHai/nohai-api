@@ -1,5 +1,5 @@
 import { IObservableCommand } from './core/i-observable-command';
-import { UserEvents } from '../models/results/user-events';
+import { Nothing } from '../models/nothing';
 
-export interface IJoinEvent extends IObservableCommand<string, UserEvents> {
+export interface IJoinEvent extends IObservableCommand<string, Nothing> {
 }
