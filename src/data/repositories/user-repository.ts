@@ -17,7 +17,7 @@ export class UserRepository implements IUserRepository {
     }
 
     byCredentials(credentials: CredentialsInput): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail({ login: credentials.login, password: credentials.password }))
+        return from(UserEntity.findOneOrFail({ login: credentials.login}))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
@@ -32,6 +32,12 @@ export class UserRepository implements IUserRepository {
         return of(UserEntity.findOneOrFail(id, { relations: ['city']}))
             .pipe(switchMap((entity) => from(entity)))
             .pipe(map((entity) =>  UserFactory.result.fromUserEntity(entity)));
+    }
+
+    getCredentials(id: string): Observable<Credentials> {
+        return of(UserEntity.findOneOrFail(id))
+                .pipe(switchMap((entity) => from(entity)))
+                .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 }
 
