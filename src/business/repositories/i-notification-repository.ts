@@ -10,4 +10,6 @@ export interface INotificationRepository {
     insert(input: NotificationInput): Observable<NotificationResult>;
 
     markAllAsRead(): Observable<boolean>;
+
+    joinEvent(eventId: string): Observable<NotificationResult>;
 }

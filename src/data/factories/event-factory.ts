@@ -9,10 +9,11 @@ import { Sport } from '../entities/sport';
 
 export class EventFactory {
     static entity = {
-        fromEventInput: (event: EventInput): EventEntity => new EventEntity({
+        fromEventInput: (event: EventInput, id: string): EventEntity => new EventEntity({
             ...event,
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
+            id,
         }),
         fromUpdateEventInput: (event: UpdateEventInput): EventEntity => new EventEntity({
             ...event,

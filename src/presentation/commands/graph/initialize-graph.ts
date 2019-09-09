@@ -18,11 +18,11 @@ import { IGetNotifications } from '../../../business/commands/i-get-notification
 import { ICreateNotificationToken } from '../../../business/commands/i-create-notification-token';
 import { IGetNotificationTokens } from '../../../business/commands/i-get-notification-tokens';
 import { IDeleteNotificationToken } from '../../../business/commands/i-delete-notification-token';
-import { ICreateUserEvents } from '../../../business/commands/i-create-user-events';
 import { IDeleteUserEvents } from '../../../business/commands/i-delete-user-events';
 import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
+import { IJoinEvent } from '../../../business/commands/i-join-event';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -64,7 +64,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createNotificationToken: ICreateNotificationToken,
                 private readonly getNotificationTokens: IGetNotificationTokens,
                 private readonly deleteNotificationToken: IDeleteNotificationToken,
-                private readonly createUserEvents: ICreateUserEvents,
+                private readonly joinEvent: IJoinEvent,
                 private readonly deleteUserEvents: IDeleteUserEvents,
                 private readonly getUserById: IGetUserById,
                 private readonly createUserContext: ICreateUserContext,
@@ -82,8 +82,7 @@ export class InitializeGraph implements IInitializeGraph {
 
     private buildHandler(schema: GraphQLSchema): any {
         return expressGraphql((request) => {
-            // console.log(request);
-            // this.createUserContext.execute(request.headers).subscribe();
+            this.createUserContext.execute(request.headers).subscribe();
             return {
                 graphiql: true,
                 rootValue: {
@@ -100,7 +99,7 @@ export class InitializeGraph implements IInitializeGraph {
                     createNotificationToken: (context: any) => this.createNotificationToken.execute(context.input).toPromise(),
                     getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
                     deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
-                    createUserEvents: (context: any) => this.createUserEvents.execute(context.input).toPromise(),
+                    joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
                     deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
                 },

@@ -20,19 +20,12 @@ export class AuthHelper {
         return new CredentialsInput({ password: hash, login: input.login });
     }
 
-    static verifyToken(token: string): boolean {
+    static verifyToken(token: string) {
         try {
-            const payload = verify(token, process.env.NOHAI_JWT_SECRET || '');
-            console.log(payload);
-            return true;
+           return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-            console.log(error);
-            return false;
+             return null;
         }
-    }
-
-    static decodeToken(token: string) {
-        return decode(token);
     }
 
     static buildRefreshToken(): Observable<string> {

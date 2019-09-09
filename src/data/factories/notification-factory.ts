@@ -1,6 +1,7 @@
 import { Notification as NotificationResult } from '../../business/models/results/notification';
 import { Notification as NotificationEntity } from '../entities/notification';
 import { NotificationInput } from '../../business/models/inputs/notification-input';
+import { Event } from '../entities/event';
 
 export class NotificationFactory {
     static entity = {

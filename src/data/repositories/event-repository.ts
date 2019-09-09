@@ -1,5 +1,5 @@
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, flatMap } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { EventsParameter } from '../../business/models/parameters/events-parameter';
@@ -11,16 +11,14 @@ import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 import { UserContext } from '../../utilities/user-context';
 
-
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
                 private readonly userContext: UserContext) {
     }
 
     insert(input: EventInput): Observable<EventResult> {
-        return of(EventFactory.entity.fromEventInput(input))
-            .pipe(switchMap((entity) => entity.save()))
-            .pipe(tap(console.log))
+        return of(EventFactory.entity.fromEventInput(input, this.userContext.userId))
+            .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));
     }
 
@@ -41,7 +39,6 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        console.log(this.userContext);
         return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
