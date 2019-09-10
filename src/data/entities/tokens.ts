@@ -15,7 +15,7 @@ export class Tokens extends BaseEntity {
 
     @JoinColumn({ name: 'user_id' })
     @OneToOne(() => User, (user) => user.id)
-    user = new User();
+    user!: User;
 
     constructor(init?: any) {
         super();

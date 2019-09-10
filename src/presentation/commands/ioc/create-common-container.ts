@@ -30,6 +30,7 @@ import { GetUserById } from '../../../business/commands/get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
 import { CreateUserContext } from '../graph/create-user-context';
 import { JoinEvent } from '../../../business/commands/join-event';
+import { RefreshToken } from '../../../business/commands/refresh-token';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -58,6 +59,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { joinEvent: asClass(JoinEvent).transient().classic() },
         { deleteUserEvents: asClass(DeleteUserEvents).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
+        { refreshToken: asClass(RefreshToken).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

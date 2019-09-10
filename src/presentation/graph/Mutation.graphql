@@ -3,6 +3,9 @@ type Mutation {
     """It's used to authenticate a user."""
     auth(input: CredentialsInput!): Tokens
 
+    """It's used to get the refresh token from a user."""
+    refreshToken(input: String!): Tokens
+
     """It's used to create a new user."""
     createUser(input: CredentialsInput!): Credentials!
 

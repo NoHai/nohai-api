@@ -23,6 +23,7 @@ import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
 import { IJoinEvent } from '../../../business/commands/i-join-event';
+import { IRefreshToken } from '../../../business/commands/i-refresh-token';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -68,6 +69,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly deleteUserEvents: IDeleteUserEvents,
                 private readonly getUserById: IGetUserById,
                 private readonly createUserContext: ICreateUserContext,
+                private readonly refreshToken: IRefreshToken,
                 private userContext: UserContext,
     ) {
     }
@@ -102,6 +104,7 @@ export class InitializeGraph implements IInitializeGraph {
                     joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
                     deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
+                    refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                 },
                 schema,
                 context: {
