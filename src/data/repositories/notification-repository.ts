@@ -41,6 +41,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     joinEvent(eventId: string): Observable<NotificationResult> {
+        console.log(this.userContext.userId);
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
 
@@ -68,7 +69,9 @@ export class NotificationRepository implements INotificationRepository {
                                        body: NotificationHelper.joinNotificationBody(event, user),
                                        eventId: event.id,
                                        user: event.owner,
+                                       avatarUrl: user.picture,
                                        createdUser: user.id,
+                                       createdDate: Date.UTC.toString(),
                                        notificationType: NotificationType.JoinRequest,
                                        status: NotificationStatus.Pending });
     }

@@ -1,14 +1,13 @@
-import { Observable, zip, from, pipe, of } from 'rxjs';
+import { Observable, zip, from } from 'rxjs';
 import { IJoinEvent } from './i-join-event';
-import { UserEvents } from '../models/results/user-events';
 import { INotificationRepository } from '../repositories/i-notification-repository';
 import { UserContext } from '../../utilities/user-context';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { flatMap } from 'rxjs/operators';
 import { SendNotification } from '../../services/send-notification';
-import { Nothing } from '../models/nothing';
 import { UserEventsInput } from '../models/inputs/user-events-input';
+import { NotificationStatus } from '../../data/enums/notification-status';
 
 export class JoinEvent implements IJoinEvent {
 
@@ -18,11 +17,12 @@ export class JoinEvent implements IJoinEvent {
                 private readonly userContext: UserContext) {
     }
 
-    execute(eventId: string): Observable<Nothing> {
+    execute(eventId: string): Observable<boolean> {
 
         const userEvent = new UserEventsInput({
             eventId,
             userId: this.userContext.userId,
+            status: NotificationStatus.Pending,
         });
         const userEventFlow = this.userEventsRepository.insert(userEvent);
         const notificationFlow = this.notificationRepository.joinEvent(eventId);
@@ -30,13 +30,10 @@ export class JoinEvent implements IJoinEvent {
 
         return  zip(userEventFlow, notificationFlow, notificationTokenFlow)
             .pipe(flatMap((result) => this.sendNotification(result[1], result[2])));
-
-
     }
 
-    private sendNotification(notification: any, tokens: any): Observable<Nothing> {
-        return  from(SendNotification(tokens, notification.body, notification.title))
-                .pipe(() => of(Nothing));
-
+    private sendNotification(notification: any, tokens: any): Observable<boolean> {
+        console.log(tokens);
+        return  from(SendNotification(tokens, notification.body, notification.title));
     }
 }

@@ -6,7 +6,7 @@ export class NotificationHelper {
         return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title}`;
     }
 
-    static  joinNotificationTitle(){
+    static  joinNotificationTitle() {
         return 'Cerere de alaturare';
     }
 }

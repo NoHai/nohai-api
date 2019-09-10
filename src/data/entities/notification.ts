@@ -22,7 +22,7 @@ export class Notification extends BaseEntity {
     avatarUrl!: string;
 
     @Column({ name: 'created_date'})
-    createdDate!: Date;
+    createdDate!: string;
 
     @Column({ name: 'created_user'})
     createdUser!: string;

@@ -1,4 +1,4 @@
-import { sign, verify, decode } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { Observable, of, from } from 'rxjs';

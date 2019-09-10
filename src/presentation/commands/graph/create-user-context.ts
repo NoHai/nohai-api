@@ -13,9 +13,11 @@ export class CreateUserContext implements ICreateUserContext {
 
     execute(input?: any): Observable<Nothing> {
         const authToken: string = input.authorization || '';
-        const auth = authToken.replace('Bearer ', '');
-        const decodedToken: any = AuthHelper.verifyToken(auth);
-        this.userContext.userId = decodedToken.userId || '';
+        if (authToken) {
+            const auth = authToken.replace('Bearer ', '');
+            const decodedToken: any = AuthHelper.verifyToken(auth);
+            this.userContext.userId = decodedToken.userId || '';
+        }
 
         return of(Nothing);
     }

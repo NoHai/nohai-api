@@ -3,14 +3,21 @@ import { INotificationTokenRepository } from '../../business/repositories/i-noti
 import { NotificationTokenInput } from '../../business/models/inputs/notification-token-input';
 import { Observable, of, from } from 'rxjs';
 import { NotificationTokenFactory } from '../factories/notification-token-factory';
-import { map, switchMap, flatMap } from 'rxjs/operators';
+import { map, switchMap, flatMap, reduce } from 'rxjs/operators';
 import { NotificationToken } from '../entities/notification-token';
 import { Event } from '../entities/event';
+import { UserContext } from '../../utilities/user-context';
 
 export class NotificationTokenRepository implements INotificationTokenRepository {
 
-    insert(input: NotificationTokenInput): Observable<NotificationTokenResult> {
-        return of(NotificationTokenFactory.entity.fromNotificationTokenInput(input))
+    constructor(private readonly userContext: UserContext) {
+    }
+
+    insert(token: string): Observable<NotificationTokenResult> {
+        const notificationInput = new NotificationTokenInput({ token,
+                userId: this.userContext.userId,
+        });
+        return of(NotificationTokenFactory.entity.fromNotificationTokenInput(notificationInput))
         .pipe(switchMap((entity) => entity.save()))
         .pipe(map((entity) => NotificationTokenFactory.result.fromNotificationTokenEntity(entity)));
     }
@@ -26,9 +33,10 @@ export class NotificationTokenRepository implements INotificationTokenRepository
             .pipe(map((entity) =>  NotificationTokenFactory.results.fromNotificationTokenEntities(entity)));
     }
 
-    getFromEventOwner(eventId: string): Observable<NotificationTokenResult[]> {
-       return from(Event.findOneOrFail(eventId))
-            .pipe(flatMap((event) => NotificationToken.find({ id: event.owner})))
-            .pipe(map((entity) =>  NotificationTokenFactory.results.fromNotificationTokenEntities(entity)));
+    getFromEventOwner(eventId: string): Observable<string[]> {
+         return from(Event.findOneOrFail(eventId))
+            .pipe(flatMap((event) => NotificationToken.find({ userId: event.owner})))
+            .pipe(map((entity) =>  NotificationTokenFactory.results.fromNotificationTokenEntities(entity)))
+            .pipe(map((result) => result.map((token) => token.token)));
     }
 }
