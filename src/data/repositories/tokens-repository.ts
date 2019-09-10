@@ -1,5 +1,5 @@
 import { from, Observable, of, zip } from 'rxjs';
-import { defaultIfEmpty, filter, map, switchMap, flatMap, tap } from 'rxjs/operators';
+import { defaultIfEmpty, filter, map, switchMap } from 'rxjs/operators';
 
 import { Tokens as TokensResult } from '../../business/models/results/tokens';
 import { ITokensRepository } from '../../business/repositories/i-tokens-repository';
@@ -7,7 +7,6 @@ import { Tokens as TokensEntity } from '../entities/tokens';
 import { TokensFactory } from '../factories/tokens-factory';
 import { UserFactory } from '../factories/user-factory';
 import { User } from '../../business/models/results/user';
-import { User as UserEntity } from '../../data/entities/user';
 
 export class TokensRepository implements ITokensRepository {
     insert(tokens: TokensResult): Observable<TokensResult> {
