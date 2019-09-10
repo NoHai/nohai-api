@@ -613,6 +613,7 @@ healthchecksdb
 dist
 
 # Cucumber html report generator
+
 !features/coverage/
 # Ignore files related to API keys
 .env.*

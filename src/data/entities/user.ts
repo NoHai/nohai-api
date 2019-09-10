@@ -20,7 +20,7 @@ export class User extends BaseEntity {
     lastName!: string;
 
     @Column({ name: 'date_of_birth' })
-    dateOfBirth!: Date;
+    dateOfBirth!: string;
 
     @Column()
     height!: number;

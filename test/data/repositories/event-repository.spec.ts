@@ -6,6 +6,7 @@ import { CreatePagination } from '../../../src/data/commands/create-pagination';
 import { Event as EventEntity } from '../../../src/data/entities/event';
 import { EventFactory } from '../../../src/data/factories/event-factory';
 import { EventRepository } from '../../../src/data/repositories/event-repository';
+import { UserContext } from '../../../src/utilities/user-context';
 
 describe('event-repository', () => {
 
@@ -17,7 +18,8 @@ describe('event-repository', () => {
         const fromEventEntity = stub(EventFactory.result, 'fromEventEntity').withArgs(entity).returns(model);
         const save = stub(EventEntity.prototype, 'save').returns(of(entity).toPromise());
         const createPagination = new CreatePagination();
-        const instance = new EventRepository(createPagination);
+        const userContext = new UserContext();
+        const instance = new EventRepository(createPagination, userContext);
 
         let actual: EventResult;
 

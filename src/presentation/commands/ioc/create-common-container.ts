@@ -24,10 +24,12 @@ import { CreateNotificationToken } from '../../../business/commands/create-notif
 import { GetNotificationTokens } from '../../../business/commands/get-notification-tokens';
 import { NotificationTokenRepository } from '../../../data/repositories/notification-token-repository';
 import { DeleteNotificationToken } from '../../../business/commands/delete-notification-token';
-import { CreateUserEvents } from '../../../business/commands/create-user-events';
 import { DeleteUserEvents } from '../../../business/commands/delete-user-events';
 import { UserEventsRepository } from '../../../data/repositories/user-events-repository';
 import { GetUserById } from '../../../business/commands/get-user-by-id';
+import { UserContext } from '../../../utilities/user-context';
+import { CreateUserContext } from '../graph/create-user-context';
+import { JoinEvent } from '../../../business/commands/join-event';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -52,8 +54,8 @@ export class CreateCommonContainer implements ICreateContainer {
         { getNotifications: asClass(GetNotifications).transient().classic() },
         { createNotificationToken: asClass(CreateNotificationToken).transient().classic() },
         { getNotificationTokens: asClass(GetNotificationTokens).transient().classic() },
-        { deleteNotificationToken : asClass(DeleteNotificationToken).transient().classic() },
-        { createUserEvents: asClass(CreateUserEvents).transient().classic() },
+        { deleteNotificationToken: asClass(DeleteNotificationToken).transient().classic() },
+        { joinEvent: asClass(JoinEvent).transient().classic() },
         { deleteUserEvents: asClass(DeleteUserEvents).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
     ];
@@ -70,7 +72,10 @@ export class CreateCommonContainer implements ICreateContainer {
 
     private readonly presentationCommands: ReadonlyArray<any> = [
         { initializeGraph: asClass(InitializeGraph).transient().classic() },
+        { userContext: asClass(UserContext).scoped().classic() },
+        { createUserContext: asClass(CreateUserContext).transient().classic() },
     ];
+
 
     private readonly presentationNetworking: ReadonlyArray<any> = [
         { express: asFunction(() => express()).singleton().classic() },
