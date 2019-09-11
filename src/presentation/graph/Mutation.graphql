@@ -38,4 +38,10 @@ type Mutation {
 
     """It's used to join to an event."""
     joinEvent(eventId: String!): Boolean!
+
+    """It's used to accept a join request."""
+    approveRequest(eventId: String!): Boolean!
+
+    """It's used to reject a join request."""
+    rejectRequest(eventId: String!): Boolean!
 }
