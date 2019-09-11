@@ -8,6 +8,7 @@ export class UserInput {
     weight!: number;
     picture!: any;
     city!: City;
+    loginWithFb!: boolean;
 
     constructor(init?: any) {
         Object.assign(this, init);

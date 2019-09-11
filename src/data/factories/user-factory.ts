@@ -3,10 +3,12 @@ import { UpdateUserInput } from '../../business/models/inputs/update-user-input'
 import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { CityFactory } from './city-factory';
+import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
 
 export class UserFactory {
     static entity = {
-        fromCredentialsInput: (input: CredentialsInput) => new UserEntity(input),
+        fromCredentialsInput: (input: CredentialsInput) => new UserEntity({ ...input, loginWithFb: false}),
+        fromFacebookCredentialsInput: (input: FacebookCredentialsInput) => new UserEntity({ ...input, loginWithFb: true}),
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
         fromUserResult: (user: UserResult) => new UserEntity(user),
     };

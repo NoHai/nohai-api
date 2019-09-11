@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
+import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 
 export class AuthHelper {
 
@@ -18,6 +19,11 @@ export class AuthHelper {
         const hash =  bcrypt.hashSync(input.password, salt);
 
         return new CredentialsInput({ password: hash, login: input.login });
+    }
+
+    static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {
+        const generatedPassword = uuid().toString();
+        return new FacebookCredentialsInput({ password: generatedPassword, login: input.login });
     }
 
     static verifyToken(token: string) {
