@@ -35,6 +35,9 @@ export class User extends BaseEntity {
     @JoinColumn({ name: 'city_id' })
     city!: City;
 
+    @Column({ name: 'login_with_fb'})
+    loginWithFb!: boolean;
+
     constructor(init?: any) {
         super();
         Object.assign(this, init);

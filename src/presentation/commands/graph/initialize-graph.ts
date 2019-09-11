@@ -24,6 +24,7 @@ import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
 import { IJoinEvent } from '../../../business/commands/i-join-event';
 import { IRefreshToken } from '../../../business/commands/i-refresh-token';
+import { ILoginFacebook } from '../../../business/commands/i-login-facebook';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -70,6 +71,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly getUserById: IGetUserById,
                 private readonly createUserContext: ICreateUserContext,
                 private readonly refreshToken: IRefreshToken,
+                private readonly loginFacebook: ILoginFacebook,
                 private userContext: UserContext,
     ) {
     }
@@ -105,6 +107,7 @@ export class InitializeGraph implements IInitializeGraph {
                     deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
+                    loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
                 },
                 schema,
                 context: {

@@ -1,5 +1,5 @@
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap, tap, flatMap } from 'rxjs/operators';
+import { map, flatMap } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { Credentials } from '../../business/models/results/credentials';
@@ -8,6 +8,8 @@ import { IUserRepository } from '../../business/repositories/i-user-repository';
 import { User as UserEntity } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
+import { FacebookCredentials } from '../../business/models/results/facebook-credentials';
+import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -16,8 +18,14 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 
-    byCredentials(credentials: CredentialsInput): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail({ login: credentials.login}))
+    insertFb(input: FacebookCredentialsInput): Observable<FacebookCredentials> {
+        return of(UserFactory.entity.fromFacebookCredentialsInput(input))
+            .pipe(flatMap((entity) => entity.save()))
+            .pipe(map((entity) => CredentialsFactory.result.fromFacebookUserEntity(entity)));
+    }
+
+    byCredentials(login: string): Observable<UserResult> {
+        return from(UserEntity.findOneOrFail({ login }))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
@@ -28,15 +36,15 @@ export class UserRepository implements IUserRepository {
     }
 
     getById(id: string): Observable<UserResult> {
-         return of(UserEntity.findOneOrFail(id, { relations: ['city']}))
+        return of(UserEntity.findOneOrFail(id, { relations: ['city'] }))
             .pipe(flatMap((entity) => from(entity)))
-            .pipe(map((entity) =>  UserFactory.result.fromUserEntity(entity)));
+            .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
     }
 
     getCredentials(id: string): Observable<Credentials> {
         return of(UserEntity.findOneOrFail(id))
-                .pipe(flatMap((entity) => from(entity)))
-                .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
+            .pipe(flatMap((entity) => from(entity)))
+            .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 }
 

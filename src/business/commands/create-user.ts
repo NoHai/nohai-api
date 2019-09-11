@@ -14,7 +14,7 @@ export class CreateUser implements ICreateUser {
 
     execute(input: CredentialsInput): Observable<Credentials> {
         const hashedInput = AuthHelper.hashCredentials(input);
-        return this.userRepository.byCredentials(input)
+        return this.userRepository.byCredentials(input.login)
                     .pipe(flatMap((user) => iif(() => user !== undefined)
                                 ? throwError(Errors.AlreadyRegisterdError)
                                 :  this.userRepository.insert(hashedInput)));
