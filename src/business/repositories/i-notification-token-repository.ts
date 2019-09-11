@@ -7,6 +7,4 @@ export interface INotificationTokenRepository {
     insert(input: any): Observable<NotificationTokenResult>;
 
     delete(id: string): Observable<number | undefined>;
-
-    getFromEventOwner(eventId: string): Observable<string[]>;
 }

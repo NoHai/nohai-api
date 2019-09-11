@@ -25,6 +25,8 @@ import { ICreateUserContext } from './i-create-user-context';
 import { IJoinEvent } from '../../../business/commands/i-join-event';
 import { IRefreshToken } from '../../../business/commands/i-refresh-token';
 import { ILoginFacebook } from '../../../business/commands/i-login-facebook';
+import { IApproveRequest } from '../../../business/commands/i-approve-request';
+import { IRejectRequest } from '../../../business/commands/i-reject-request';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -72,6 +74,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createUserContext: ICreateUserContext,
                 private readonly refreshToken: IRefreshToken,
                 private readonly loginFacebook: ILoginFacebook,
+                private readonly approveRequest: IApproveRequest,
+                private readonly rejectRequest: IRejectRequest,
                 private userContext: UserContext,
     ) {
     }
@@ -108,6 +112,8 @@ export class InitializeGraph implements IInitializeGraph {
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
+                    approveRequest: (context: any) => this.approveRequest.execute(context.input).toPromise(),
+                    rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
                 },
                 schema,
                 context: {
