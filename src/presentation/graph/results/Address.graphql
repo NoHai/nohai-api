@@ -2,6 +2,12 @@ type Address {
     "The id of the address."
     id: String!
 
+    "The longitude of the location."
+    longitude: Float;
+
+    "The latitude of the location."
+    latitude: Float;
+
     "The city of the address."
     city: City!
 
