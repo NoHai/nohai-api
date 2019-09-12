@@ -10,6 +10,12 @@ export class Address extends BaseEntity {
     @Column({ name: 'street_name' })
     streetName!: string;
 
+    @Column()
+    longitude!: number;
+
+    @Column()
+    latitude!: number;
+
     @JoinColumn({ name: 'city_id' })
     @OneToOne(() => City, (city) => city.id, { cascade: true })
     city!: City;
