@@ -15,7 +15,7 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        return  from(UserEvents.findOneOrFail({eventId, userId}))
+        return  from(UserEvents.findOneOrFail({ eventId, userId}))
                 .pipe(flatMap((userEvent) => UserEvents.delete(userEvent.id)))
                 .pipe(map((res) => res.affected));
     }

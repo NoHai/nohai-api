@@ -18,7 +18,6 @@ import { IGetNotifications } from '../../../business/commands/i-get-notification
 import { ICreateNotificationToken } from '../../../business/commands/i-create-notification-token';
 import { IGetNotificationTokens } from '../../../business/commands/i-get-notification-tokens';
 import { IDeleteNotificationToken } from '../../../business/commands/i-delete-notification-token';
-import { IDeleteUserEvents } from '../../../business/commands/i-delete-user-events';
 import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
@@ -69,7 +68,6 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly getNotificationTokens: IGetNotificationTokens,
                 private readonly deleteNotificationToken: IDeleteNotificationToken,
                 private readonly joinEvent: IJoinEvent,
-                private readonly deleteUserEvents: IDeleteUserEvents,
                 private readonly getUserById: IGetUserById,
                 private readonly createUserContext: ICreateUserContext,
                 private readonly refreshToken: IRefreshToken,
@@ -108,7 +106,6 @@ export class InitializeGraph implements IInitializeGraph {
                     getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
                     deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
                     joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
-                    deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
