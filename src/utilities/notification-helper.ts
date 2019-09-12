@@ -17,7 +17,7 @@ export class NotificationHelper {
             createdUser: user.id,
             createdDate: Date.UTC.toString(),
             notificationType: NotificationType.JoinRequest,
-            status: NotificationStatus.Pending,
+            status: NotificationStatus.NotRead,
         });
     }
 
@@ -31,7 +31,7 @@ export class NotificationHelper {
             createdUser: event.owner,
             createdDate: Date.UTC.toString(),
             notificationType: NotificationType.JoinRequest,
-            status: NotificationStatus.Approved,
+            status: NotificationStatus.NotRead,
         });
     }
 
@@ -44,8 +44,8 @@ export class NotificationHelper {
             avatarUrl: fromUser.picture,
             createdUser: event.owner,
             createdDate: Date.UTC.toString(),
-            notificationType: NotificationType.JoinRequest,
-            status: NotificationStatus.Rejected,
+            notificationType: NotificationType.RejectJoin,
+            status: NotificationStatus.NotRead,
         });
     }
 

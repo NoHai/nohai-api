@@ -34,10 +34,10 @@ export class NotificationRepository implements INotificationRepository {
             .pipe(map((notification) => NotificationFactory.result.fromNotificationEntity(notification)));
     }
 
-    update(id: string, status: NotificationStatus): Observable<NotificationResult> {
+    markAsRead(id: string): Observable<NotificationResult> {
         return from(NotificationEntity.findOneOrFail(id))
             .pipe(flatMap((entity) => {
-                entity.status = status;
+                entity.status = NotificationStatus.Read;
                 return entity.save();
             }))
             .pipe(map((updatedNotification) => NotificationFactory.result.fromNotificationEntity(updatedNotification)));
@@ -50,7 +50,12 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     markAllAsRead(): Observable<boolean> {
-        throw new Error('Method not implemented.');
+        return from(NotificationEntity.find({ user: this.userContext.userId, status: NotificationStatus.NotRead }))
+            .pipe(map((notifications) => notifications.map((notification) => {
+                notification.status = NotificationStatus.Read;
+                notification.save();
+            })))
+            .pipe(map(() => true));
     }
 
     joinEvent(eventId: string): Observable<NotificationResult> {

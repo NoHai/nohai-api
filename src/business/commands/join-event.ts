@@ -6,9 +6,9 @@ import { IUserEventsRepository } from '../repositories/i-user-events-repository'
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { flatMap, map } from 'rxjs/operators';
 import { UserEventsInput } from '../models/inputs/user-events-input';
-import { NotificationStatus } from '../../data/enums/notification-status';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IEventRepository } from '../repositories/i-event-repository';
+import { NotificationType } from '../../data/enums/notification-type';
 
 export class JoinEvent implements IJoinEvent {
 
@@ -24,7 +24,7 @@ export class JoinEvent implements IJoinEvent {
         const userEvent = new UserEventsInput({
             eventId,
             userId: this.userContext.userId,
-            status: NotificationStatus.Pending,
+            status: NotificationType.JoinRequest,
         });
         const userEventFlow = this.userEventsRepository.insert(userEvent);
         const notificationFlow = this.notificationRepository.joinEvent(eventId);

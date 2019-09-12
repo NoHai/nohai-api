@@ -20,7 +20,7 @@ export class RejectRequest implements IRejectRequest {
                 this.userEventsRepository.delete(notification.eventId,
                     notification.userId)));
 
-        const rejectFlow = this.notificationRepository.update(input, NotificationStatus.Rejected)
+        const rejectFlow = this.notificationRepository.markAsRead(input)
             .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.userId)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)

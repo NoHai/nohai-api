@@ -1,11 +1,11 @@
 import { IApproveRequest } from './i-approve-request';
 import { Observable, zip } from 'rxjs';
 import { INotificationRepository } from '../repositories/i-notification-repository';
-import { NotificationStatus } from '../../data/enums/notification-status';
 import { map, flatMap } from 'rxjs/operators';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
+import { NotificationType } from '../../data/enums/notification-type';
 
 export class ApproveRequest implements IApproveRequest {
 
@@ -19,9 +19,9 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(map((notification) =>
                 this.userEventsRepository.update(notification.eventId,
                     notification.userId,
-                    NotificationStatus.Approved)));
+                    NotificationType.ApproveJoin)));
 
-        const approveFlow = this.notificationRepository.update(input, NotificationStatus.Approved)
+        const approveFlow = this.notificationRepository.markAsRead(input)
             .pipe(map((notification) => this.notificationRepository.approve(notification.eventId, notification.userId)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)

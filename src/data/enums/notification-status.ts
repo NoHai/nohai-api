@@ -1,5 +1,4 @@
 export enum NotificationStatus {
-    Pending,
-    Approved,
-    Rejected,
+    NotRead,
+    Read,
 }

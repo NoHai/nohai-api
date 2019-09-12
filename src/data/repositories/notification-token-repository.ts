@@ -3,9 +3,8 @@ import { INotificationTokenRepository } from '../../business/repositories/i-noti
 import { NotificationTokenInput } from '../../business/models/inputs/notification-token-input';
 import { Observable, of, from } from 'rxjs';
 import { NotificationTokenFactory } from '../factories/notification-token-factory';
-import { map, switchMap, flatMap, reduce } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { NotificationToken } from '../entities/notification-token';
-import { Event } from '../entities/event';
 import { UserContext } from '../../utilities/user-context';
 
 export class NotificationTokenRepository implements INotificationTokenRepository {
