@@ -9,6 +9,9 @@ export class City extends BaseEntity {
     @Column()
     name!: string;
 
+    @Column({ name: 'county_id' })
+    countyId!: string;
+
     constructor(init?: Partial<City>) {
         super();
         Object.assign(this, init);

@@ -18,13 +18,14 @@ import { IGetNotifications } from '../../../business/commands/i-get-notification
 import { ICreateNotificationToken } from '../../../business/commands/i-create-notification-token';
 import { IGetNotificationTokens } from '../../../business/commands/i-get-notification-tokens';
 import { IDeleteNotificationToken } from '../../../business/commands/i-delete-notification-token';
-import { IDeleteUserEvents } from '../../../business/commands/i-delete-user-events';
 import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
 import { IJoinEvent } from '../../../business/commands/i-join-event';
 import { IRefreshToken } from '../../../business/commands/i-refresh-token';
 import { ILoginFacebook } from '../../../business/commands/i-login-facebook';
+import { IApproveRequest } from '../../../business/commands/i-approve-request';
+import { IRejectRequest } from '../../../business/commands/i-reject-request';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -67,11 +68,12 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly getNotificationTokens: IGetNotificationTokens,
                 private readonly deleteNotificationToken: IDeleteNotificationToken,
                 private readonly joinEvent: IJoinEvent,
-                private readonly deleteUserEvents: IDeleteUserEvents,
                 private readonly getUserById: IGetUserById,
                 private readonly createUserContext: ICreateUserContext,
                 private readonly refreshToken: IRefreshToken,
                 private readonly loginFacebook: ILoginFacebook,
+                private readonly approveRequest: IApproveRequest,
+                private readonly rejectRequest: IRejectRequest,
                 private userContext: UserContext,
     ) {
     }
@@ -104,10 +106,11 @@ export class InitializeGraph implements IInitializeGraph {
                     getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
                     deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
                     joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
-                    deleteUserEvents: (context: any) => this.deleteUserEvents.execute(context).toPromise(),
                     getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
+                    approveRequest: (context: any) => this.approveRequest.execute(context.input).toPromise(),
+                    rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
                 },
                 schema,
                 context: {

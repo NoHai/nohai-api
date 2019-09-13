@@ -7,9 +7,17 @@ import { PaginationParameter } from '../models/parameters/pagination-parameter';
 export interface INotificationRepository {
     get(parameter: PaginationParameter): Observable<Pagination>;
 
+    getById(id: string): Observable<NotificationResult>;
+
+    markAsRead(id: string): Observable<NotificationResult>;
+
     insert(input: NotificationInput): Observable<NotificationResult>;
 
     markAllAsRead(): Observable<boolean>;
 
     joinEvent(eventId: string): Observable<NotificationResult>;
+
+    approve(eventId: string, userId: string): Observable<NotificationResult>;
+
+    reject(eventId: string, userId: string): Observable<NotificationResult>;
 }

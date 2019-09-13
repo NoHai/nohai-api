@@ -24,7 +24,6 @@ import { CreateNotificationToken } from '../../../business/commands/create-notif
 import { GetNotificationTokens } from '../../../business/commands/get-notification-tokens';
 import { NotificationTokenRepository } from '../../../data/repositories/notification-token-repository';
 import { DeleteNotificationToken } from '../../../business/commands/delete-notification-token';
-import { DeleteUserEvents } from '../../../business/commands/delete-user-events';
 import { UserEventsRepository } from '../../../data/repositories/user-events-repository';
 import { GetUserById } from '../../../business/commands/get-user-by-id';
 import { UserContext } from '../../../utilities/user-context';
@@ -32,6 +31,8 @@ import { CreateUserContext } from '../graph/create-user-context';
 import { JoinEvent } from '../../../business/commands/join-event';
 import { RefreshToken } from '../../../business/commands/refresh-token';
 import { LoginFacebook } from '../../../business/commands/login-facebook';
+import { ApproveRequest } from '../../../business/commands/approve-request';
+import { RejectRequest } from '../../../business/commands/reject-request';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -58,10 +59,11 @@ export class CreateCommonContainer implements ICreateContainer {
         { getNotificationTokens: asClass(GetNotificationTokens).transient().classic() },
         { deleteNotificationToken: asClass(DeleteNotificationToken).transient().classic() },
         { joinEvent: asClass(JoinEvent).transient().classic() },
-        { deleteUserEvents: asClass(DeleteUserEvents).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
         { refreshToken: asClass(RefreshToken).transient().classic() },
         { loginFacebook : asClass(LoginFacebook).transient().classic() },
+        { approveRequest: asClass(ApproveRequest).transient().classic() },
+        { rejectRequest: asClass(RejectRequest).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

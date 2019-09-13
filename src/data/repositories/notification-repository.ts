@@ -12,7 +12,6 @@ import { Event } from '../entities/event';
 import { User } from '../entities/user';
 import { UserContext } from '../../utilities/user-context';
 import { NotificationHelper } from '../../utilities/notification-helper';
-import { NotificationType } from '../enums/notification-type';
 import { NotificationStatus } from '../enums/notification-status';
 
 export class NotificationRepository implements INotificationRepository {
@@ -23,30 +22,66 @@ export class NotificationRepository implements INotificationRepository {
     get(parameter: PaginationParameter): Observable<Pagination> {
         const itemsOptions = this.buildOptions(parameter);
         return this.createPagination
-        .withEntity(NotificationEntity)
-        .withParameter(parameter)
-        .withItemsOptions(itemsOptions)
-        .execute()
-        .pipe(map((pagination) => this.buildPagination(pagination)));
+            .withEntity(NotificationEntity)
+            .withParameter(parameter)
+            .withItemsOptions(itemsOptions)
+            .execute()
+            .pipe(map((pagination) => this.buildPagination(pagination)));
+    }
+
+    getById(id: string): Observable<NotificationResult> {
+        return from(NotificationEntity.findOneOrFail(id))
+            .pipe(map((notification) => NotificationFactory.result.fromNotificationEntity(notification)));
+    }
+
+    markAsRead(id: string): Observable<NotificationResult> {
+        return from(NotificationEntity.findOneOrFail(id))
+            .pipe(flatMap((entity) => {
+                entity.status = NotificationStatus.Read;
+                return entity.save();
+            }))
+            .pipe(map((updatedNotification) => NotificationFactory.result.fromNotificationEntity(updatedNotification)));
     }
 
     insert(input: NotificationInput): Observable<NotificationResult> {
         return of(NotificationFactory.entity.fromNotificationInput(input))
-        .pipe(switchMap((entity) => entity.save()))
-        .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
+            .pipe(switchMap((entity) => entity.save()))
+            .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
     }
 
     markAllAsRead(): Observable<boolean> {
-        throw new Error('Method not implemented.');
+        return from(NotificationEntity.find({ user: this.userContext.userId, status: NotificationStatus.NotRead }))
+            .pipe(map((notifications) => notifications.map((notification) => {
+                notification.status = NotificationStatus.Read;
+                notification.save();
+            })))
+            .pipe(map(() => true));
     }
 
     joinEvent(eventId: string): Observable<NotificationResult> {
-        console.log(this.userContext.userId);
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
 
         return zip(eventFlow, userFlow)
-            .pipe(flatMap((result) =>  this.buildNotification(result[0], result[1]).save()))
+            .pipe(flatMap((result) => NotificationHelper.buildJoinNotification(result[0], result[1]).save()))
+            .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
+    }
+
+    approve(eventId: string, userId: string): Observable<NotificationResult> {
+        const eventFlow = from(Event.findOneOrFail(eventId));
+        const userFlow = from(User.findOneOrFail(this.userContext.userId));
+
+        return zip(eventFlow, userFlow)
+            .pipe(flatMap((result) => NotificationHelper.buildApproveNotification(result[0], result[1], userId).save()))
+            .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
+    }
+
+    reject(eventId: string, userId: string): Observable<NotificationResult> {
+        const eventFlow = from(Event.findOneOrFail(eventId));
+        const userFlow = from(User.findOneOrFail(this.userContext.userId));
+
+        return zip(eventFlow, userFlow)
+            .pipe(flatMap((result) => NotificationHelper.buildRejectNotification(result[0], result[1], userId).save()))
             .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
     }
 
@@ -62,17 +97,5 @@ export class NotificationRepository implements INotificationRepository {
 
     private buildPagination(pagination: any): Pagination {
         return new Pagination({ ...pagination, items: NotificationFactory.results.fromNotificationEntities(pagination.items) });
-    }
-
-    private buildNotification(event: any, user: any): NotificationEntity {
-       return new NotificationEntity({ title: NotificationHelper.joinNotificationTitle(),
-                                       body: NotificationHelper.joinNotificationBody(event, user),
-                                       eventId: event.id,
-                                       user: event.owner,
-                                       avatarUrl: user.picture,
-                                       createdUser: user.id,
-                                       createdDate: Date.UTC.toString(),
-                                       notificationType: NotificationType.JoinRequest,
-                                       status: NotificationStatus.Pending });
     }
 }
