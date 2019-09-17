@@ -15,7 +15,7 @@ export class LoginFacebook implements ILoginFacebook {
     execute(input: FacebookCredentialsInput): Observable<Tokens> {
         const hashedInput = AuthHelper.hashFacebookCredentials(input);
         const freshLogin = this.userRepository.insertFb(hashedInput)
-                    .pipe(flatMap((cred) => this.saveToken(cred)));
+            .pipe(flatMap((cred) => this.saveToken(cred)));
 
         return this.userRepository.byCredentials(input.login)
             .pipe(catchError(() => freshLogin))
@@ -28,13 +28,22 @@ export class LoginFacebook implements ILoginFacebook {
         const userFlow: Observable<User> = this.userRepository.byCredentials(input.login);
 
         return zip(userFlow, accessTokenFlow, refreshTokenFlow)
-            .pipe(map((result) => new Tokens({ user: result[0], accessToken: result[1], refreshToken: result[2] })))
+            .pipe(map((result) => new Tokens({
+                user: result[0],
+                accessToken: result[1],
+                refreshToken: result[2],
+                expireIn: process.env.NOHAI_JWT_EXPIRE_IN,
+            })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
     }
 
     private buildAccessToken(credentials: FacebookCredentialsInput): Observable<string> {
         return this.userRepository.byCredentials(credentials.login)
-            .pipe(map((user) => ({ userId: user.id, firstName: user.firstName, lastName: user.lastName, expires: 'tomorrow' })))
+            .pipe(map((user) => ({
+                userId: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
 }
