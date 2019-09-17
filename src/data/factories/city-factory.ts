@@ -11,4 +11,9 @@ export class CityFactory {
     static result = {
         fromCityEntity: (city: CityEntity) => new CityResult(city),
     };
+
+    static results = {
+        fromCityEntities: (cities: CityEntity[]): CityResult[] =>
+            cities.map((city) => new CityResult(city)),
+    };
 }
