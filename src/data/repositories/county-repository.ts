@@ -3,15 +3,14 @@ import { Observable, from } from 'rxjs';
 import { County as CountyResult } from '../../business/models/results/county';
 import { County as CountyEntity } from '../entities/county';
 import { Like } from 'typeorm';
-import { flatMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { CountyFactory } from '../factories/county-factory';
 
 export class CountyRepository implements ICountyRepository {
-    get(parameter: string): Observable<CountyResult> {
+    get(parameter: string): Observable<CountyResult[]> {
         return from(CountyEntity.find({
-            name: Like(`%${parameter}#%`),
+            name: Like(`%${parameter}%`),
         }))
-        .pipe(flatMap((results) => CountyFactory.results.fromCountyEntities(results)));
+        .pipe(map((results) => CountyFactory.results.fromCountyEntities(results)));
     }
-
 }

@@ -3,14 +3,15 @@ import { City as CityResult } from '../../business/models/results/city';
 import { City as CityEntity } from '../entities/city';
 import { Observable, from } from 'rxjs';
 import { Like } from 'typeorm';
-import { flatMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { CityFactory } from '../factories/city-factory';
 
 export class CityRepository implements ICityRepository {
-    get(parameter: string): Observable<CityResult> {
+    get(parameter: string): Observable<CityResult[]> {
+        console.log(parameter);
         return from(CityEntity.find({
-            name: Like(`%${parameter}#%`),
+            name: Like(`%${parameter}%`),
         }))
-        .pipe(flatMap((results) => CityFactory.results.fromCityEntities(results)));
+        .pipe(map((results) => CityFactory.results.fromCityEntities(results)));
     }
 }
