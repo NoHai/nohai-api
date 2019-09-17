@@ -16,5 +16,5 @@ type Query {
     getNotificationTokens(userId: String!): [NotificationToken]
 
      "It's used to fetch the user by id from server."
-    getUserById(id: String!): User
+    getUserById: User
 }
