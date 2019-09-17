@@ -4,11 +4,28 @@ import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { CityFactory } from './city-factory';
 import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
+import { AuthHelper } from '../../utilities/auth-helper';
 
 export class UserFactory {
     static entity = {
-        fromCredentialsInput: (input: CredentialsInput) => new UserEntity({ ...input, loginWithFb: false}),
-        fromFacebookCredentialsInput: (input: FacebookCredentialsInput) => new UserEntity({ ...input, loginWithFb: true}),
+        fromCredentialsInput: (input: CredentialsInput) => {
+            const picture = AuthHelper.hashEmail(input.login);
+            const hashedInput = AuthHelper.hashCredentials(input);
+            return new UserEntity({
+                ...hashedInput,
+                picture,
+                loginWithFb: false,
+            });
+        },
+        fromFacebookCredentialsInput: (input: FacebookCredentialsInput) => {
+            const picture = AuthHelper.hashEmail(input.login);
+            const hashedInput = AuthHelper.hashFacebookCredentials(input);
+            return new UserEntity({
+                ...hashedInput,
+                picture,
+                loginWithFb: false,
+            });
+        },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
         fromUserResult: (user: UserResult) => new UserEntity(user),
     };
@@ -16,6 +33,7 @@ export class UserFactory {
     static result = {
         fromUserEntity: (user: UserEntity) => new UserResult({
             ...user,
-            city: CityFactory.result.fromCityEntity(user.city)}),
+            city: CityFactory.result.fromCityEntity(user.city),
+        }),
     };
 }
