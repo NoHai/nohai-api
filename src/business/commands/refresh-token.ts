@@ -15,9 +15,14 @@ export class RefreshToken implements IRefreshToken {
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow: Observable<User> = this.tokensRepository.getUser(refresh);
 
-        return  zip(userFlow, accessTokenFlow, refreshTokenFlow)
-                .pipe(map((result) => new Tokens({ user: result[0], accessToken: result[1], refreshToken: result[2] })))
-                .pipe(flatMap((token) => this.tokensRepository.insert(token)));
+        return zip(userFlow, accessTokenFlow, refreshTokenFlow)
+            .pipe(map((result) => new Tokens({
+                user: result[0],
+                accessToken: result[1],
+                refreshToken: result[2],
+                expireIn: process.env.NOHAI_JWT_EXPIRE_IN,
+            })))
+            .pipe(flatMap((token) => this.tokensRepository.insert(token)));
 
     }
 
