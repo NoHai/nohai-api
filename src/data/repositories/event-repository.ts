@@ -17,6 +17,7 @@ export class EventRepository implements IEventRepository {
     }
 
     insert(input: EventInput): Observable<EventResult> {
+        console.log(this.userContext.userId);
         return of(EventFactory.entity.fromEventInput(input, this.userContext.userId))
             .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));

@@ -29,9 +29,9 @@ export class JoinEvent implements IJoinEvent {
         const userEventFlow = this.userEventsRepository.insert(userEvent);
         const notificationFlow = this.notificationRepository.joinEvent(eventId);
         const notificationTokenFlow = this.eventRepository.getById(eventId)
-                                    .pipe(map((event) => this.notificationTokenRepository.get(event.owner)));
+                                    .pipe(flatMap((event) => this.notificationTokenRepository.get(event.owner)));
 
         return  zip(userEventFlow, notificationFlow, notificationTokenFlow)
-            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
+                .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
     }
 }

@@ -11,4 +11,9 @@ export class UserEventsFactory {
     static result = {
         fromUserEventsEntity: (userEvent: UserEventsEntity) => new UserEventsResult(userEvent),
     };
+
+    static results = {
+        fromUserEventsEntities: (userEvents: UserEventsEntity[]): UserEventsResult[] =>
+            userEvents.map((userEvent) => new UserEventsResult(userEvent)),
+    };
 }
