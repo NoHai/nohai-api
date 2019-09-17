@@ -12,7 +12,7 @@ export class GetEventDetails implements IGetEventDetails {
 
     execute(id: any): Observable<any> {
         const eventFlow = this.eventRepository.getById(id);
-
+        const usersFlow = this.userEventsRepository.get(id);
         return of(Nothing);
     }
 }

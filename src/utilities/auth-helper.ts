@@ -25,7 +25,7 @@ export class AuthHelper {
 
     static hashEmail(email: string): string {
        const hashEmail =   crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
-       return ` https://s.gravatar.com/avatar/${hashEmail}`;
+       return `https://s.gravatar.com/avatar/${hashEmail}`;
     }
 
     static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {

@@ -4,10 +4,10 @@ type UserEvents {
     id: String!
 
     "The user id of the user events."
-    userId: String!
+    user: User!
 
     "The event id of the user events."
-    eventId: String!
+    event: Event!
 
     "The status of the user events."
     status: Int
