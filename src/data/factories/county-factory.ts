@@ -9,4 +9,9 @@ export class CountyFactory {
     static result = {
         fromCountyEntity: (county: CountyEntity) => new CountyResult(county),
     };
+
+    static results = {
+        fromCountyEntities : (cities: CountyEntity[]): CountyResult[] =>
+            cities.map((city) => new CountyResult(city)),
+    };
 }
