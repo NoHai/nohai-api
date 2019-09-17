@@ -38,6 +38,9 @@ export class User extends BaseEntity {
     @Column({ name: 'login_with_fb'})
     loginWithFb!: boolean;
 
+    @Column({ name: 'favorite_sport'})
+    favoriteSport!: string;
+
     constructor(init?: any) {
         super();
         Object.assign(this, init);

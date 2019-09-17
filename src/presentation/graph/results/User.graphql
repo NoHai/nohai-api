@@ -3,6 +3,9 @@ type User {
     "The id of the user."
     id: String!
 
+    "The email used for login."
+    login: String!
+
     "The first name of the user."
     firstName: String
 
@@ -13,7 +16,6 @@ type User {
     dateOfBirth: String
 
     "The height of the user."
-    
     height: Int 
 
     "The weight of the user."
@@ -25,4 +27,9 @@ type User {
     "The city of the user."
     city: City
 
+    "The login method."
+    loginWithFb: Boolean
+
+   "The favorite main sport."
+    favoriteSport: String
 }

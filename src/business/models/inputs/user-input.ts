@@ -6,8 +6,8 @@ export class UserInput {
     dateOfBirth!: string;
     height!: number;
     weight!: number;
-    picture!: any;
     city!: City;
+    favoriteSport!: string;
     loginWithFb!: boolean;
 
     constructor(init?: any) {

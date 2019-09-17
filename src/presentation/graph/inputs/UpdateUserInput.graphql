@@ -1,8 +1,5 @@
 """An input model used for posting an user to server."""
 input UpdateUserInput {
-    "The id of the user."
-    id: String!
-
     "The first name of the user."
     firstName: String
 
@@ -17,4 +14,7 @@ input UpdateUserInput {
 
     "The weight of the user."
     weight: Float 
+
+    "The favorite main sport."
+    favoriteSport: String
 }

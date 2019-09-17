@@ -4,6 +4,9 @@ import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
+import crypto from 'crypto';
+
+
 
 export class AuthHelper {
 
@@ -19,6 +22,11 @@ export class AuthHelper {
         const hash =  bcrypt.hashSync(input.password, salt);
 
         return new CredentialsInput({ password: hash, login: input.login });
+    }
+
+    static hashEmail(email: string): string {
+       const hashEmail =   crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
+       return ` https://s.gravatar.com/avatar/${hashEmail}`;
     }
 
     static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {
