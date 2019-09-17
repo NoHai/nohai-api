@@ -17,4 +17,10 @@ type Query {
 
      "It's used to fetch the user by id from server."
     getUserById(id: String!): User
+
+     "It's used to fetch the cities from server."
+    cities(parameter: String): [City]
+
+     "It's used to fetch the counties from server."
+    counties(parameter: String): [County]
 }

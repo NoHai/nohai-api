@@ -33,6 +33,10 @@ import { RefreshToken } from '../../../business/commands/refresh-token';
 import { LoginFacebook } from '../../../business/commands/login-facebook';
 import { ApproveRequest } from '../../../business/commands/approve-request';
 import { RejectRequest } from '../../../business/commands/reject-request';
+import { GetCities } from '../../../business/commands/get-cities';
+import { GetCounties } from '../../../business/commands/get-counties';
+import { CityRepository } from '../../../data/repositories/city-repository';
+import { CountyRepository } from '../../../data/repositories/county-repository';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -64,6 +68,8 @@ export class CreateCommonContainer implements ICreateContainer {
         { loginFacebook : asClass(LoginFacebook).transient().classic() },
         { approveRequest: asClass(ApproveRequest).transient().classic() },
         { rejectRequest: asClass(RejectRequest).transient().classic() },
+        { cities: asClass(GetCities).transient().classic() },
+        { counties: asClass(GetCounties).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
@@ -74,6 +80,8 @@ export class CreateCommonContainer implements ICreateContainer {
         { notificationRepository: asClass(NotificationRepository).transient().classic() },
         { notificationTokenRepository: asClass(NotificationTokenRepository).transient().classic() },
         { userEventsRepository: asClass(UserEventsRepository).transient().classic() },
+        { cityRepository: asClass(CityRepository).transient().classic() },
+        { countyRepository: asClass(CountyRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [
