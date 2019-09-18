@@ -1,6 +1,4 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { City } from './city';
-import { County } from './county';
 
 @Entity('address')
 export class Address extends BaseEntity {
@@ -16,13 +14,11 @@ export class Address extends BaseEntity {
     @Column()
     latitude!: number;
 
-    @JoinColumn({ name: 'city_id' })
-    @OneToOne(() => City, (city) => city.id, { cascade: true })
-    city!: City;
+    @Column()
+    city!: string;
 
-    @JoinColumn({ name: 'county_id' })
-    @OneToOne(() => County, (county) => county.id, { cascade: true })
-    county!: County;
+    @Column()
+    county!: string;
 
     constructor(init?: Partial<Address>) {
         super();

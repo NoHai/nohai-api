@@ -6,7 +6,7 @@ export class UserInput {
     dateOfBirth!: string;
     height!: number;
     weight!: number;
-    city!: City;
+    city!: string;
     favoriteSport!: string;
     loginWithFb!: boolean;
 

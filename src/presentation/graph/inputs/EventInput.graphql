@@ -10,7 +10,7 @@ input EventInput {
     address: AddressInput
 
     "The sport at the event."
-    sport: String
+    sport: SportInput
 
     "The participants number of the event."
     freeSpots: Int 

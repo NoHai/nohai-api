@@ -5,8 +5,8 @@ export class AddressInput {
     streetName!: string;
     longitude!: number;
     latitude!: number;
-    city!: City;
-    county!: County;
+    city!: string;
+    county!: string;
 
     constructor(init?: any) {
         Object.assign(this, init);

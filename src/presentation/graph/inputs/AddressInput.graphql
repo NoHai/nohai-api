@@ -10,8 +10,8 @@ input AddressInput {
     latitude: Float
 
     "The city in which the event takes place."
-    city:CityInput!
+    city:String!
 
     "The county in which the event takes place."
-    county:CountyInput!
+    county:String!
 }
