@@ -1,6 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { User } from './user';
-import { Event } from './event';
 
 @Entity('user_events')
 export class UserEvents extends BaseEntity {
@@ -8,19 +7,18 @@ export class UserEvents extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    // @JoinColumn({ name: 'user_id'})
-    // userId!: string;
+    @Column({ name: 'user_id'})
+    userId!: string;
 
-    @JoinColumn({ name: 'user_id'})
-    @OneToOne(() => User, (user) => user.id, { cascade: true })
-    user!: User;
-
-    @JoinColumn({ name: 'event_id'})
-    @OneToOne(() => Event, (event) => event.id, { cascade: true })
-    event!: Event;
+    @Column({ name: 'event_id'})
+    eventId!: string;
 
     @Column({ name: 'status'})
     status!: number;
+
+    @ManyToMany(() => User, (user) => user.id, { cascade: false, eager: true })
+    @JoinTable()
+    users!: User[];
 
     constructor(init?: Partial<UserEvents>) {
         super();
