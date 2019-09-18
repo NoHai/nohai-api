@@ -37,6 +37,8 @@ import { GetCities } from '../../../business/commands/get-cities';
 import { GetCounties } from '../../../business/commands/get-counties';
 import { CityRepository } from '../../../data/repositories/city-repository';
 import { CountyRepository } from '../../../data/repositories/county-repository';
+import { MarkAsRead } from '../../../business/commands/mark-as-read';
+import { MarkAllAsRead } from '../../../business/commands/mark-all-as-read';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -70,6 +72,8 @@ export class CreateCommonContainer implements ICreateContainer {
         { rejectRequest: asClass(RejectRequest).transient().classic() },
         { cities: asClass(GetCities).transient().classic() },
         { counties: asClass(GetCounties).transient().classic() },
+        { markAsRead: asClass(MarkAsRead).transient().classic() },
+        { markAllAsRead: asClass(MarkAllAsRead).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

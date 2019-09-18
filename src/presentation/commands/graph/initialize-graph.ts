@@ -28,6 +28,8 @@ import { IApproveRequest } from '../../../business/commands/i-approve-request';
 import { IRejectRequest } from '../../../business/commands/i-reject-request';
 import { IGetCities } from '../../../business/commands/i-get-cities';
 import { IGetCounties } from '../../../business/commands/i-get-counties';
+import { IMarkAsRead } from '../../../business/commands/i-mark-as-read';
+import { IMarkAllAsRead } from '../../../business/commands/i-mark-all-as-read';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -78,6 +80,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly rejectRequest: IRejectRequest,
                 private readonly cities: IGetCities,
                 private readonly counties: IGetCounties,
+                private readonly markAsRead: IMarkAsRead,
+                private readonly markAllAsRead: IMarkAllAsRead,
                 private userContext: UserContext,
     ) {
     }
@@ -117,6 +121,8 @@ export class InitializeGraph implements IInitializeGraph {
                     rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
                     cities: (context: any) => this.cities.execute(context.parameter).toPromise(),
                     counties: (context: any) => this.counties.execute(context.parameter).toPromise(),
+                    markAsRead: (context: any) => this.markAsRead.execute(context.parameter).toPromise(),
+                    markAllAsRead: (context: any) => this.markAllAsRead.execute(context).toPromise(),
                 },
                 schema,
                 context: {
