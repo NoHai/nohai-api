@@ -24,7 +24,7 @@ export class RejectRequest implements IRejectRequest {
             .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.userId)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)
-            .pipe(map((notification) => this.notificationTokenRepository.get(notification.userId)));
+            .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.userId)));
 
         return zip(deleteUserEventFlow, rejectFlow, notificationTokenFlow)
             .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
