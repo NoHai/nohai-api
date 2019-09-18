@@ -11,4 +11,7 @@ type UserEvents {
 
     "The status of the user events."
     status: Int
+
+    "The user with all the details."
+    user: User
 }

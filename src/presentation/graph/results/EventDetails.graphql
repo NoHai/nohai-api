@@ -1,0 +1,7 @@
+type EventDetails {
+    "The event."
+    event: Event
+
+    "The user events."
+    userEvents: [UserEvents]
+}

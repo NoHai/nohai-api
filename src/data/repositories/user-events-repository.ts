@@ -15,16 +15,16 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        return from(UserEvents.findOneOrFail({ eventId, userId }))
+        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
             .pipe(flatMap((userEvent) => UserEvents.delete(userEvent.id)))
             .pipe(map((res) => res.affected));
     }
 
     update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult> {
-        return from(UserEvents.findOneOrFail({ eventId, userId }))
+        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
             .pipe(map((userEvent) => {
-                    userEvent.status = status;
-                    return userEvent;
+                userEvent.status = status;
+                return userEvent;
             }))
             .pipe(flatMap((updatedEntity) => updatedEntity.save()))
             .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));

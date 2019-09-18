@@ -6,6 +6,9 @@ type Query {
     "It's used to fetch the event by id from server."
     eventById(id: String!): Event
 
+     "It's used to fetch the event by id with all details from server."
+    eventDetails(parameter: String!): EventDetails
+
     "It's used to fetch the sports from server."
     sports: [Sport]
 
