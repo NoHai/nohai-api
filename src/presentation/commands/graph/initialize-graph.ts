@@ -26,6 +26,8 @@ import { IRefreshToken } from '../../../business/commands/i-refresh-token';
 import { ILoginFacebook } from '../../../business/commands/i-login-facebook';
 import { IApproveRequest } from '../../../business/commands/i-approve-request';
 import { IRejectRequest } from '../../../business/commands/i-reject-request';
+import { IGetCities } from '../../../business/commands/i-get-cities';
+import { IGetCounties } from '../../../business/commands/i-get-counties';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -74,6 +76,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly loginFacebook: ILoginFacebook,
                 private readonly approveRequest: IApproveRequest,
                 private readonly rejectRequest: IRejectRequest,
+                private readonly cities: IGetCities,
+                private readonly counties: IGetCounties,
                 private userContext: UserContext,
     ) {
     }
@@ -111,6 +115,8 @@ export class InitializeGraph implements IInitializeGraph {
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
                     approveRequest: (context: any) => this.approveRequest.execute(context.input).toPromise(),
                     rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
+                    cities: (context: any) => this.cities.execute(context.parameter).toPromise(),
+                    counties: (context: any) => this.counties.execute(context.parameter).toPromise(),
                 },
                 schema,
                 context: {

@@ -16,13 +16,13 @@ export class CreateTokens implements ICreateTokens {
     }
 
     execute(input: CredentialsInput): Observable<Tokens> {
-        return  this.userRepository.byCredentials(input.login)
-                    .pipe(catchError(() => throwError(Errors.NotRegisteredError)))
-                    .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
-                    .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
-                    .pipe(flatMap((passwordMatches) => passwordMatches === false
-                                                     ? throwError(Errors.IncorrectPassowordError)
-                                                     : this.saveToken(input)));
+        return this.userRepository.byCredentials(input.login)
+            .pipe(catchError(() => throwError(Errors.NotRegisteredError)))
+            .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
+            .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
+            .pipe(flatMap((passwordMatches) => passwordMatches === false
+                ? throwError(Errors.IncorrectPassowordError)
+                : this.saveToken(input)));
     }
 
     private saveToken(input: CredentialsInput): Observable<Tokens> {
@@ -30,14 +30,23 @@ export class CreateTokens implements ICreateTokens {
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow: Observable<User> = this.userRepository.byCredentials(input.login);
 
-        return  zip(userFlow, accessTokenFlow, refreshTokenFlow)
-                .pipe(map((result) => new Tokens({ user: result[0], accessToken: result[1], refreshToken: result[2] })))
-                .pipe(flatMap((token) => this.tokensRepository.insert(token)));
+        return zip(userFlow, accessTokenFlow, refreshTokenFlow)
+            .pipe(map((result) => new Tokens({
+                user: result[0],
+                accessToken: result[1],
+                refreshToken: result[2],
+                expireIn: process.env.NOHAI_JWT_EXPIRE_IN,
+            })))
+            .pipe(flatMap((token) => this.tokensRepository.insert(token)));
     }
 
     private buildAccessToken(credentials: CredentialsInput): Observable<string> {
         return this.userRepository.byCredentials(credentials.login)
-            .pipe(map((user) => ({ userId: user.id, firstName: user.firstName, lastName: user.lastName, expires: 'tomorrow' })))
+            .pipe(map((user) => ({
+                userId: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
 }

@@ -181,7 +181,7 @@ export const CitySeed = [
     { name: 'Paltin'},
     { name: 'Talmacel'},
     { name: 'Tilisca'},
-    { name: 'Rod,Sibiu'},
+    { name: 'Rod'},
     { name: 'Turnu Rosu'},
     { name: 'Sebesu de Jos'},
     { name: 'Valea Viilor'},

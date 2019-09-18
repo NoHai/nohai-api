@@ -9,7 +9,6 @@ import crypto from 'crypto';
 
 
 export class AuthHelper {
-
     static  signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
             algorithm: 'HS256',
