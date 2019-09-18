@@ -9,4 +9,6 @@ export interface IUserEventsRepository {
     update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult>;
 
     delete(eventId: string, userId: string): Observable<number | undefined>;
+
+    get(eventId: string): Observable<UserEventsResult[]>;
 }

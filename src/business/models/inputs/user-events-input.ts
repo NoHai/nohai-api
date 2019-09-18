@@ -1,6 +1,8 @@
+import { User } from '../../../data/entities/user';
+
 export class UserEventsInput {
     eventId!: string;
-    userId!: string;
+    user!: User;
     status!: number;
 
     constructor(init?: any) {

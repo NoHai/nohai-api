@@ -39,6 +39,7 @@ import { CityRepository } from '../../../data/repositories/city-repository';
 import { CountyRepository } from '../../../data/repositories/county-repository';
 import { MarkAsRead } from '../../../business/commands/mark-as-read';
 import { MarkAllAsRead } from '../../../business/commands/mark-all-as-read';
+import { GetEventDetails } from '../../../business/commands/get-event-details';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -58,6 +59,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { updateUser: asClass(UpdateUser).transient().classic() },
         { eventById: asClass(GetEventById).transient().classic() },
         { events: asClass(GetEvents).transient().classic() },
+        { eventDetails: asClass(GetEventDetails).transient().classic() },
         { sports: asClass(GetSports).transient().classic() },
         { createNotification: asClass(CreateNotification).transient().classic() },
         { getNotifications: asClass(GetNotifications).transient().classic() },
