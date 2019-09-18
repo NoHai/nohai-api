@@ -25,7 +25,7 @@ type User {
     picture: String
 
     "The city of the user."
-    city: City
+    city: String
 
     "The login method."
     loginWithFb: Boolean

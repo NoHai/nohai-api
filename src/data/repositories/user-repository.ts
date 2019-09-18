@@ -36,7 +36,7 @@ export class UserRepository implements IUserRepository {
     }
 
     getById(id: string): Observable<UserResult> {
-        return of(UserEntity.findOneOrFail(id, { relations: ['city'] }))
+        return of(UserEntity.findOneOrFail(id))
             .pipe(flatMap((entity) => from(entity)))
             .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
     }

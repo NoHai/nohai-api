@@ -1,5 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { City } from './city';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -31,9 +30,8 @@ export class User extends BaseEntity {
     @Column()
     picture!: string;
 
-    @OneToOne(() => City)
-    @JoinColumn({ name: 'city_id' })
-    city!: City;
+    @Column()
+    city!: string;
 
     @Column({ name: 'login_with_fb'})
     loginWithFb!: boolean;
