@@ -5,7 +5,6 @@ import { SendNotification } from '../services/send-notification';
 import { Observable, from, of } from 'rxjs';
 import { NotificationType } from '../data/enums/notification-type';
 import { NotificationStatus } from '../data/enums/notification-status';
-import { NotificationToken } from '../business/models/results/notification-token';
 
 export class NotificationHelper {
 
@@ -67,7 +66,7 @@ export class NotificationHelper {
         return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
     }
 
-    static sendNotification(notification: any, tokens: NotificationToken[]): Observable<boolean> {
+    static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
         if (tokens && tokens.length > 0) {
             return from(SendNotification(tokens, notification.body, notification.title));
         } else {
