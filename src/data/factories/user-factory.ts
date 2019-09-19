@@ -27,6 +27,7 @@ export class UserFactory {
         },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
         fromUserResult: (user: UserResult) => new UserEntity(user),
+        fromId: (id: string) => new UserEntity({ id }),
     };
 
     static result = {

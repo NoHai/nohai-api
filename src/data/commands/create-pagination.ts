@@ -2,6 +2,7 @@ import { from, Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PaginationParameter } from '../../business/models/parameters/pagination-parameter';
 
+
 export class CreatePagination {
     private totalCountOptions: any;
     private customCountOptions: any;

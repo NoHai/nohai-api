@@ -57,7 +57,6 @@ export class EventRepository implements IEventRepository {
             relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
-            filter: parameter.title,
         };
     }
 }
