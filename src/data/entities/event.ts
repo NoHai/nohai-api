@@ -1,6 +1,7 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Address } from './address';
 import { Sport } from './sport';
+import { User } from './user';
 
 @Entity('event')
 export class Event extends BaseEntity {
@@ -34,8 +35,9 @@ export class Event extends BaseEntity {
     @Column()
     hour!: string;
 
-    @Column()
-    owner!: string;
+    @OneToOne(() => User, (user) => user.id, { cascade: false, eager: true })
+    @JoinColumn({ name: 'owner'})
+    owner!: User;
 
     @Column()
     duration!: number;

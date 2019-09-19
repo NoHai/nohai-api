@@ -18,7 +18,7 @@ export class NotificationHelper {
             createdUser: user.id,
             createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
-            status: NotificationStatus.NotRead,
+            status: NotificationStatus.Unread,
         });
     }
 
@@ -32,7 +32,7 @@ export class NotificationHelper {
             createdUser: event.owner,
             createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
-            status: NotificationStatus.NotRead,
+            status: NotificationStatus.Unread,
         });
     }
 
@@ -46,7 +46,7 @@ export class NotificationHelper {
             createdUser: event.owner,
             createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.RejectJoin,
-            status: NotificationStatus.NotRead,
+            status: NotificationStatus.Unread,
         });
     }
 

@@ -4,7 +4,7 @@ type Event {
     id: String!
 
     "The owner of the event."
-    owner: String!
+    owner: User!
 
     "The title of the event."
     title: String!

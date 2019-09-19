@@ -3,5 +3,6 @@ type Notifications implements Pagination {
     pageIndex: Int!
     pageSize: Int!
     totalCount: Int!
+    customCount:Int
     items: [Notification]!
 }
