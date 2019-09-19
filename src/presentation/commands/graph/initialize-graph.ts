@@ -117,7 +117,7 @@ export class InitializeGraph implements IInitializeGraph {
                     getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
                     deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
                     joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
-                    getUserById: (context: any) => this.getUserById.execute(context).toPromise(),
+                    getUserById: (context: any) => this.getUserById.execute(context.parameter).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
                     approveRequest: (context: any) => this.approveRequest.execute(context.input).toPromise(),

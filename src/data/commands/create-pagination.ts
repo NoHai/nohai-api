@@ -2,8 +2,10 @@ import { from, Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PaginationParameter } from '../../business/models/parameters/pagination-parameter';
 
+
 export class CreatePagination {
     private totalCountOptions: any;
+    private customCountOptions: any;
     private itemsOptions: any;
     private entity: any;
     private parameter!: PaginationParameter;
@@ -15,6 +17,11 @@ export class CreatePagination {
 
     withTotalCountOptions(options: any): CreatePagination {
         this.totalCountOptions = options;
+        return this;
+    }
+
+    withCustomCountOption(options: any): CreatePagination {
+        this.customCountOptions = options;
         return this;
     }
 
@@ -30,8 +37,9 @@ export class CreatePagination {
 
     execute(): Observable<any> {
         const totalCountFlow = from(this.entity.count(this.totalCountOptions));
+        const customCountFlow = from (this.entity.count(this.customCountOptions));
         const itemsFlow = from(this.entity.find(this.itemsOptions));
-        return zip(totalCountFlow, itemsFlow).pipe(map((result) => this.buildPagination(result)));
+        return zip(totalCountFlow, itemsFlow, customCountFlow).pipe(map((result) => this.buildPagination(result)));
     }
 
     private buildPagination(result: any): any {
@@ -40,6 +48,7 @@ export class CreatePagination {
             pageIndex: this.parameter.pageIndex,
             pageSize: this.parameter.pageSize,
             totalCount: result[0],
+            customCount: result[2],
         };
     }
 }

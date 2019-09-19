@@ -31,7 +31,7 @@ export class JoinEvent implements IJoinEvent {
         const userEventFlow = this.userEventsRepository.insert(userEvent);
         const notificationFlow = this.notificationRepository.joinEvent(eventId);
         const notificationTokenFlow = this.eventRepository.getById(eventId)
-            .pipe(flatMap((event) => this.notificationTokenRepository.get(event.owner)))
+            .pipe(flatMap((event) => this.notificationTokenRepository.get(event.owner.id)))
             .pipe(map((tokens) => tokens.map((token) => token.token)));
 
         return zip(userEventFlow, notificationFlow, notificationTokenFlow)

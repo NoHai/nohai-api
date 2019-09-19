@@ -1,8 +1,9 @@
 import { Address } from '../../../data/entities/address';
 import { Sport } from '../../../data/entities/sport';
+import { User } from '../../../data/entities/user';
 
 export class EventInput {
-    owner!: string;
+    owner!: User;
     title!: string;
     description!: string;
     address!: Address;

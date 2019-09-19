@@ -9,7 +9,7 @@ export class GetUserById implements IGetUserById {
                 private readonly userContext: UserContext) {
     }
 
-    execute(): Observable<User> {
-        return this.userRepository.getById(this.userContext.userId);
+    execute(id?: string ): Observable<User> {
+        return this.userRepository.getById(id || this.userContext.userId);
     }
 }

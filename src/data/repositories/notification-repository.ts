@@ -21,10 +21,12 @@ export class NotificationRepository implements INotificationRepository {
 
     get(parameter: PaginationParameter): Observable<Pagination> {
         const itemsOptions = this.buildOptions(parameter);
+        const unreadOption = this.buildCustomCountOption();
         return this.createPagination
             .withEntity(NotificationEntity)
             .withParameter(parameter)
             .withItemsOptions(itemsOptions)
+            .withCustomCountOption(unreadOption)
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
     }
@@ -96,6 +98,14 @@ export class NotificationRepository implements INotificationRepository {
             },
             skip: parameter.pageSize * parameter.pageIndex,
             take: parameter.pageSize,
+        };
+    }
+
+    private buildCustomCountOption(): any {
+        return {
+            where: {
+                status: NotificationStatus.Unread,
+            },
         };
     }
 
