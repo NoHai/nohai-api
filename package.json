@@ -50,6 +50,7 @@
   },
   "homepage": "https://github.com/NoHai/nohai-api#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "awilix": "^4.2.2",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
