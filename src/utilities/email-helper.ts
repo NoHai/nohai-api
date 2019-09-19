@@ -8,7 +8,8 @@ export class EmailHelper {
             to: email,
             from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
             subject: 'Recuperare parola NoHai',
-            message: this.recoverPasswordMessage(link),
+            text: this.recoverPasswordMessage(link),
+            html: `<strong>${this.recoverPasswordMessage(link)}<strong>`,
         });
     }
 

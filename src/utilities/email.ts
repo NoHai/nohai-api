@@ -1,7 +1,7 @@
 export class Email {
     to!: string;
     from!: string;
-    message!: string;
+    text!: string;
     subject!: string;
     html!: string;
 
