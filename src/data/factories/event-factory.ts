@@ -25,7 +25,7 @@ export class EventFactory {
     static result = {
         fromEventEntity: (event: EventEntity): EventResult => new EventResult({
             ...event,
-            address: Address.findOneOrFail(event.address.id, { relations: ['city', 'county'] }),
+            address: Address.findOneOrFail(event.address.id),
             sport: Sport.findOneOrFail(event.sport.id),
         }),
     };
@@ -34,7 +34,7 @@ export class EventFactory {
         fromEventEntities: (entities: EventEntity[]): EventResult[] =>
             entities.map((event) => new EventResult({
                 ...event,
-                address: Address.findOneOrFail(event.address.id, { relations: ['city', 'county'] }),
+                address: Address.findOneOrFail(event.address.id),
                 sport: Sport.findOneOrFail(event.sport.id),
             })),
     };

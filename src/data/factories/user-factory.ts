@@ -2,7 +2,6 @@ import { CredentialsInput } from '../../business/models/inputs/credentials-input
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
-import { CityFactory } from './city-factory';
 import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
 import { AuthHelper } from '../../utilities/auth-helper';
 
@@ -31,9 +30,6 @@ export class UserFactory {
     };
 
     static result = {
-        fromUserEntity: (user: UserEntity) => new UserResult({
-            ...user,
-            city: CityFactory.result.fromCityEntity(user.city),
-        }),
+        fromUserEntity: (user: UserEntity) => new UserResult(user),
     };
 }

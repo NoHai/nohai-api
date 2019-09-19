@@ -10,21 +10,28 @@ import { NotificationType } from '../enums/notification-type';
 export class UserEventsRepository implements IUserEventsRepository {
     insert(input: UserEventsInput): Observable<UserEventsResult> {
         return of(UserEventsFactory.entity.fromUserEventsInput(input))
-        .pipe(switchMap((entity) => entity.save()))
-        .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
+            .pipe(switchMap((entity) => entity.save()))
+            .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        return  from(UserEvents.findOneOrFail({ eventId, userId}))
-                .pipe(flatMap((userEvent) => UserEvents.delete(userEvent.id)))
-                .pipe(map((res) => res.affected));
+        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
+            .pipe(flatMap((userEvent) => UserEvents.delete(userEvent.id)))
+            .pipe(map((res) => res.affected));
     }
 
     update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult> {
-        return from(UserEvents.findOneOrFail({ eventId, userId}))
-              .pipe(map((userEvent) => { userEvent.status =  status;
-                                         return userEvent; }))
-              .pipe(flatMap((updatedEntity) => updatedEntity.save()))
-              .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
+        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
+            .pipe(map((userEvent) => {
+                userEvent.status = status;
+                return userEvent;
+            }))
+            .pipe(flatMap((updatedEntity) => updatedEntity.save()))
+            .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
+    }
+
+    get(eventId: string): Observable<UserEventsResult[]> {
+        return from(UserEvents.find({ eventId }))
+            .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
     }
 }

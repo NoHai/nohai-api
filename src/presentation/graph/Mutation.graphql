@@ -44,4 +44,10 @@ type Mutation {
 
     """It's used to reject a join request."""
     rejectRequest(eventId: String!): Boolean!
+
+    """It's used to mark a notification as read."""
+    markAsRead(parameter: String!): Notification!
+
+     """It's used to mark all notifications as read."""
+    markAllAsRead: Boolean!
 }

@@ -28,6 +28,9 @@ import { IApproveRequest } from '../../../business/commands/i-approve-request';
 import { IRejectRequest } from '../../../business/commands/i-reject-request';
 import { IGetCities } from '../../../business/commands/i-get-cities';
 import { IGetCounties } from '../../../business/commands/i-get-counties';
+import { IMarkAsRead } from '../../../business/commands/i-mark-as-read';
+import { IMarkAllAsRead } from '../../../business/commands/i-mark-all-as-read';
+import { IGetEventDetails } from '../../../business/commands/i-get-event-details';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -63,6 +66,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
                 private readonly events: IGetEvents,
+                private readonly eventDetails: IGetEventDetails,
                 private readonly sports: IGetSports,
                 private readonly createNotification: ICreateNotification,
                 private readonly getNotifications: IGetNotifications,
@@ -78,6 +82,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly rejectRequest: IRejectRequest,
                 private readonly cities: IGetCities,
                 private readonly counties: IGetCounties,
+                private readonly markAsRead: IMarkAsRead,
+                private readonly markAllAsRead: IMarkAllAsRead,
                 private userContext: UserContext,
     ) {
     }
@@ -101,6 +107,7 @@ export class InitializeGraph implements IInitializeGraph {
                     createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
                     eventById: (context: any) => this.eventById.execute(context).toPromise(),
                     events: (context: any) => this.events.execute(context.parameter).toPromise(),
+                    eventDetails: (context: any) => this.eventDetails.execute(context.parameter).toPromise(),
                     sports: (context: any) => this.sports.execute(context.input).toPromise(),
                     updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
                     updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
@@ -117,6 +124,8 @@ export class InitializeGraph implements IInitializeGraph {
                     rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
                     cities: (context: any) => this.cities.execute(context.parameter).toPromise(),
                     counties: (context: any) => this.counties.execute(context.parameter).toPromise(),
+                    markAsRead: (context: any) => this.markAsRead.execute(context.parameter).toPromise(),
+                    markAllAsRead: (context: any) => this.markAllAsRead.execute(context).toPromise(),
                 },
                 schema,
                 context: {

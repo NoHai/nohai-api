@@ -50,7 +50,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     markAllAsRead(): Observable<boolean> {
-        return from(NotificationEntity.find({ user: this.userContext.userId, status: NotificationStatus.NotRead }))
+        return from(NotificationEntity.find({ user: this.userContext.userId, status: 0 }))
             .pipe(map((notifications) => notifications.map((notification) => {
                 notification.status = NotificationStatus.Read;
                 notification.save();
@@ -87,6 +87,10 @@ export class NotificationRepository implements INotificationRepository {
 
     private buildOptions(parameter: PaginationParameter): any {
         return {
+            where:
+            {
+                userId: this.userContext.userId,
+            },
             order: {
                 id: 'DESC',
             },

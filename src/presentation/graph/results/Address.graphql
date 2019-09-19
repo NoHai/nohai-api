@@ -9,10 +9,10 @@ type Address {
     latitude: Float
 
     "The city of the address."
-    city: City!
+    city: String!
 
     "The county of the address."
-    county: County!
+    county: String!
 
     "The street name."
     streetName: String

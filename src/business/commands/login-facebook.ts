@@ -1,6 +1,6 @@
 import { ILoginFacebook } from './i-login-facebook';
 import { FacebookCredentialsInput } from '../models/inputs/facebook-credentials-input';
-import { Observable, zip, iif } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { Tokens } from '../models/results/tokens';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { flatMap, map, catchError } from 'rxjs/operators';

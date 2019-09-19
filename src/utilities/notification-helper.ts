@@ -2,9 +2,10 @@ import { User } from '../data/entities/user';
 import { Event } from '../data/entities/event';
 import { Notification } from '../data/entities/notification';
 import { SendNotification } from '../services/send-notification';
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { NotificationType } from '../data/enums/notification-type';
 import { NotificationStatus } from '../data/enums/notification-status';
+
 export class NotificationHelper {
 
     static buildJoinNotification(event: any, user: any): Notification {
@@ -15,7 +16,7 @@ export class NotificationHelper {
             user: event.owner,
             avatarUrl: user.picture,
             createdUser: user.id,
-            createdDate: Date.UTC.toString(),
+            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
             status: NotificationStatus.NotRead,
         });
@@ -29,7 +30,7 @@ export class NotificationHelper {
             user: toUser,
             avatarUrl: fromUser.picture,
             createdUser: event.owner,
-            createdDate: Date.UTC.toString(),
+            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
             status: NotificationStatus.NotRead,
         });
@@ -43,7 +44,7 @@ export class NotificationHelper {
             user: toUser,
             avatarUrl: fromUser.picture,
             createdUser: event.owner,
-            createdDate: Date.UTC.toString(),
+            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.NotRead,
         });
@@ -65,7 +66,11 @@ export class NotificationHelper {
         return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
     }
 
-    static sendNotification(notification: any, tokens: any): Observable<boolean> {
-        return from(SendNotification(tokens, notification.body, notification.title));
+    static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
+        if (tokens && tokens.length > 0) {
+            return from(SendNotification(tokens, notification.body, notification.title));
+        } else {
+            return of(false);
+        }
     }
 }
