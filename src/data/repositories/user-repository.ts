@@ -48,10 +48,10 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 
-    updateCredentials(email: string, newPassword: string): Observable<void> {
-        return from(UserEntity.findOneOrFail({ login: email }))
+    updateCredentials(credentials: CredentialsInput): Observable<void> {
+        return from(UserEntity.findOneOrFail({ login: credentials.login }))
             .pipe(map((entity) => {
-                entity.password = AuthHelper.hashPassword(newPassword);
+                entity.password = AuthHelper.hashPassword(credentials.password);
                 entity.save();
             }));
     }

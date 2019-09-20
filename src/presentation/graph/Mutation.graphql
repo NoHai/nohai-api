@@ -53,4 +53,7 @@ type Mutation {
 
     """It's used to recover password."""
     recoverPassword(parameter: String!): String
+
+    """It's used to recover password."""
+    updateCredentials(input: CredentialsInput!): Boolean
 }

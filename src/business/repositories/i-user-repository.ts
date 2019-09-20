@@ -19,5 +19,5 @@ export interface IUserRepository {
 
     getCredentials(id: string): Observable<Credentials>;
 
-    updateCredentials(email: string, newPassword: string): Observable<void>;
+    updateCredentials(input: CredentialsInput): Observable<void>;
 }
