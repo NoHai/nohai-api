@@ -42,6 +42,7 @@ import { MarkAllAsRead } from '../../../business/commands/mark-all-as-read';
 import { GetEventDetails } from '../../../business/commands/get-event-details';
 import { EmailService } from '../../../services/email-service';
 import { RecoverPassword } from '../../../business/commands/recover-password';
+import { UpdateCredentials } from '../../../business/commands/update-credentials';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -79,6 +80,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { markAsRead: asClass(MarkAsRead).transient().classic() },
         { markAllAsRead: asClass(MarkAllAsRead).transient().classic() },
         { recoverPassword: asClass(RecoverPassword).transient().classic() },
+        { updateCredentials: asClass(UpdateCredentials).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

@@ -18,4 +18,6 @@ export interface IUserRepository {
     getById(id: string): Observable<User>;
 
     getCredentials(id: string): Observable<Credentials>;
+
+    updateCredentials(email: string, newPassword: string): Observable<void>;
 }
