@@ -6,8 +6,6 @@ import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
 
-
-
 export class AuthHelper {
     static  signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
