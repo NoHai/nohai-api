@@ -1,15 +1,17 @@
 import { Email } from './email';
 import { of, Observable } from 'rxjs';
+import { User } from '../business/models/results/user';
+import mjml2html from 'mjml';
 
 export class EmailHelper {
 
-   static getRecoverPasswordEmail(email: string, link: string): Email {
+   static getRecoverPasswordEmail(user: User, email: string, link: string): Email {
         return new Email({
             to: email,
             from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
             subject: 'Recuperare parola NoHai',
             text: this.recoverPasswordMessage(link),
-            html: `<strong>${this.recoverPasswordMessage(link)}<strong>`,
+            html: this.getRecoveryEmailHtml(user, link),
         });
     }
 
@@ -24,6 +26,30 @@ export class EmailHelper {
 
     private static recoverPasswordMessage(link: string): string {
         return `Pentru a recupera parola va rugam accesati link-ul de mai jos. Va multumim. ${link} `;
+    }
+
+    private static getRecoveryEmailHtml(user: User, link: string): string {
+        return mjml2html(`
+        <mjml>
+        <mj-body>
+        <mj-section>
+            <mj-column>
+            <mj-text  font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+            <mj-text  font-family="helvetica">Mai jos se alfla link-ul pentru resetarea parolei atasata contului NoHai</mj-text>
+            <mj-text>
+                <a href="${link}">Resetare parola</a>
+            </mj-text>
+            <mj-text  font-family="helvetica">Va multumim</mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section>
+        <mj-column>
+            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
+        </mj-column>
+        </mj-section>
+        </mj-body>
+        </mjml>
+        `).html;
     }
 
 }

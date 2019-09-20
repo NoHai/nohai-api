@@ -51,6 +51,7 @@
   "homepage": "https://github.com/NoHai/nohai-api#readme",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "@types/mjml": "^4.0.2",
     "awilix": "^4.2.2",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
@@ -60,6 +61,7 @@
     "firebase-admin": "^8.3.0",
     "graphql": "^14.4.2",
     "jsonwebtoken": "^8.5.1",
+    "mjml": "^4.5.0",
     "mongodb": "^3.2.3",
     "mysql": "^2.17.1",
     "npm": "^6.9.0",

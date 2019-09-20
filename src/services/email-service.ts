@@ -8,7 +8,7 @@ export class EmailService {
     }
 
     async sendEmail(email: Email) {
-        const result = await emailSender.send(email);
+        const result = await emailSender.send(email, false);
         return result;
     }
 
