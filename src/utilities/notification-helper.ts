@@ -7,10 +7,14 @@ import { NotificationType } from '../data/enums/notification-type';
 import { NotificationStatus } from '../data/enums/notification-status';
 
 export class NotificationHelper {
+    static joinNotificationTitle: 'Cerere de alaturare';
+    static approveNotificationTitle: 'Cerere aprobata';
+    static rejectNotificationTitle: 'Cerere respinsa';
+    static userApprovedTitle: 'Ai aprobat aceasta cerere';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
-            title: NotificationHelper.joinNotificationTitle(),
+            title: NotificationHelper.joinNotificationTitle,
             body: NotificationHelper.joinNotificationBody(event, user),
             eventId: event.id,
             user: event.owner.id,
@@ -24,7 +28,7 @@ export class NotificationHelper {
 
     static buildApproveNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
-            title: NotificationHelper.joinNotificationTitle(),
+            title: NotificationHelper.approveNotificationTitle,
             body: NotificationHelper.approveRequestBody(event),
             eventId: event.id,
             user: toUser,
@@ -38,7 +42,7 @@ export class NotificationHelper {
 
     static buildRejectNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
-            title: NotificationHelper.joinNotificationTitle(),
+            title: NotificationHelper.rejectNotificationTitle,
             body: NotificationHelper.rejectRequestBody(event),
             eventId: event.id,
             user: toUser,
@@ -52,10 +56,6 @@ export class NotificationHelper {
 
     static joinNotificationBody(event: Event, user: User): string {
         return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title}`;
-    }
-
-    static joinNotificationTitle() {
-        return 'Cerere de alaturare';
     }
 
     static approveRequestBody(event: Event): string {

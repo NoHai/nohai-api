@@ -91,7 +91,7 @@ export class NotificationRepository implements INotificationRepository {
         return {
             where : { user: this.userContext.userId},
             order: {
-                id: 'DESC',
+                createdDate: 'DESC',
             },
             skip: parameter.pageSize * parameter.pageIndex,
             take: parameter.pageSize,
