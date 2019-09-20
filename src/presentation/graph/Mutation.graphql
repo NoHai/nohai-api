@@ -48,6 +48,9 @@ type Mutation {
     """It's used to mark a notification as read."""
     markAsRead(parameter: String!): Notification!
 
-     """It's used to mark all notifications as read."""
+    """It's used to mark all notifications as read."""
     markAllAsRead: Boolean!
+
+    """It's used to recover password."""
+    recoverPassword(parameter: String!): String
 }

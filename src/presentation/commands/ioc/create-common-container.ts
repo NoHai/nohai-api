@@ -40,6 +40,8 @@ import { CountyRepository } from '../../../data/repositories/county-repository';
 import { MarkAsRead } from '../../../business/commands/mark-as-read';
 import { MarkAllAsRead } from '../../../business/commands/mark-all-as-read';
 import { GetEventDetails } from '../../../business/commands/get-event-details';
+import { EmailService } from '../../../services/email-service';
+import { RecoverPassword } from '../../../business/commands/recover-password';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -76,6 +78,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { counties: asClass(GetCounties).transient().classic() },
         { markAsRead: asClass(MarkAsRead).transient().classic() },
         { markAllAsRead: asClass(MarkAllAsRead).transient().classic() },
+        { recoverPassword: asClass(RecoverPassword).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
@@ -101,6 +104,10 @@ export class CreateCommonContainer implements ICreateContainer {
         { express: asFunction(() => express()).singleton().classic() },
     ];
 
+    private readonly providers: ReadonlyArray<any> = [
+        { emailService:  asClass(EmailService).singleton().classic() },
+    ];
+
     private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC });
 
     execute(): AwilixContainer {
@@ -118,6 +125,7 @@ export class CreateCommonContainer implements ICreateContainer {
             .concat(this.businessRepositories)
             .concat(this.businessCommands)
             .concat(this.presentationCommands)
-            .concat(this.presentationNetworking);
+            .concat(this.presentationNetworking)
+            .concat(this.providers);
     }
 }

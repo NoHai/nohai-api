@@ -8,12 +8,12 @@ import { NotificationStatus } from '../data/enums/notification-status';
 
 export class NotificationHelper {
 
-    static buildJoinNotification(event: any, user: any): Notification {
+    static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
             title: NotificationHelper.joinNotificationTitle(),
             body: NotificationHelper.joinNotificationBody(event, user),
             eventId: event.id,
-            user: event.owner,
+            user: event.owner.id,
             avatarUrl: user.picture,
             createdUser: user.id,
             createdDate: (new Date()).toUTCString(),
@@ -22,28 +22,28 @@ export class NotificationHelper {
         });
     }
 
-    static buildApproveNotification(event: any, fromUser: any, toUser: string): Notification {
+    static buildApproveNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
             title: NotificationHelper.joinNotificationTitle(),
             body: NotificationHelper.approveRequestBody(event),
             eventId: event.id,
             user: toUser,
             avatarUrl: fromUser.picture,
-            createdUser: event.owner,
+            createdUser: event.owner.id,
             createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
             status: NotificationStatus.Unread,
         });
     }
 
-    static buildRejectNotification(event: any, fromUser: any, toUser: string): Notification {
+    static buildRejectNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
             title: NotificationHelper.joinNotificationTitle(),
             body: NotificationHelper.rejectRequestBody(event),
             eventId: event.id,
             user: toUser,
             avatarUrl: fromUser.picture,
-            createdUser: event.owner,
+            createdUser: event.owner.id,
             createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.Unread,
