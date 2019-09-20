@@ -1,7 +1,6 @@
 import { from, Observable, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { PaginationParameter } from '../../business/models/parameters/pagination-parameter';
-
 
 export class CreatePagination {
     private totalCountOptions: any;
@@ -39,6 +38,7 @@ export class CreatePagination {
         const totalCountFlow = from(this.entity.count(this.totalCountOptions));
         const customCountFlow = from (this.entity.count(this.customCountOptions));
         const itemsFlow = from(this.entity.find(this.itemsOptions));
+
         return zip(totalCountFlow, itemsFlow, customCountFlow).pipe(map((result) => this.buildPagination(result)));
     }
 
