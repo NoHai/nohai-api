@@ -1,11 +1,13 @@
 import { IApproveRequest } from './i-approve-request';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, from } from 'rxjs';
 import { INotificationRepository } from '../repositories/i-notification-repository';
 import { map, flatMap } from 'rxjs/operators';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { NotificationType } from '../../data/enums/notification-type';
+import { Notification } from '../../data/entities/notification';
+import { NotificationStatus } from '../../data/enums/notification-status';
 
 export class ApproveRequest implements IApproveRequest {
 
@@ -21,8 +23,13 @@ export class ApproveRequest implements IApproveRequest {
                     notification.userId,
                     NotificationType.ApproveJoin)));
 
-        const approveFlow = this.notificationRepository.markAsRead(input)
-            .pipe(map((notification) => this.notificationRepository.approve(notification.eventId, notification.userId)));
+        const approveFlow = from(Notification.findOneOrFail({ id: input}))
+                            .pipe(flatMap((entity) => {
+                                entity.status = NotificationStatus.Read;
+                                entity.title = NotificationHelper.userApprovedTitle;
+                                return entity.save();
+                            }))
+                         .pipe(map((notification) => this.notificationRepository.approve(notification.eventId, notification.user)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)
             .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.userId)))

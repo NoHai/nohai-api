@@ -5,11 +5,12 @@ import { UpdateUserInput } from '../../business/models/inputs/update-user-input'
 import { Credentials } from '../../business/models/results/credentials';
 import { User as UserResult } from '../../business/models/results/user';
 import { IUserRepository } from '../../business/repositories/i-user-repository';
-import { User as UserEntity } from '../entities/user';
+import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
 import { FacebookCredentials } from '../../business/models/results/facebook-credentials';
 import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
+import { AuthHelper } from '../../utilities/auth-helper';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -45,6 +46,14 @@ export class UserRepository implements IUserRepository {
         return of(UserEntity.findOneOrFail(id))
             .pipe(flatMap((entity) => from(entity)))
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
+    }
+
+    updateCredentials(credentials: CredentialsInput): Observable<void> {
+        return from(UserEntity.findOneOrFail({ login: credentials.login }))
+            .pipe(map((entity) => {
+                entity.password = AuthHelper.hashPassword(credentials.password);
+                entity.save();
+            }));
     }
 }
 

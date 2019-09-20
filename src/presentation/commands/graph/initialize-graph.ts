@@ -32,6 +32,7 @@ import { IMarkAsRead } from '../../../business/commands/i-mark-as-read';
 import { IMarkAllAsRead } from '../../../business/commands/i-mark-all-as-read';
 import { IGetEventDetails } from '../../../business/commands/i-get-event-details';
 import { IRecoverPassword } from '../../../business/commands/i-recover-password';
+import { IUpdateCredentials } from '../../../business/commands/i-update-credentials';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -86,6 +87,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly markAsRead: IMarkAsRead,
                 private readonly markAllAsRead: IMarkAllAsRead,
                 private readonly recoverPassword: IRecoverPassword,
+                private readonly updateCredentials: IUpdateCredentials,
     ) {
     }
 
@@ -128,6 +130,7 @@ export class InitializeGraph implements IInitializeGraph {
                     markAsRead: (context: any) => this.markAsRead.execute(context.parameter).toPromise(),
                     markAllAsRead: (context: any) => this.markAllAsRead.execute(context).toPromise(),
                     recoverPassword: (context: any) => this.recoverPassword.execute(context.parameter).toPromise(),
+                    updateCredentials: (context: any) => this.updateCredentials.execute(context.input).toPromise(),
                 },
                 schema,
                 context: {

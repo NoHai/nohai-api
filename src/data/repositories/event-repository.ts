@@ -52,7 +52,7 @@ export class EventRepository implements IEventRepository {
         return {
             order: {
                 description: 'ASC',
-                id: 'DESC',
+                date: 'ASC',
             },
             relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
