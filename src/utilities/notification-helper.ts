@@ -7,10 +7,10 @@ import { NotificationType } from '../data/enums/notification-type';
 import { NotificationStatus } from '../data/enums/notification-status';
 
 export class NotificationHelper {
-    static joinNotificationTitle: 'Cerere de alaturare';
-    static approveNotificationTitle: 'Cerere aprobata';
-    static rejectNotificationTitle: 'Cerere respinsa';
-    static userApprovedTitle: 'Ai aprobat aceasta cerere';
+    static joinNotificationTitle: string = 'Cerere de alaturare';
+    static approveNotificationTitle: string =  'Cerere aprobata';
+    static rejectNotificationTitle: string = 'Cerere respinsa';
+    static userApprovedTitle: string = 'Ai aprobat aceasta cerere';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
