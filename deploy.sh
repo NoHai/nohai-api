@@ -14,7 +14,7 @@ for i in "${!array[@]}"; do
 	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} "docker stop nohai-api || true && docker rm nohai-api || true && rm -rf /var/www/nohai/*"
 	echo "Copy files"
 	ls "$PWD"
-	scp -r "$PWD"/ ubuntu@${array[i]}:/var/www/nohai
+	rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" -r --exclude "node_modules" --progress "$PWD"/ ubuntu@${array[i]}:/var/www/nohai 
 	echo "Run docker"
 	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} /bin/bash <<EOF
 	cd /var/www/nohai/nohai-api
