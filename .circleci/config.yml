@@ -23,16 +23,16 @@ jobs:
             
       - checkout
 
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+      # - run:
+      #     name: Setup Code Climate test-reporter
+      #     command: |
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #       chmod +x ./cc-test-reporter
 
-      - type: shell
-        name: Code Climate before build
-        command: |
-          ./cc-test-reporter before-build
+      # - type: shell
+      #   name: Code Climate before build
+      #   command: |
+      #     ./cc-test-reporter before-build
 
       # Download and cache dependencies
       - restore_cache:
@@ -65,7 +65,7 @@ jobs:
             echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null\n\n" > ~/.ssh/config
             bash deploy.sh 
 
-      - type: shell
-        name: Code Climate after build
-        command: |
-          ./cc-test-reporter after-build --debug --exit-code $?
+      # - type: shell
+      #   name: Code Climate after build
+      #   command: |
+      #     ./cc-test-reporter after-build --debug --exit-code $?
