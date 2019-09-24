@@ -17,6 +17,10 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "b1:64:f4:de:7d:11:c8:52:5b:7a:86:d0:34:c2:15:ec"
+            
       - checkout
 
       - run:
@@ -50,8 +54,14 @@ jobs:
       # run generate prod files
       - run: npm run production:build
 
-      # run tests!
-      - run: npm test
+      # # run tests!
+      # - run: npm test
+
+      - run: 
+          name: AWS EC2 deploy
+          command: |
+            echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null\n\n" > ~/.ssh/config
+            bash deploy.sh 
 
       - type: shell
         name: Code Climate after build

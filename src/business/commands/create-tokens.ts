@@ -7,7 +7,7 @@ import { User } from '../models/results/user';
 import { ITokensRepository } from '../repositories/i-tokens-repository';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateTokens } from './i-create-tokens';
-import { Errors } from '../../utilities/Errors';
+import { Errors } from '../../utilities/errors';
 import { AuthHelper } from '../../utilities/auth-helper';
 
 export class CreateTokens implements ICreateTokens {

@@ -4,7 +4,7 @@ import { Credentials } from '../models/results/credentials';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateUser } from './i-create-user';
 import { flatMap, catchError } from 'rxjs/operators';
-import { Errors } from '../../utilities/Errors';
+import { Errors } from '../../utilities/errors';
 
 export class CreateUser implements ICreateUser {
     constructor(private userRepository: IUserRepository) {
