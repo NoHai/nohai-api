@@ -2,12 +2,12 @@
 export const SportSeed =  [
     {
         name: 'Fotbal',
-        description: 'Joc cu mingea între două echipe de câte 11 jucători, dintre care un portar și 10 jucători de câmp',
+        description: 'Joc cu mingea între doua echipe de cate 11 jucatori, dintre care un portar si 10 jucatori de câmp',
         defaultParticipantsNumber: 22,
     },
     {
         name: 'Volei',
-        description: 'Joc sportiv practicat pe un teren dreptunghiular de două echipe adverse compuse din câte șase jucători, care aruncă o minge peste o plasă întinsă sus.',
+        description: 'Joc sportiv practicat pe un teren dreptunghiular de doua echipe adverse compuse din cate sase jucatori, care arunca o minge peste o plasa întinsa sus.',
         defaultParticipantsNumber: 12,
     },
     {
@@ -22,25 +22,25 @@ export const SportSeed =  [
     },
     {
         name: 'Handbal',
-        description: 'Joc sportiv între două echipe de câte unsprezece sau șapte jucători, în care se aruncă mingea cu mâna și se caută a o introduce în poarta echipei adverse',
+        description: 'Joc sportiv între doua echipe de câte unsprezece sau sapte jucatori, în care se arunca mingea cu mâna si se cauta a o introduce în poarta echipei adverse',
         defaultParticipantsNumber: 14,
      
     },
     {
         name: 'Tenis de camp',
-        description: 'Joc sportiv care se practică cu mingi mici, lovite cu rachete de către doi sportivi sau două perechi, pe un teren special amenajat, despărțit în două printr-o plasă joasă',
+        description: 'Joc sportiv care se practica cu mingi mici, lovite cu rachete de catre doi sportivi sau doua perechi, pe un teren special amenajat, despartit în doua printr-o plasa joasa',
         defaultParticipantsNumber: 2,
      
     },
     {
         name: 'Tenis de masa',
-        description: 'Sport în care doi sau patru jucători lovesc o minge ușoară de la unii la alții cu ajutorul unor palete. Jocul are loc pe o masă separată în două de un fileu.',
+        description: 'Sport în care doi sau patru jucatori lovesc o minge usoara de la unii la altii cu ajutorul unor palete. Jocul are loc pe o masa separata în doua de un fileu.',
         defaultParticipantsNumber: 2,
      
     },
     {
         name: 'Squash',
-        description: 'Sport în care doi sau patru jucători lovesc o minge ușoară de cauciuc intr-un teren cu 4 pereti.',
+        description: 'Sport în care doi sau patru jucatori lovesc o minge usoara de cauciuc intr-un teren cu 4 pereti.',
         defaultParticipantsNumber: 2,
     },
     {
