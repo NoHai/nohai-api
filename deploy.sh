@@ -13,7 +13,7 @@ for i in "${!array[@]}"; do
 	echo "Stop docker container"
 	ssh ubuntu@${array[i]} "docker stop nohai-api || true && docker rm nohai-api || true && rm -rf /var/www/nohai/*"
 	echo "Copy files"
-	scp -r "$CI_BUILDS_DIR/$CI_PROJECT_PATH/" ubuntu@${array[i]}:/var/www/nohai
+	scp -r ./ ubuntu@${array[i]}:/var/www/nohai
 	echo "Run docker"
 	ssh ubuntu@${array[i]} /bin/bash <<EOF
 	cd /var/www/nohai/nohai-api
