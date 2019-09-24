@@ -42,6 +42,17 @@ describe('startup-production', () => {
                                                     fakeCommand,
                                                     fakeCommand,
                                                     fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
+                                                    fakeCommand,
                                                     fakeCommand));
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));

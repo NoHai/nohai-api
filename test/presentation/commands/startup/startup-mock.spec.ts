@@ -43,6 +43,17 @@ describe('startup-mock', () => {
                                                             fakeCommand,
                                                             fakeCommand,
                                                             fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
+                                                            fakeCommand,
                                                             fakeCommand));
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));

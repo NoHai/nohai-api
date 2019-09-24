@@ -1,18 +1,13 @@
 import { User as UserModel } from '../../../../src/business/models/results/user';
-import { City } from '../../../../src/data/entities/city';
 
 describe('user', () => {
-    const city =  new City();
-    city.name = 'Sibiu';
-
     const init: Partial<UserModel> = {
         firstName: 'First name here.',
-        lastName: 'Last name here', 
-        dateOfBirth:  new Date('1989-05-02'),
+        lastName: 'Last name here',
+        dateOfBirth:  '1989-05-02',
         height: 165,
         weight: 58,
-        picture: '',
-        city,
+        city: 'Sibiu',
     };
 
     let instance: UserModel;
@@ -40,10 +35,6 @@ describe('user', () => {
 
         it('weight is set', () => {
             expect(instance.weight).toEqual(init.weight);
-        });
-
-        it('picture is set', () => {
-            expect(instance.picture).toEqual(init.picture);
         });
 
         it('city is set', () => {
