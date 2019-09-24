@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
