@@ -43,7 +43,7 @@ for i in "${!array[@]}"; do
 	TYPEORM_SUBSCRIBERS_DIR="$TYPEORM_SUBSCRIBERS_DIR"
 	TYPEORM_SYNCHRONIZE="$TYPEORM_SYNCHRONIZE"
 	TYPEORM_USERNAME="$TYPEORM_USERNAME"
-	EOF
+EOF
 	
 	docker run -d -it -p 8081:5000 --env-file ./env.list --name nohai-api nohai-api-image
 EOF
