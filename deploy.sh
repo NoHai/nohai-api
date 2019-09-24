@@ -11,11 +11,11 @@ echo "Deploying information to EC2 and Gitlab"
 for i in "${!array[@]}"; do
 	echo "Deploy project on server ${array[i]}"
 	echo "Stop docker container"
-	ssh ubuntu@${array[i]} "docker stop nohai-api || true && docker rm nohai-api || true && rm -rf /var/www/nohai/*"
+	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} "docker stop nohai-api || true && docker rm nohai-api || true && rm -rf /var/www/nohai/*"
 	echo "Copy files"
 	scp -r ./ ubuntu@${array[i]}:/var/www/nohai
 	echo "Run docker"
-	ssh ubuntu@${array[i]} /bin/bash <<EOF
+	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} /bin/bash <<EOF
 	cd /var/www/nohai/nohai-api
 	docker build -t nohai-api-image .
 	
