@@ -17,6 +17,10 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "b1:64:f4:de:7d:11:c8:52:5b:7a:86:d0:34:c2:15:ec"
+            
       - checkout
 
       - run:
@@ -56,11 +60,6 @@ jobs:
       - run: 
           name: AWS EC2 deploy
           command: |
-            mkdir -p ~/.ssh
-            echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa   
-            chmod 700 ~/.ssh
-            chmod 600 ~/.ssh/id_rsa     
-            echo -e "Host *\n\tStrictHostKeyChecking no\n\tPasswordAuthentication no\n\n" > ~/.ssh/config
             bash deploy.sh 
 
       - type: shell
