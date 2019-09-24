@@ -13,7 +13,7 @@ for i in "${!array[@]}"; do
 	echo "Stop docker container"
 	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} "docker stop nohai-api || true && docker rm nohai-api || true && rm -rf /var/www/nohai/*"
 	echo "Copy files"
-	ls $PWD"
+	ls "$PWD"
 	scp -r "$PWD"/ ubuntu@${array[i]}:/var/www/nohai
 	echo "Run docker"
 	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} /bin/bash <<EOF
