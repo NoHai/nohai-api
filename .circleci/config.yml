@@ -50,8 +50,17 @@ jobs:
       # run generate prod files
       - run: npm run production:build
 
-      # run tests!
-      - run: npm test
+      # # run tests!
+      # - run: npm test
+
+      - run: 
+        name: AWS EC2 deploy
+        command: |
+          mkdir -p ~/.ssh
+          echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa   
+          chmod 600 ~/.ssh/id_rsa     
+          '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+          bash deploy.sh 
 
       - type: shell
         name: Code Climate after build
