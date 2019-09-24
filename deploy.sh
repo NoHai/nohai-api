@@ -17,7 +17,7 @@ for i in "${!array[@]}"; do
 	rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" -r --exclude "node_modules" --progress "$PWD"/ ubuntu@${array[i]}:/var/www/nohai 
 	echo "Run docker"
 	ssh -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@${array[i]} /bin/bash <<EOF
-	cd /var/www/nohai/nohai-api
+	cd /var/www/nohai
 	docker build -t nohai-api-image .
 	
 	docker run -d -it -p 8081:5000 \
