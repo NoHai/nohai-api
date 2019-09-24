@@ -57,6 +57,8 @@ jobs:
       # # run tests!
       # - run: npm test
 
+      - run: sudo apt install -y rsync
+
       - run: 
           name: AWS EC2 deploy
           command: |
