@@ -74,7 +74,6 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/bcrypt": "^3.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.5",
     "@types/cucumber": "^4.0.7",
