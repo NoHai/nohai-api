@@ -6,7 +6,6 @@ import { Event as EventEntity } from '../entities/event';
 import { AddressFactory } from './address-factory';
 import { SportFactory } from './sport-factory';
 import { Sport } from '../entities/sport';
-import { User } from '../entities/user';
 import { UserFactory } from './user-factory';
 
 export class EventFactory {
@@ -27,8 +26,8 @@ export class EventFactory {
     static result = {
         fromEventEntity: (event: EventEntity): EventResult => new EventResult({
             ...event,
-            address: Address.findOneOrFail(event.address.id),
-            sport: Sport.findOneOrFail(event.sport.id),
+            address: Address.findOne(event.address.id),
+            sport: Sport.findOne(event.sport.id),
         }),
     };
 
@@ -36,8 +35,8 @@ export class EventFactory {
         fromEventEntities: (entities: EventEntity[]): EventResult[] =>
             entities.map((event) => new EventResult({
                 ...event,
-                address: Address.findOneOrFail(event.address.id),
-                sport: Sport.findOneOrFail(event.sport.id),
+                address: Address.findOne(event.address.id),
+                sport: Sport.findOne(event.sport.id),
             })),
     };
 }

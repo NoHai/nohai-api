@@ -10,11 +10,5 @@ describe('user-factory', () => {
 
             expect(actual.login).toEqual(credentialsInput.login);
         });
-
-        it('#password is set', () => {
-            const actual = UserFactory.entity.fromCredentialsInput(credentialsInput);
-
-            expect(actual.password).toEqual(credentialsInput.password);
-        });
     });
 });

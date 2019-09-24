@@ -64,14 +64,6 @@ describe('create-common-container', () => {
             actual.resolve('deleteNotificationToken');
         });
 
-        it('ICreateUserEvents is registered', () => {
-            actual.resolve('createUserEvents');
-        });
-
-        it('IDeleteUserEvents is registered', () => {
-            actual.resolve('deleteUserEvents');
-        });
-
         it('IEventRepository is registered', () => {
             actual.resolve('eventRepository');
         });

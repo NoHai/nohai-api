@@ -1,15 +1,13 @@
 import { UserInput } from '../../../../src/business/models/inputs/user-input';
-import { City } from '../../../../src/data/entities/city';
 
 describe('user-input', () => {
     const init: Partial<UserInput> = {
         firstName: 'First name here.',
         lastName: 'Last name here',
-        dateOfBirth: new Date('1989-05-02'),
+        dateOfBirth: '1989-05-02',
         height: 165,
         weight: 58,
-        picture: '',
-        city: new City()
+        city: 'Sibiu',
     };
 
     let instance: UserInput;
@@ -37,10 +35,6 @@ describe('user-input', () => {
 
         it('#weight is set', () => {
             expect(instance.weight).toEqual(init.weight);
-        });
-
-        it('#picture is set', () => {
-            expect(instance.picture).toEqual(init.picture);
         });
 
         it('#city is set', () => {

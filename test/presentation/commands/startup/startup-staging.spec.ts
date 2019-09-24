@@ -42,7 +42,18 @@ describe('startup-staging', () => {
                                                 fakeCommand,
                                                 fakeCommand,
                                                 fakeCommand,
-                                                fakeCommand));
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand,
+                                                fakeCommand ));
         initializeDatabaseConnection.returns(of({ }));
         initializeGraph.returns(of({ }));
         instance = new StartupStaging();
