@@ -20,7 +20,7 @@ export class RefreshToken implements IRefreshToken {
                 user: result[0],
                 accessToken: result[1],
                 refreshToken: result[2],
-                expireIn: process.env.NOHAI_JWT_EXPIRE_IN,
+                expireIn: AuthHelper.expireIn,
             })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
 

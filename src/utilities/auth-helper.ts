@@ -7,6 +7,8 @@ import { FacebookCredentialsInput } from '../business/models/inputs/facebook-cre
 import crypto from 'crypto';
 
 export class AuthHelper {
+    static expireIn: number = 3600;
+
     static signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
             algorithm: 'HS256',
