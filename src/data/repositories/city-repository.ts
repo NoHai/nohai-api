@@ -8,7 +8,6 @@ import { CityFactory } from '../factories/city-factory';
 
 export class CityRepository implements ICityRepository {
     get(parameter: string): Observable<CityResult[]> {
-        console.log(parameter);
         return from(CityEntity.find({
             name: Like(`%${parameter}%`),
         }))

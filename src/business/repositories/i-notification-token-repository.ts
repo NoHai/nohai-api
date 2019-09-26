@@ -4,7 +4,7 @@ import { NotificationToken as NotificationTokenResult } from '../models/results/
 export interface INotificationTokenRepository {
     get(userId: string): Observable<NotificationTokenResult[]>;
 
-    insert(input: any): Observable<NotificationTokenResult>;
+    insert(input: string): Observable<NotificationTokenResult>;
 
     delete(id: string): Observable<number | undefined>;
 }

@@ -98,7 +98,7 @@ export class CreateCommonContainer implements ICreateContainer {
     private readonly presentationCommands: ReadonlyArray<any> = [
         { initializeGraph: asClass(InitializeGraph).transient().classic() },
         { userContext: asClass(UserContext).scoped().classic() },
-        { createUserContext: asClass(CreateUserContext).transient().classic() },
+        { createUserContext: asClass(CreateUserContext).scoped().classic() },
     ];
 
 

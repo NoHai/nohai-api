@@ -25,7 +25,7 @@ type Mutation {
     createNotification(input: NotificationInput!): Notification!
 
     """It's used to create a notification token."""
-    createNotificationToken(token: String!): NotificationToken!
+    createNotificationToken(token: String): NotificationToken
 
      """It's used to delete a notification token."""
     deleteNotificationToken(id: String!) : Int
