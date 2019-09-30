@@ -14,7 +14,7 @@ export class CreateUser implements ICreateUser {
         return this.userRepository.byCredentials(input.login)
             .pipe(catchError(() => of(undefined)))
             .pipe(flatMap((user) => iif(() => user !== undefined,
-                throwError(Errors.AlreadyRegisterdError),
+                throwError(Errors.AlreadyRegisterd),
                 this.userRepository.insert(input))));
     }
 }

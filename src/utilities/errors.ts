@@ -1,18 +1,6 @@
 export class Errors {
-
-    static readonly  NotRegisteredError: any =  {
-        message: 'The email is not registered',
-        status: 401,
-    };
-
-    static readonly IncorrectPassowordError: any =  {
-        message: 'The password is incorect',
-        status: 401,
-    };
-
-    static readonly AlreadyRegisterdError: any =  {
-        message: 'The email was already registerd',
-        status: 401,
-    };
-
+    static readonly Unauthorized: string =  'Mai  intai trebuie sa fiti autentificat';
+    static readonly NotRegistered: string = 'Adresa de email nu este inregistrata.';
+    static readonly IncorrectPassoword: string = 'Parola incorecta.';
+    static readonly AlreadyRegisterd: string = 'Exista deja un cont cu aceasi adresa de email';
 }
