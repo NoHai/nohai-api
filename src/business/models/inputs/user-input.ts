@@ -1,5 +1,3 @@
-import { City } from '../../../data/entities/city';
-
 export class UserInput {
     firstName!: string;
     lastName!: string;

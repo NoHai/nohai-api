@@ -17,18 +17,22 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "b1:64:f4:de:7d:11:c8:52:5b:7a:86:d0:34:c2:15:ec"
+            
       - checkout
 
-      - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+      # - run:
+      #     name: Setup Code Climate test-reporter
+      #     command: |
+      #       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #       chmod +x ./cc-test-reporter
 
-      - type: shell
-        name: Code Climate before build
-        command: |
-          ./cc-test-reporter before-build
+      # - type: shell
+      #   name: Code Climate before build
+      #   command: |
+      #     ./cc-test-reporter before-build
 
       # Download and cache dependencies
       - restore_cache:
@@ -50,10 +54,18 @@ jobs:
       # run generate prod files
       - run: npm run production:build
 
-      # run tests!
-      - run: npm test
+      # # run tests!
+      # - run: npm test
 
-      - type: shell
-        name: Code Climate after build
-        command: |
-          ./cc-test-reporter after-build --debug --exit-code $?
+      - run: sudo apt install -y rsync
+
+      - run: 
+          name: AWS EC2 deploy
+          command: |
+            echo -e "Host *\n\tStrictHostKeyChecking no\n\tUserKnownHostsFile=/dev/null\n\n" > ~/.ssh/config
+            bash deploy.sh 
+
+      # - type: shell
+      #   name: Code Climate after build
+      #   command: |
+      #     ./cc-test-reporter after-build --debug --exit-code $?

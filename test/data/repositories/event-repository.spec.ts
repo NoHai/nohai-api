@@ -7,18 +7,22 @@ import { Event as EventEntity } from '../../../src/data/entities/event';
 import { EventFactory } from '../../../src/data/factories/event-factory';
 import { EventRepository } from '../../../src/data/repositories/event-repository';
 import { UserContext } from '../../../src/utilities/user-context';
+import { Address } from '../../../src/data/entities/address';
+import { Sport } from '../../../src/data/entities/sport';
 
 describe('event-repository', () => {
 
     describe('insert', () => {
-        const entity = new EventEntity();
-        const model = new EventResult();
-        const input = new EventInput();
-        const fromEventInput = stub(EventFactory.entity, 'fromEventInput').withArgs(input).returns(entity);
+        const userId = '';
+        const entity = new EventEntity({ address: new Address({ id: ''}), sport: new Sport({ id: ''})});
+        const model = new EventResult({ address: new Address({ id: ''}), sport: new Sport({ id: ''})});
+        const input = new EventInput({ address: new Address({ id: ''}), sport: new Sport({ id: ''})});
+        const fromEventInput = stub(EventFactory.entity, 'fromEventInput').withArgs(input, '').returns(entity);
         const fromEventEntity = stub(EventFactory.result, 'fromEventEntity').withArgs(entity).returns(model);
         const save = stub(EventEntity.prototype, 'save').returns(of(entity).toPromise());
         const createPagination = new CreatePagination();
         const userContext = new UserContext();
+        userContext.userId = userId;
         const instance = new EventRepository(createPagination, userContext);
 
         let actual: EventResult;
@@ -28,7 +32,7 @@ describe('event-repository', () => {
         });
 
         it('invokes EventFactory.entity.fromEventInput for event model to event entity mapping', async () => {
-            assert.calledWith(fromEventInput, input);
+            assert.calledWith(fromEventInput, input, userId);
         });
 
         it('saves the entity', async () => {

@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
@@ -7,7 +7,9 @@ import { FacebookCredentialsInput } from '../business/models/inputs/facebook-cre
 import crypto from 'crypto';
 
 export class AuthHelper {
-    static  signToken(accessToken: any): string {
+    static expireIn: number = 3600;
+
+    static signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
             algorithm: 'HS256',
             encoding: 'UTF8',
@@ -15,15 +17,20 @@ export class AuthHelper {
     }
 
     static hashCredentials(input: CredentialsInput): CredentialsInput {
-        const salt = bcrypt.genSaltSync(10);
-        const hash =  bcrypt.hashSync(input.password, salt);
+        return new CredentialsInput({
+            password: this.hashPassword(input.password),
+            login: input.login,
+        });
+    }
 
-        return new CredentialsInput({ password: hash, login: input.login });
+    static hashPassword(password: string) {
+        const salt = bcrypt.genSaltSync(10);
+        return bcrypt.hashSync(password, salt);
     }
 
     static hashEmail(email: string): string {
-       const hashEmail =   crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
-       return `https://s.gravatar.com/avatar/${hashEmail}`;
+        const hashEmail = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
+        return `https://s.gravatar.com/avatar/${hashEmail}`;
     }
 
     static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {
@@ -33,9 +40,9 @@ export class AuthHelper {
 
     static verifyToken(token: string) {
         try {
-           return verify(token, process.env.NOHAI_JWT_SECRET || '');
+            return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-             return null;
+            return null;
         }
     }
 
@@ -43,8 +50,8 @@ export class AuthHelper {
         return of(uuid().toString());
     }
 
-     static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
-         return from(bcrypt.compare(inputPassword, hasedPassword));
+    static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
+        return from(bcrypt.compare(inputPassword, hasedPassword));
     }
 
 }

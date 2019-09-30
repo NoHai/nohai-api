@@ -7,7 +7,7 @@ import { User } from '../models/results/user';
 import { ITokensRepository } from '../repositories/i-tokens-repository';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateTokens } from './i-create-tokens';
-import { Errors } from '../../utilities/Errors';
+import { Errors } from '../../utilities/errors';
 import { AuthHelper } from '../../utilities/auth-helper';
 
 export class CreateTokens implements ICreateTokens {
@@ -35,7 +35,7 @@ export class CreateTokens implements ICreateTokens {
                 user: result[0],
                 accessToken: result[1],
                 refreshToken: result[2],
-                expireIn: process.env.NOHAI_JWT_EXPIRE_IN,
+                expireIn: AuthHelper.expireIn,
             })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
     }

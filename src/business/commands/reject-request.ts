@@ -1,11 +1,12 @@
 import { IRejectRequest } from './i-reject-request';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { INotificationRepository } from '../repositories/i-notification-repository';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, from } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationStatus } from '../../data/enums/notification-status';
 import { NotificationHelper } from '../../utilities/notification-helper';
+import { Notification } from '../../data/entities/notification';
 
 export class RejectRequest implements IRejectRequest {
     constructor(
@@ -20,7 +21,15 @@ export class RejectRequest implements IRejectRequest {
                 this.userEventsRepository.delete(notification.eventId,
                     notification.userId)));
 
-        const rejectFlow = this.notificationRepository.markAsRead(input)
+        const rejectFlow = from(Notification.findOneOrFail({ id: input }))
+                            .pipe(flatMap((entity) => {
+                                entity.status = NotificationStatus.Read;
+                                entity.title = NotificationHelper.userApprovedTitle;
+                                return entity.save();
+                            }))
+                            .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.user)));
+
+        this.notificationRepository.markAsRead(input)
             .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.userId)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)

@@ -4,7 +4,7 @@ import { EmailService } from '../../services/email-service';
 import { EmailHelper } from '../../utilities/email-helper';
 import { flatMap, catchError, map } from 'rxjs/operators';
 import { IUserRepository } from '../repositories/i-user-repository';
-import { Errors } from '../../utilities/Errors';
+import { Errors } from '../../utilities/errors';
 import { AuthHelper } from '../../utilities/auth-helper';
 
 export class RecoverPassword implements IRecoverPassword {
