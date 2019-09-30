@@ -7,8 +7,8 @@ import { User } from '../models/results/user';
 import { ITokensRepository } from '../repositories/i-tokens-repository';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { ICreateTokens } from './i-create-tokens';
-import { Errors } from '../../utilities/errors';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { Errors } from '../../utilities/errors';
 
 export class CreateTokens implements ICreateTokens {
     constructor(private readonly tokensRepository: ITokensRepository,
@@ -17,11 +17,11 @@ export class CreateTokens implements ICreateTokens {
 
     execute(input: CredentialsInput): Observable<Tokens> {
         return this.userRepository.byCredentials(input.login)
-            .pipe(catchError(() => throwError(Errors.NotRegisteredError)))
+            .pipe(catchError(() => throwError(Errors.NotRegistered)))
             .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
             .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
             .pipe(flatMap((passwordMatches) => passwordMatches === false
-                ? throwError(Errors.IncorrectPassowordError)
+                ? throwError(new Error(Errors.IncorrectPassoword))
                 : this.saveToken(input)));
     }
 

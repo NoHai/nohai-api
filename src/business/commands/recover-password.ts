@@ -4,8 +4,8 @@ import { EmailService } from '../../services/email-service';
 import { EmailHelper } from '../../utilities/email-helper';
 import { flatMap, catchError, map } from 'rxjs/operators';
 import { IUserRepository } from '../repositories/i-user-repository';
-import { Errors } from '../../utilities/errors';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { Errors } from '../../utilities/errors';
 
 export class RecoverPassword implements IRecoverPassword {
     constructor(private readonly emailService: EmailService,
@@ -16,13 +16,13 @@ export class RecoverPassword implements IRecoverPassword {
         const userFlow  = this.userRepository.byCredentials(input);
 
         const recoveryLinkFlow = this.userRepository.byCredentials(input)
-                            .pipe(catchError(() => throwError(Errors.NotRegisteredError)))
+                            .pipe(catchError(() => throwError(Errors.NotRegistered)))
                             .pipe(map((user) => ({
                                 userId: user.id,
                                 email: input,
                                 expireIn: 60 * 60 * 24,
                             })))
-                            .pipe(map((token) => `localhost:300/reset-password/${AuthHelper.signToken(token)}`));
+                            .pipe(map((token) => `${process.env.NOHAI_CLIENT}/reset-password/${AuthHelper.signToken(token)}`));
 
         return zip(userFlow, recoveryLinkFlow)
                         .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))

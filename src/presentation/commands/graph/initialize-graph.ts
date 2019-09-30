@@ -2,7 +2,7 @@ import cors from 'cors';
 import expressGraphql from 'express-graphql';
 import * as fs from 'fs';
 import { buildSchema, GraphQLSchema } from 'graphql';
-import { Observable, of } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
@@ -135,6 +135,9 @@ export class InitializeGraph implements IInitializeGraph {
                 schema,
                 context: {
                     authToken: request.headers.authorization,
+                },
+                customFormatErrorFn: (err) => {
+                    return ({ message: err.message, status: 500 });
                 },
             };
         });
