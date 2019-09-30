@@ -22,6 +22,11 @@ export class CreateSportTable1557162938603 implements MigrationInterface {
                     name: 'default_participants_number',
                     type: 'int',
                 },
+                {
+                    name: 'image_path',
+                    type: 'varchar',
+                    isNullable: true,
+                }
             ],
             name: 'sport',
         }), true);
