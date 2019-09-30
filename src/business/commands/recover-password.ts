@@ -22,7 +22,7 @@ export class RecoverPassword implements IRecoverPassword {
                                 email: input,
                                 expireIn: 60 * 60 * 24,
                             })))
-                            .pipe(map((token) => `${process.env.NOHAI_CLIENT}/reset-password/${AuthHelper.signToken(token)}`));
+                            .pipe(map((token) => `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`));
 
         return zip(userFlow, recoveryLinkFlow)
                         .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))
