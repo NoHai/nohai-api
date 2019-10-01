@@ -40,10 +40,10 @@ type Mutation {
     joinEvent(eventId: String!): Boolean!
 
     """It's used to accept a join request."""
-    approveRequest(eventId: String!): Boolean!
+    approveRequest(parameter: String!): Boolean!
 
     """It's used to reject a join request."""
-    rejectRequest(eventId: String!): Boolean!
+    rejectRequest(parameter: String!): Boolean!
 
     """It's used to mark a notification as read."""
     markAsRead(parameter: String!): Notification!

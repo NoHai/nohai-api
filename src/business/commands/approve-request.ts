@@ -27,6 +27,7 @@ export class ApproveRequest implements IApproveRequest {
                             .pipe(flatMap((entity) => {
                                 entity.status = NotificationStatus.Read;
                                 entity.title = NotificationHelper.userApprovedTitle;
+                                entity.notificationType = NotificationType.ApproveJoin;
                                 return entity.save();
                             }))
                          .pipe(map((notification) => this.notificationRepository.approve(notification.eventId, notification.user)));

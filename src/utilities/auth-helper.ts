@@ -5,9 +5,10 @@ import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
+import { Errors } from './errors';
 
 export class AuthHelper {
-    static expireIn: number = 3600;
+    static expireIn: number = 600;
 
     static signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
@@ -42,7 +43,7 @@ export class AuthHelper {
         try {
             return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-            return null;
+           throw new Error(Errors.Unauthorized);
         }
     }
 

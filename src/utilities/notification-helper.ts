@@ -11,6 +11,7 @@ export class NotificationHelper {
     static approveNotificationTitle: string =  'Cerere aprobata';
     static rejectNotificationTitle: string = 'Cerere respinsa';
     static userApprovedTitle: string = 'Ai aprobat aceasta cerere';
+    static userRejectTitle: string = 'Ai respins aceasta cerere';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
