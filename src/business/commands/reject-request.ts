@@ -7,6 +7,7 @@ import { IUserEventsRepository } from '../repositories/i-user-events-repository'
 import { NotificationStatus } from '../../data/enums/notification-status';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { Notification } from '../../data/entities/notification';
+import { NotificationType } from '../../data/enums/notification-type';
 
 export class RejectRequest implements IRejectRequest {
     constructor(
@@ -24,7 +25,8 @@ export class RejectRequest implements IRejectRequest {
         const rejectFlow = from(Notification.findOneOrFail({ id: input }))
                             .pipe(flatMap((entity) => {
                                 entity.status = NotificationStatus.Read;
-                                entity.title = NotificationHelper.userApprovedTitle;
+                                entity.title = NotificationHelper.userRejectTitle;
+                                entity.notificationType = NotificationType.RejectJoin;
                                 return entity.save();
                             }))
                             .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.user)));
