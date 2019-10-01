@@ -100,7 +100,7 @@ export class InitializeGraph implements IInitializeGraph {
     }
 
     private buildHandler(schema: GraphQLSchema): any {
-        return expressGraphql((request) => {
+        return expressGraphql((request, response) => {
             this.createUserContext.execute(request.headers).subscribe();
             return {
                 graphiql: true,
@@ -123,8 +123,8 @@ export class InitializeGraph implements IInitializeGraph {
                     getUserById: (context: any) => this.getUserById.execute(context.parameter).toPromise(),
                     refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
                     loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
-                    approveRequest: (context: any) => this.approveRequest.execute(context.input).toPromise(),
-                    rejectRequest: (context: any) => this.rejectRequest.execute(context.input).toPromise(),
+                    approveRequest: (context: any) => this.approveRequest.execute(context.parameter).toPromise(),
+                    rejectRequest: (context: any) => this.rejectRequest.execute(context.parameter).toPromise(),
                     cities: (context: any) => this.cities.execute(context.parameter).toPromise(),
                     counties: (context: any) => this.counties.execute(context.parameter).toPromise(),
                     markAsRead: (context: any) => this.markAsRead.execute(context.parameter).toPromise(),
@@ -135,8 +135,11 @@ export class InitializeGraph implements IInitializeGraph {
                 schema,
                 context: {
                     authToken: request.headers.authorization,
-                },
+                    response,
+                }
+                ,
                 customFormatErrorFn: (err) => {
+                    console.log(err);
                     return ({ message: err.message, status: 500 });
                 },
             };
