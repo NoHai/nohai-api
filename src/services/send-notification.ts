@@ -20,7 +20,7 @@ export async function SendNotification(tokens: any, body: string, title: string)
 
   admin.messaging().sendToDevice(tokens, notification)
     .then((response) => {
-      console.log('Success', response);
+      console.log('Success', JSON.stringify(response));
       messageSent = true;
     })
     .catch((error) => {
