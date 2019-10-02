@@ -85,7 +85,7 @@
     "@types/graphql": "^14.2.0",
     "@types/jest": "^24.0.15",
     "@types/jsonwebtoken": "^8.3.2",
-    "@types/mongodb": "^3.1.28",
+    "@types/mongodb": "^3.3.4",
     "@types/mysql": "^2.15.6",
     "@types/node": "^12.6.2",
     "@types/sinon": "^7.0.11",
