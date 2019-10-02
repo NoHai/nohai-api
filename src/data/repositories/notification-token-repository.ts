@@ -21,8 +21,8 @@ export class NotificationTokenRepository implements INotificationTokenRepository
         .pipe(map((entity) => NotificationTokenFactory.result.fromNotificationTokenEntity(entity)));
     }
 
-    delete(id: string): Observable<number | undefined> {
-        return  from(NotificationToken.delete(id))
+    delete(userId: string, token: string): Observable<number | undefined> {
+        return  from(NotificationToken.delete({ userId, token }))
             .pipe(map((res) => res.affected));
     }
 
