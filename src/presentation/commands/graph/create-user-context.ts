@@ -15,8 +15,12 @@ export class CreateUserContext implements ICreateUserContext {
         const authToken: string = input.authorization || '';
         if (authToken) {
             const auth = authToken.replace('Bearer ', '');
-            const decodedToken: any = AuthHelper.verifyToken(auth);
-            this.userContext.userId = decodedToken.userId || '';
+            if (auth && auth.length > 0) {
+                const decodedToken: any = AuthHelper.verifyToken(auth);
+                this.userContext.userId = decodedToken !== undefined
+                    ? decodedToken.userId
+                    : '';
+            }
         }
 
         return of(Nothing);

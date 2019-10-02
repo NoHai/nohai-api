@@ -5,7 +5,6 @@ import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
-import { Errors } from './errors';
 
 export class AuthHelper {
     static expireIn: number = 600;
@@ -14,6 +13,7 @@ export class AuthHelper {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
             algorithm: 'HS256',
             encoding: 'UTF8',
+            expiresIn: this.expireIn,
         });
     }
 
@@ -43,7 +43,7 @@ export class AuthHelper {
         try {
             return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-           throw new Error(Errors.Unauthorized);
+           return undefined;
         }
     }
 
@@ -54,6 +54,5 @@ export class AuthHelper {
     static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
         return from(bcrypt.compare(inputPassword, hasedPassword));
     }
-
 }
 

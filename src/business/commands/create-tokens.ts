@@ -17,7 +17,7 @@ export class CreateTokens implements ICreateTokens {
 
     execute(input: CredentialsInput): Observable<Tokens> {
         return this.userRepository.byCredentials(input.login)
-            .pipe(catchError(() => throwError(Errors.NotRegistered)))
+            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
             .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
             .pipe(flatMap((passwordMatches) => passwordMatches === false

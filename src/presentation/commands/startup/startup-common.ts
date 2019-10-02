@@ -6,25 +6,28 @@ import { IInitializeGraph } from '../graph/i-initialize-graph';
 import { ICreateContainer } from '../ioc/i-create-container';
 import { ResolveService } from '../ioc/resolve-service';
 import { IStartup } from './i-startup';
+import { AuthController } from '../../../controllers/auth.controller';
 
 export abstract class StartupCommon implements IStartup {
     protected readonly express: any;
     protected readonly resolveService: ResolveService;
     protected readonly initializeDatabase: IInitializeDatabaseConnection;
     protected readonly initializeGraph: IInitializeGraph;
+    private readonly authController: AuthController;
 
     protected constructor(createContainer: ICreateContainer) {
         this.resolveService = new ResolveService(createContainer.execute());
         this.express = this.resolveService.execute('express');
         this.initializeDatabase = this.resolveService.execute('initializeDatabaseConnection');
         this.initializeGraph = this.resolveService.execute('initializeGraph');
+        this.authController = this.resolveService.execute('authController');
     }
 
     execute(): Observable<Nothing> {
         return this.initializeDatabase.execute()
             .pipe(switchMap(() => this.initializeGraph.execute()))
             .pipe(tap(() => this.listen()))
-            .pipe(tap(() => this.get()));
+            .pipe(tap(() => this.routes()));
     }
 
     private listen(): void {
@@ -33,9 +36,17 @@ export abstract class StartupCommon implements IStartup {
         });
     }
 
-    private get(): void {
+    private routes(): void {
         this.express.get('/', (_: any, response: any) => {
             response.send('NoHai application.');
+        });
+
+        this.express.post('/login', async (req: any, res: any) => {
+            await this.authController.login(req, res);
+        });
+
+        this.express.post('/refresh', async (req: any, res: any) => {
+            await this.authController.refresh(req, res);
         });
     }
 

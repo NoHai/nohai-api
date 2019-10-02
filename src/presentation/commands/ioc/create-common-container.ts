@@ -43,6 +43,7 @@ import { GetEventDetails } from '../../../business/commands/get-event-details';
 import { EmailService } from '../../../services/email-service';
 import { RecoverPassword } from '../../../business/commands/recover-password';
 import { UpdateCredentials } from '../../../business/commands/update-credentials';
+import { AuthController } from '../../../controllers/auth.controller';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -108,6 +109,7 @@ export class CreateCommonContainer implements ICreateContainer {
 
     private readonly providers: ReadonlyArray<any> = [
         { emailService:  asClass(EmailService).singleton().classic() },
+        { authController: asClass(AuthController).singleton().classic() },
     ];
 
     private container: AwilixContainer = createContainer({ injectionMode: InjectionMode.CLASSIC });

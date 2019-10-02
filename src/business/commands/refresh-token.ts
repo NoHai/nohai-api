@@ -28,7 +28,11 @@ export class RefreshToken implements IRefreshToken {
 
     private buildAccessToken(refreshToken: string): Observable<string> {
         return this.tokensRepository.getUser(refreshToken)
-            .pipe(map((user) => ({ userId: user.id, firstName: user.firstName, lastName: user.lastName, expires: 'tomorrow' })))
+            .pipe(map((user) => ({
+                userId: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
 }

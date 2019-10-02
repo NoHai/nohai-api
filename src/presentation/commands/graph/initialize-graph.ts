@@ -2,7 +2,7 @@ import cors from 'cors';
 import expressGraphql from 'express-graphql';
 import * as fs from 'fs';
 import { buildSchema, GraphQLSchema } from 'graphql';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
@@ -19,7 +19,6 @@ import { ICreateNotificationToken } from '../../../business/commands/i-create-no
 import { IGetNotificationTokens } from '../../../business/commands/i-get-notification-tokens';
 import { IDeleteNotificationToken } from '../../../business/commands/i-delete-notification-token';
 import { IGetUserById } from '../../../business/commands/i-get-user-by-id';
-import { UserContext } from '../../../utilities/user-context';
 import { ICreateUserContext } from './i-create-user-context';
 import { IJoinEvent } from '../../../business/commands/i-join-event';
 import { IRefreshToken } from '../../../business/commands/i-refresh-token';
@@ -33,6 +32,8 @@ import { IMarkAllAsRead } from '../../../business/commands/i-mark-all-as-read';
 import { IGetEventDetails } from '../../../business/commands/i-get-event-details';
 import { IRecoverPassword } from '../../../business/commands/i-recover-password';
 import { IUpdateCredentials } from '../../../business/commands/i-update-credentials';
+import { AuthHelper } from '../../../utilities/auth-helper';
+import bodyParser from 'body-parser';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -95,52 +96,92 @@ export class InitializeGraph implements IInitializeGraph {
         return of(InitializeGraph.buildSchema())
             .pipe(map((schema) => this.buildHandler(schema)))
             .pipe(tap(() => this.express.use(cors({ origin: '*' }))))
+            .pipe(tap(() => this.express.use(bodyParser.urlencoded({ extended: true }))))
+            .pipe(tap(() => this.express.use(bodyParser.json())))
             .pipe(tap((graphHandler) => this.express.use('/graphql', graphHandler)))
             .pipe(map(() => new Nothing()));
+    }
+
+    private executer = (expressContext: any, command: any, requiresAuth: boolean = true): any => {
+        if (requiresAuth) {
+            try {
+                if (expressContext.authToken && expressContext.authToken.length > 0) {
+                    const auth = expressContext.authToken.replace('Bearer ', '');
+                    const decodedToken: any = AuthHelper.verifyToken(auth);
+                    if (decodedToken !== undefined) {
+                        return command();
+                    } else {
+                        expressContext.response.status(401);
+                    }
+                } else {
+                    expressContext.response.status(401);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else {
+            return command();
+        }
     }
 
     private buildHandler(schema: GraphQLSchema): any {
         return expressGraphql((request, response) => {
             this.createUserContext.execute(request.headers).subscribe();
+            const expContext: any = {
+                authToken: request.headers.authorization,
+                response,
+            };
             return {
                 graphiql: true,
                 rootValue: {
-                    auth: (context: any) => this.createTokens.execute(context.input).toPromise(),
-                    createEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
-                    createUser: (context: any) => this.createUser.execute(context.input).toPromise(),
-                    eventById: (context: any) => this.eventById.execute(context).toPromise(),
-                    events: (context: any) => this.events.execute(context.parameter).toPromise(),
-                    eventDetails: (context: any) => this.eventDetails.execute(context.parameter).toPromise(),
-                    sports: (context: any) => this.sports.execute(context.input).toPromise(),
-                    updateEvent: (context: any) => this.createEvent.execute(context.input).toPromise(),
-                    updateUser: (context: any) => this.updateUser.execute(context.input).toPromise(),
-                    createNotification: (context: any) => this.createNotification.execute(context.input).toPromise(),
-                    getNotifications: (context: any) => this.getNotifications.execute(context.parameter).toPromise(),
-                    createNotificationToken: (context: any) => this.createNotificationToken.execute(context.token).toPromise(),
-                    getNotificationTokens: (context: any) => this.getNotificationTokens.execute(context.userId).toPromise(),
-                    deleteNotificationToken: (context: any) => this.deleteNotificationToken.execute(context).toPromise(),
-                    joinEvent: (context: any) => this.joinEvent.execute(context.eventId).toPromise(),
-                    getUserById: (context: any) => this.getUserById.execute(context.parameter).toPromise(),
-                    refreshToken: (context: any) => this.refreshToken.execute(context.input).toPromise(),
-                    loginFacebook: (context: any) => this.loginFacebook.execute(context.input).toPromise(),
-                    approveRequest: (context: any) => this.approveRequest.execute(context.parameter).toPromise(),
-                    rejectRequest: (context: any) => this.rejectRequest.execute(context.parameter).toPromise(),
-                    cities: (context: any) => this.cities.execute(context.parameter).toPromise(),
-                    counties: (context: any) => this.counties.execute(context.parameter).toPromise(),
-                    markAsRead: (context: any) => this.markAsRead.execute(context.parameter).toPromise(),
-                    markAllAsRead: (context: any) => this.markAllAsRead.execute(context).toPromise(),
-                    recoverPassword: (context: any) => this.recoverPassword.execute(context.parameter).toPromise(),
-                    updateCredentials: (context: any) => this.updateCredentials.execute(context.input).toPromise(),
+                    auth: (context: any) => this.executer(expContext, () => this.createTokens.execute(context.input).toPromise(), false),
+                    createEvent: (context: any) => this.executer(expContext, () => this.createEvent.execute(context.input).toPromise()),
+                    createUser: (context: any) => this.executer(expContext, () => this.createUser.execute(context.input).toPromise()),
+                    eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise()),
+                    events: (context: any) => this.executer(expContext, () => this.events.execute(context.parameter).toPromise()),
+                    eventDetails: (context: any) => this.executer(expContext,
+                        () => this.eventDetails.execute(context.parameter).toPromise()),
+                    sports: (context: any) => this.executer(expContext, () => this.sports.execute(context.input).toPromise()),
+                    updateEvent: (context: any) => this.executer(expContext, () => this.createEvent.execute(context.input).toPromise()),
+                    updateUser: (context: any) => this.executer(expContext, () => this.updateUser.execute(context.input).toPromise()),
+                    createNotification: (context: any) => this.executer(expContext,
+                        () => this.createNotification.execute(context.input).toPromise()),
+                    getNotifications: (context: any) => this.executer(expContext,
+                        () => this.getNotifications.execute(context.parameter).toPromise()),
+                    createNotificationToken: (context: any) => this.executer(expContext,
+                        () => this.createNotificationToken.execute(context.token).toPromise()),
+                    getNotificationTokens: (context: any) => this.executer(expContext,
+                        () => this.getNotificationTokens.execute(context.userId).toPromise()),
+                    deleteNotificationToken: (context: any) => this.executer(expContext,
+                        () => this.deleteNotificationToken.execute(context).toPromise()),
+                    joinEvent: (context: any) => this.executer(expContext, () => this.joinEvent.execute(context.eventId).toPromise()),
+                    getUserById: (context: any) => this.executer(expContext,
+                        () => this.getUserById.execute(context.parameter).toPromise(), false),
+                    refreshToken: (context: any) => this.executer(expContext,
+                        () => this.refreshToken.execute(context.input).toPromise(), false),
+                    loginFacebook: (context: any) => this.executer(expContext,
+                        () => this.loginFacebook.execute(context.input).toPromise()),
+                    approveRequest: (context: any) => this.executer(expContext,
+                        () => this.approveRequest.execute(context.parameter).toPromise()),
+                    rejectRequest: (context: any) => this.executer(expContext,
+                        () => this.rejectRequest.execute(context.parameter).toPromise()),
+                    cities: (context: any) => this.executer(expContext,
+                        () => this.cities.execute(context.parameter).toPromise()),
+                    counties: (context: any) => this.executer(expContext,
+                        () => this.counties.execute(context.parameter).toPromise()),
+                    markAsRead: (context: any) => this.executer(expContext,
+                        () => this.markAsRead.execute(context.parameter).toPromise()),
+                    markAllAsRead: (context: any) => this.executer(expContext,
+                        () => this.markAllAsRead.execute(context).toPromise()),
+                    recoverPassword: (context: any) => this.executer(expContext,
+                        () => this.recoverPassword.execute(context.parameter).toPromise()),
+                    updateCredentials: (context: any) => this.executer(expContext,
+                        () => this.updateCredentials.execute(context.input).toPromise()),
                 },
                 schema,
-                context: {
-                    authToken: request.headers.authorization,
-                    response,
-                }
-                ,
                 customFormatErrorFn: (err) => {
-                    console.log(err);
-                    return ({ message: err.message, status: 500 });
+                    return ({ message: err.message });
                 },
             };
         });
