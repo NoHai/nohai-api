@@ -29,11 +29,10 @@ export class EventRepository implements IEventRepository {
     }
 
     get(parameter: EventsParameter): Observable<Pagination> {
-        const itemsOptions = this.buildOptions(parameter);
         return this.createPagination
             .withEntity(Event)
             .withParameter(parameter.pagination)
-            .withItemsOptions(itemsOptions)
+            .withItemsOptions(this.buildOptions(parameter))
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
     }

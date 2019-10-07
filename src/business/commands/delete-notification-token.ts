@@ -4,7 +4,8 @@ import { IDeleteNotificationToken } from './i-delete-notification-token';
 import { UserContext } from '../../utilities/user-context';
 
 export class DeleteNotificationToken implements IDeleteNotificationToken {
-    constructor(private readonly notificationTokenRepository: INotificationTokenRepository, private readonly userContext: UserContext) {
+    constructor(private readonly notificationTokenRepository: INotificationTokenRepository,
+                private readonly userContext: UserContext) {
     }
 
     execute(id: string): Observable<number | undefined> {

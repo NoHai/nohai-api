@@ -52,7 +52,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     markAllAsRead(): Observable<boolean> {
-        return from(NotificationEntity.find({ user: this.userContext.userId, status: 0 }))
+        return from(NotificationEntity.find({ userId: this.userContext.userId, status: 0 }))
             .pipe(map((notifications) => notifications.map((notification) => {
                 notification.status = NotificationStatus.Read;
                 notification.save();
@@ -72,6 +72,7 @@ export class NotificationRepository implements INotificationRepository {
     approve(eventId: string, userId: string): Observable<NotificationResult> {
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
+        console.log('approve');
 
         return zip(eventFlow, userFlow)
             .pipe(flatMap((result) => NotificationHelper.buildApproveNotification(result[0], result[1], userId).save()))
@@ -89,7 +90,7 @@ export class NotificationRepository implements INotificationRepository {
 
     private buildOptions(parameter: PaginationParameter): any {
         return {
-            where : { user: this.userContext.userId},
+            where : { userId: this.userContext.userId},
             order: {
                 createdDate: 'DESC',
             },
@@ -101,7 +102,7 @@ export class NotificationRepository implements INotificationRepository {
     private buildTotalCountOption(): any {
         return {
             where: {
-                user: this.userContext.userId,
+                userId: this.userContext.userId,
             },
         };
     }
@@ -109,7 +110,7 @@ export class NotificationRepository implements INotificationRepository {
     private buildCustomCountOption(): any {
         return {
             where: {
-                user: this.userContext.userId,
+                userId: this.userContext.userId,
                 status: NotificationStatus.Unread,
             },
         };

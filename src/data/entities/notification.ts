@@ -28,7 +28,7 @@ export class Notification extends BaseEntity {
     createdUser!: string;
 
     @Column({ name: 'user_id'})
-    user!: string;
+    userId!: string;
 
     @Column()
     status!: number;

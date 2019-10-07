@@ -18,25 +18,26 @@ export class ApproveRequest implements IApproveRequest {
     execute(input: string): Observable<boolean> {
 
         const updateUserEventFlow = this.notificationRepository.getById(input)
-            .pipe(map((notification) =>
+            .pipe(flatMap((notification) =>
                 this.userEventsRepository.update(notification.eventId,
-                    notification.userId,
+                    notification.createdUser,
                     NotificationType.ApproveJoin)));
 
-        const approveFlow = from(Notification.findOneOrFail({ id: input}))
-                            .pipe(flatMap((entity) => {
-                                entity.status = NotificationStatus.Read;
-                                entity.title = NotificationHelper.userApprovedTitle;
-                                entity.notificationType = NotificationType.ApproveJoin;
-                                return entity.save();
-                            }))
-                         .pipe(map((notification) => this.notificationRepository.approve(notification.eventId, notification.user)));
+        const approveFlow = from(Notification.findOneOrFail({ id: input }))
+            .pipe(flatMap((entity) => {
+                entity.status = NotificationStatus.Read;
+                entity.title = NotificationHelper.userApprovedTitle;
+                entity.notificationType = NotificationType.ApproveJoin;
+                return entity.save();
+            }))
+            .pipe(flatMap((notification) =>
+                this.notificationRepository.approve(notification.eventId, notification.createdUser)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)
-            .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.userId)))
+            .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.createdUser)))
             .pipe(map((tokens) => tokens.map((token) => token.token)));
 
-        return  zip(updateUserEventFlow, approveFlow, notificationTokenFlow)
+        return zip(updateUserEventFlow, approveFlow, notificationTokenFlow)
             .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
     }
 }

@@ -7,6 +7,8 @@ import { AddressFactory } from './address-factory';
 import { SportFactory } from './sport-factory';
 import { Sport } from '../entities/sport';
 import { UserFactory } from './user-factory';
+import { UserEvents } from '../entities/user-events';
+import { NotificationType } from '../enums/notification-type';
 
 export class EventFactory {
     static entity = {
@@ -14,7 +16,7 @@ export class EventFactory {
             ...event,
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
-            owner:  UserFactory.entity.fromId(userId),
+            owner: UserFactory.entity.fromId(userId),
         }),
         fromUpdateEventInput: (event: UpdateEventInput): EventEntity => new EventEntity({
             ...event,
@@ -28,6 +30,7 @@ export class EventFactory {
             ...event,
             address: Address.findOne(event.address.id),
             sport: Sport.findOne(event.sport.id),
+            numberOfParticipants: UserEvents.count({ eventId: event.id, status: NotificationType.ApproveJoin }),
         }),
     };
 
@@ -37,6 +40,7 @@ export class EventFactory {
                 ...event,
                 address: Address.findOne(event.address.id),
                 sport: Sport.findOne(event.sport.id),
+                numberOfParticipants: UserEvents.count({ eventId: event.id, status: NotificationType.ApproveJoin }),
             })),
     };
 }

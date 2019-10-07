@@ -20,12 +20,9 @@ export class JoinEvent implements IJoinEvent {
     }
 
     execute(eventId: string): Observable<boolean> {
-
         const userEvent = new UserEventsInput({
             eventId,
-            user: {
-                id: this.userContext.userId,
-            },
+            userId: this.userContext.userId,
             status: NotificationType.JoinRequest,
         });
         const userEventFlow = this.userEventsRepository.insert(userEvent);
