@@ -5,7 +5,7 @@ import { Observable, of, from } from 'rxjs';
 import { UserEventsFactory } from '../factories/user-events-factory';
 import { switchMap, map, flatMap, tap } from 'rxjs/operators';
 import { UserEvents } from '../entities/user-events';
-import { NotificationType } from '../enums/notification-type';
+import { UserEventsStatus } from '../enums/user-events-status';
 
 export class UserEventsRepository implements IUserEventsRepository {
     insert(input: UserEventsInput): Observable<UserEventsResult> {
@@ -15,13 +15,11 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        console.log('from delete');
-        console.log(eventId);
         return from(UserEvents.delete({ eventId,  userId }))
             .pipe(map((res) => res.affected));
     }
 
-    update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult> {
+    update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult> {
         return from(UserEvents.findOneOrFail({ eventId, userId }))
             .pipe(map((userEvent) => {
                 userEvent.status = status;

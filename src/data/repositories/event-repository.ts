@@ -10,6 +10,7 @@ import { CreatePagination } from '../commands/create-pagination';
 import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 import { UserContext } from '../../utilities/user-context';
+import { UserEvents } from '../entities/user-events';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -29,12 +30,11 @@ export class EventRepository implements IEventRepository {
     }
 
     get(parameter: EventsParameter): Observable<Pagination> {
-        return this.createPagination
-            .withEntity(Event)
-            .withParameter(parameter.pagination)
-            .withItemsOptions(this.buildOptions(parameter))
-            .execute()
-            .pipe(map((pagination) => this.buildPagination(pagination)));
+        if (parameter.showHistory === true) {
+            return from(this.getHistoryEvents(parameter));
+        } else {
+            return this.getAllEvents(parameter);
+        }
     }
 
     getById(id: any): Observable<EventResult> {
@@ -56,5 +56,31 @@ export class EventRepository implements IEventRepository {
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
             take: parameter.pagination.pageSize,
         };
+    }
+
+    private async getHistoryEvents(parameter: EventsParameter): Promise<Pagination> {
+        const [items, count] = await Event.createQueryBuilder()
+            .leftJoinAndSelect(UserEvents, 'userEvents', 'userEvents.event_id = event.id')
+            .where('event.owner = :owner', { owner: this.userContext.userId })
+            .orWhere('userEvents.user_id = :userId', { userId: this.userContext.userId })
+            .orderBy('date')
+            .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
+            .take(parameter.pagination.pageSize)
+            .getManyAndCount();
+        return {
+            items,
+            pageIndex: parameter.pagination.pageIndex,
+            pageSize: parameter.pagination.pageSize,
+            totalCount: count,
+        };
+    }
+
+    private getAllEvents(parameter: EventsParameter) {
+        return this.createPagination
+            .withEntity(Event)
+            .withParameter(parameter.pagination)
+            .withItemsOptions(this.buildOptions(parameter))
+            .execute()
+            .pipe(map((pagination) => this.buildPagination(pagination)));
     }
 }

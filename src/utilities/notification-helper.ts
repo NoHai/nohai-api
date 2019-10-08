@@ -36,7 +36,7 @@ export class NotificationHelper {
             avatarUrl: fromUser.picture,
             createdUser: event.owner.id,
             createdDate: (new Date()).toUTCString(),
-            notificationType: NotificationType.JoinRequest,
+            notificationType: NotificationType.ApproveJoin,
             status: NotificationStatus.Unread,
         });
     }

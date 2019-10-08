@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 import { UserEventsInput } from '../models/inputs/user-events-input';
 import { UserEvents as UserEventsResult } from '../models/results/user-events';
-import { NotificationType } from '../../data/enums/notification-type';
+import { UserEventsStatus } from '../../data/enums/user-events-status';
 
 export interface IUserEventsRepository {
     insert(event: UserEventsInput): Observable<UserEventsResult>;
 
-    update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult>;
+    update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult>;
 
     delete(eventId: string, userId: string): Observable<number | undefined>;
 
