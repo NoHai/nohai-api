@@ -7,7 +7,7 @@ import { ICreateDatabase } from './i-create-database';
 export class CreateDatabase implements ICreateDatabase {
 
     execute(): Observable<Nothing> {
-        return of(`CREATE DATABASE IF NOT EXISTS ${process.env.TYPEORM_DATABASE}`)
+        return of(`CREATE DATABASE IF NOT EXISTS ${process.env.TYPEORM_DATABASE} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci`)
             .pipe(switchMap((query) => this.executeQuery(query, this.buildConnection())));
     }
 
