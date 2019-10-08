@@ -7,6 +7,11 @@ export class CreateTokensTable1563045221728 implements MigrationInterface {
             columns: [
                 {
                     isPrimary: true,
+                    name: 'id',
+                    type: 'varchar(36)',
+                },
+                {
+                    isPrimary: false,
                     name: 'user_id',
                     type: 'varchar(36)',
                 },

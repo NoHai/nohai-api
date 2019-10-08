@@ -59,22 +59,25 @@ export class EventRepository implements IEventRepository {
     }
 
     private async getHistoryEvents(parameter: EventsParameter): Promise<Pagination> {
-        console.log(this.userContext.userId);
         const [items, count] = await Event.createQueryBuilder('event')
+            .leftJoinAndSelect('event.sport', 'sport')
+            .leftJoinAndSelect('event.address', 'address')
+            .leftJoinAndSelect('event.owner', 'owner')
             .leftJoinAndSelect(UserEvents, 'userEvents', 'userEvents.event_id = event.id')
             .where('event.owner = :owner', { owner: this.userContext.userId })
             .orWhere('userEvents.user_id = :userId', { userId: this.userContext.userId })
-            // .orderBy('event.date')
+            .orWhere('userEvents.user_id IS NULL')
+            .orderBy('event.date')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
             .take(parameter.pagination.pageSize)
             .getManyAndCount();
-        console.log(items);
-        console.log(count);
+
         return new Pagination ({
             items: EventFactory.results.fromEventEntities(items),
             pageIndex: parameter.pagination.pageIndex,
             pageSize: parameter.pagination.pageSize,
             totalCount: count,
+            customCount: 0,
         });
     }
 
