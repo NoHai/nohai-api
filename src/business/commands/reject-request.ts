@@ -18,24 +18,25 @@ export class RejectRequest implements IRejectRequest {
 
     execute(input: string): Observable<boolean> {
         const deleteUserEventFlow = this.notificationRepository.getById(input)
-            .pipe(map((notification) =>
+            .pipe(flatMap((notification) =>
                 this.userEventsRepository.delete(notification.eventId,
-                    notification.userId)));
+                    notification.createdUser)));
 
         const rejectFlow = from(Notification.findOneOrFail({ id: input }))
-                            .pipe(flatMap((entity) => {
-                                entity.status = NotificationStatus.Read;
-                                entity.title = NotificationHelper.userRejectTitle;
-                                entity.notificationType = NotificationType.RejectJoin;
-                                return entity.save();
-                            }))
-                            .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.user)));
+            .pipe(flatMap((entity) => {
+                entity.status = NotificationStatus.Read;
+                entity.title = NotificationHelper.userRejectTitle;
+                entity.notificationType = NotificationType.RejectJoin;
+                return entity.save();
+            }))
+            .pipe(flatMap((notification) =>
+                this.notificationRepository.reject(notification.eventId, notification.createdUser)));
 
         this.notificationRepository.markAsRead(input)
             .pipe(map((notification) => this.notificationRepository.reject(notification.eventId, notification.userId)));
 
         const notificationTokenFlow = this.notificationRepository.getById(input)
-            .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.userId)))
+            .pipe(flatMap((notification) => this.notificationTokenRepository.get(notification.createdUser)))
             .pipe(map((tokens) => tokens.map((token) => token.token)));
 
         return zip(deleteUserEventFlow, rejectFlow, notificationTokenFlow)

@@ -35,4 +35,7 @@ type Event {
 
     "Level of the sport."
     level: Int
+
+    "Number of participants"
+    numberOfParticipants: Int
 }

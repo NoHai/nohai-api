@@ -67,7 +67,7 @@
     "npm": "^6.9.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.1",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.19",
     "typeorm-seeding": "^1.0.0-rc.3",
     "uuid": "^3.3.2",
     "yarn": "^1.17.3"

@@ -3,7 +3,7 @@ import { UserEventsInput } from '../../business/models/inputs/user-events-input'
 import { UserEvents as UserEventsResult } from '../../business/models/results/user-events';
 import { Observable, of, from } from 'rxjs';
 import { UserEventsFactory } from '../factories/user-events-factory';
-import { switchMap, map, flatMap } from 'rxjs/operators';
+import { switchMap, map, flatMap, tap } from 'rxjs/operators';
 import { UserEvents } from '../entities/user-events';
 import { NotificationType } from '../enums/notification-type';
 
@@ -15,13 +15,14 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
-            .pipe(flatMap((userEvent) => UserEvents.delete(userEvent.id)))
+        console.log('from delete');
+        console.log(eventId);
+        return from(UserEvents.delete({ eventId,  userId }))
             .pipe(map((res) => res.affected));
     }
 
     update(eventId: string, userId: string, status: NotificationType): Observable<UserEventsResult> {
-        return from(UserEvents.findOneOrFail({ eventId, user: { id: userId } }))
+        return from(UserEvents.findOneOrFail({ eventId, userId }))
             .pipe(map((userEvent) => {
                 userEvent.status = status;
                 return userEvent;

@@ -137,7 +137,8 @@ export class InitializeGraph implements IInitializeGraph {
                 rootValue: {
                     auth: (context: any) => this.executer(expContext, () => this.createTokens.execute(context.input).toPromise(), false),
                     createEvent: (context: any) => this.executer(expContext, () => this.createEvent.execute(context.input).toPromise()),
-                    createUser: (context: any) => this.executer(expContext, () => this.createUser.execute(context.input).toPromise()),
+                    createUser: (context: any) => this.executer(expContext,
+                        () => this.createUser.execute(context.input).toPromise(), false),
                     eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise()),
                     events: (context: any) => this.executer(expContext, () => this.events.execute(context.parameter).toPromise()),
                     eventDetails: (context: any) => this.executer(expContext,
@@ -154,7 +155,7 @@ export class InitializeGraph implements IInitializeGraph {
                     getNotificationTokens: (context: any) => this.executer(expContext,
                         () => this.getNotificationTokens.execute(context.userId).toPromise()),
                     deleteNotificationToken: (context: any) => this.executer(expContext,
-                        () => this.deleteNotificationToken.execute(context).toPromise()),
+                        () => this.deleteNotificationToken.execute(context.id).toPromise()),
                     joinEvent: (context: any) => this.executer(expContext, () => this.joinEvent.execute(context.eventId).toPromise()),
                     getUserById: (context: any) => this.executer(expContext,
                         () => this.getUserById.execute(context.parameter).toPromise(), false),
