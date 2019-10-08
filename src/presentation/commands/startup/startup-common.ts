@@ -7,6 +7,7 @@ import { ICreateContainer } from '../ioc/i-create-container';
 import { ResolveService } from '../ioc/resolve-service';
 import { IStartup } from './i-startup';
 import { AuthController } from '../../../controllers/auth.controller';
+import cors from 'cors';
 
 export abstract class StartupCommon implements IStartup {
     protected readonly express: any;
@@ -26,6 +27,7 @@ export abstract class StartupCommon implements IStartup {
     execute(): Observable<Nothing> {
         return this.initializeDatabase.execute()
             .pipe(switchMap(() => this.initializeGraph.execute()))
+            .pipe(tap(() => this.express.use(cors({ origin: '*' }))))
             .pipe(tap(() => this.listen()))
             .pipe(tap(() => this.routes()));
     }
