@@ -3,5 +3,5 @@ interface Pagination {
     pageIndex: Int!
     pageSize: Int!
     totalCount: Int!
-    items: [PaginationItem]!
+    items: [PaginationItem]
 }

@@ -1,5 +1,5 @@
-import { from, Observable, of, zip, iif } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
+import { from, Observable, of, zip, iif, throwError } from 'rxjs';
+import { map, flatMap, catchError } from 'rxjs/operators';
 
 import { Tokens as TokensResult } from '../../business/models/results/tokens';
 import { ITokensRepository } from '../../business/repositories/i-tokens-repository';
@@ -7,6 +7,7 @@ import { Tokens as TokensEntity, Tokens } from '../entities/tokens';
 import { TokensFactory } from '../factories/tokens-factory';
 import { UserFactory } from '../factories/user-factory';
 import { User } from '../../business/models/results/user';
+import { Errors } from '../../utilities/errors';
 
 export class TokensRepository implements ITokensRepository {
     insert(tokens: TokensResult): Observable<TokensResult> {
@@ -21,6 +22,7 @@ export class TokensRepository implements ITokensRepository {
 
     getUser(refresh: string): Observable<User> {
         return from(TokensEntity.findOneOrFail({ refreshToken: refresh }, { relations: ['user'] }))
+            .pipe(catchError((error) => throwError(error)))
             .pipe(map((token) => UserFactory.result.fromUserEntity(token.user)));
     }
 }

@@ -3,5 +3,5 @@ type Events implements Pagination {
     pageIndex: Int!
     pageSize: Int!
     totalCount: Int!
-    items: [Event]!
+    items: [Event]
 }
