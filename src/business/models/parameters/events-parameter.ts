@@ -1,7 +1,7 @@
 import { PaginationParameter } from './pagination-parameter';
 
 export class EventsParameter {
-    title!: string;
+    showHistory!: boolean;
     pagination!: PaginationParameter;
 
     constructor(init?: any) {

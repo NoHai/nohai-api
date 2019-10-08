@@ -1,7 +1,8 @@
 import { User } from './user';
 
 export class Tokens {
-    user = new User();
+    id!: string;
+    user!: User;
     accessToken!: string;
     refreshToken!: string;
     expireIn!: number;

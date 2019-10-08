@@ -8,6 +8,7 @@ import { INotificationTokenRepository } from '../repositories/i-notification-tok
 import { NotificationType } from '../../data/enums/notification-type';
 import { Notification } from '../../data/entities/notification';
 import { NotificationStatus } from '../../data/enums/notification-status';
+import { UserEventsStatus } from '../../data/enums/user-events-status';
 
 export class ApproveRequest implements IApproveRequest {
 
@@ -21,7 +22,7 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(flatMap((notification) =>
                 this.userEventsRepository.update(notification.eventId,
                     notification.createdUser,
-                    NotificationType.ApproveJoin)));
+                    UserEventsStatus.Approved)));
 
         const approveFlow = from(Notification.findOneOrFail({ id: input }))
             .pipe(flatMap((entity) => {

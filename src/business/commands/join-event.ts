@@ -9,6 +9,7 @@ import { UserEventsInput } from '../models/inputs/user-events-input';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IEventRepository } from '../repositories/i-event-repository';
 import { NotificationType } from '../../data/enums/notification-type';
+import { UserEventsStatus } from '../../data/enums/user-events-status';
 
 export class JoinEvent implements IJoinEvent {
 
@@ -23,7 +24,7 @@ export class JoinEvent implements IJoinEvent {
         const userEvent = new UserEventsInput({
             eventId,
             userId: this.userContext.userId,
-            status: NotificationType.JoinRequest,
+            status: UserEventsStatus.Pending,
         });
         const userEventFlow = this.userEventsRepository.insert(userEvent);
         const notificationFlow = this.notificationRepository.joinEvent(eventId);
