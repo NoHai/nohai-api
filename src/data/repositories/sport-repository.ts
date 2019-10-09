@@ -7,7 +7,7 @@ import { SportFactory } from '../factories/sport-factory';
 
 export class SportRepository implements ISportRepository {
     getAll(): Observable<SportResult> {
-        return from(Sport.find())
+        return from(Sport.find({ order: { name: 'ASC' }}))
             .pipe(switchMap((entities) => from(entities)))
             .pipe(map((foundEntity) => SportFactory.result.fromSportEntity(foundEntity)));
     }
