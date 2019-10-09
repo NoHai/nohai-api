@@ -1,7 +1,6 @@
 export class FacebookCredentialsInput {
-    login!: string;
-    firstName!: string;
-    lastName!: string;
+    accessToken!: string;
+    userId!: string;
 
     constructor(init?: any) {
         Object.assign(this, init);

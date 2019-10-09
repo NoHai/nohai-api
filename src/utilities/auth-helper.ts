@@ -5,6 +5,7 @@ import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
+import request from 'request';
 
 export class AuthHelper {
     static expireIn: number = 600;
@@ -34,7 +35,7 @@ export class AuthHelper {
         return `https://s.gravatar.com/avatar/${hashEmail}`;
     }
 
-    static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {
+    static hashFacebookCredentials(input: any): FacebookCredentialsInput {
         const generatedPassword = uuid().toString();
         return new FacebookCredentialsInput({ password: generatedPassword, login: input.login });
     }
@@ -43,7 +44,7 @@ export class AuthHelper {
         try {
             return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-           return undefined;
+            return undefined;
         }
     }
 
@@ -53,6 +54,24 @@ export class AuthHelper {
 
     static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
         return from(bcrypt.compare(inputPassword, hasedPassword));
+    }
+
+    static facebookoLogin(credentials: FacebookCredentialsInput): any {
+        let fbcredentials: any = null;
+        const uri = `https://graph.facebook.com/${credentials.userId}?fields=id,name,email&access_token=${credentials.accessToken}`;
+
+        request(uri, (response) => {
+            console.log(response);
+
+            const something  =  response.toJSON();
+            console.log(something);
+
+            response.on('data', (data: any) => {
+                fbcredentials = data;
+            });
+        });
+
+        return fbcredentials;
     }
 }
 

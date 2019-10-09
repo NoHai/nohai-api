@@ -2,7 +2,6 @@ import { CredentialsInput } from '../../business/models/inputs/credentials-input
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
-import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
 import { AuthHelper } from '../../utilities/auth-helper';
 
 export class UserFactory {
@@ -16,7 +15,7 @@ export class UserFactory {
                 loginWithFb: false,
             });
         },
-        fromFacebookCredentialsInput: (input: FacebookCredentialsInput) => {
+        fromFacebookCredentialsInput: (input: any) => {
             const picture = AuthHelper.hashEmail(input.login);
             const hashedInput = AuthHelper.hashFacebookCredentials(input);
             return new UserEntity({
