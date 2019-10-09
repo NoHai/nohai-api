@@ -5,7 +5,8 @@ import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
-import request from 'request';
+import axios from 'axios';
+import { map, catchError, tap } from 'rxjs/operators';
 
 export class AuthHelper {
     static expireIn: number = 600;
@@ -22,6 +23,7 @@ export class AuthHelper {
         return new CredentialsInput({
             password: this.hashPassword(input.password),
             login: input.login,
+            loginWithFb: input.loginWithFb,
         });
     }
 
@@ -33,11 +35,6 @@ export class AuthHelper {
     static hashEmail(email: string): string {
         const hashEmail = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
         return `https://s.gravatar.com/avatar/${hashEmail}`;
-    }
-
-    static hashFacebookCredentials(input: any): FacebookCredentialsInput {
-        const generatedPassword = uuid().toString();
-        return new FacebookCredentialsInput({ password: generatedPassword, login: input.login });
     }
 
     static verifyToken(token: string) {
@@ -56,22 +53,18 @@ export class AuthHelper {
         return from(bcrypt.compare(inputPassword, hasedPassword));
     }
 
-    static facebookoLogin(credentials: FacebookCredentialsInput): any {
-        let fbcredentials: any = null;
-        const uri = `https://graph.facebook.com/${credentials.userId}?fields=id,name,email&access_token=${credentials.accessToken}`;
-
-        request(uri, (response) => {
-            console.log(response);
-
-            const something  =  response.toJSON();
-            console.log(something);
-
-            response.on('data', (data: any) => {
-                fbcredentials = data;
-            });
-        });
-
-        return fbcredentials;
+    static async facebookoLogin(credentials: FacebookCredentialsInput): Promise<CredentialsInput> {
+        const url = `https://graph.facebook.com/${credentials.userId}?fields=id,name,email&access_token=${credentials.accessToken}`;
+        return from(axios.get(url))
+            .pipe(catchError((error) => of(error.response)))
+            .pipe(map((response) => {
+                return  new CredentialsInput({
+                    login: response.data.email,
+                    password: uuid().toString(),
+                    loginWithFb: true,
+                });
+            }))
+            .toPromise();
     }
 }
 

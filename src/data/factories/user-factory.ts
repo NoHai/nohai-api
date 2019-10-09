@@ -12,16 +12,6 @@ export class UserFactory {
             return new UserEntity({
                 ...hashedInput,
                 picture,
-                loginWithFb: false,
-            });
-        },
-        fromFacebookCredentialsInput: (input: any) => {
-            const picture = AuthHelper.hashEmail(input.login);
-            const hashedInput = AuthHelper.hashFacebookCredentials(input);
-            return new UserEntity({
-                ...hashedInput,
-                picture,
-                loginWithFb: false,
             });
         },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
