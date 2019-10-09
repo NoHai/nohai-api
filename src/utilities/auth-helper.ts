@@ -5,6 +5,8 @@ import { Observable, of, from } from 'rxjs';
 import uuid = require('uuid');
 import { FacebookCredentialsInput } from '../business/models/inputs/facebook-credentials-input';
 import crypto from 'crypto';
+import axios from 'axios';
+import { map, catchError, tap } from 'rxjs/operators';
 
 export class AuthHelper {
     static expireIn: number = 600;
@@ -21,6 +23,7 @@ export class AuthHelper {
         return new CredentialsInput({
             password: this.hashPassword(input.password),
             login: input.login,
+            loginWithFb: input.loginWithFb,
         });
     }
 
@@ -34,16 +37,11 @@ export class AuthHelper {
         return `https://s.gravatar.com/avatar/${hashEmail}`;
     }
 
-    static hashFacebookCredentials(input: FacebookCredentialsInput): FacebookCredentialsInput {
-        const generatedPassword = uuid().toString();
-        return new FacebookCredentialsInput({ password: generatedPassword, login: input.login });
-    }
-
     static verifyToken(token: string) {
         try {
             return verify(token, process.env.NOHAI_JWT_SECRET || '');
         } catch (error) {
-           return undefined;
+            return undefined;
         }
     }
 
@@ -53,6 +51,20 @@ export class AuthHelper {
 
     static comparePassords(inputPassword: string, hasedPassword: any): Observable<boolean> {
         return from(bcrypt.compare(inputPassword, hasedPassword));
+    }
+
+    static async facebookoLogin(credentials: FacebookCredentialsInput): Promise<CredentialsInput> {
+        const url = `https://graph.facebook.com/${credentials.userId}?fields=id,name,email&access_token=${credentials.accessToken}`;
+        return from(axios.get(url))
+            .pipe(catchError((error) => of(error.response)))
+            .pipe(map((response) => {
+                return  new CredentialsInput({
+                    login: response.data.email,
+                    password: uuid().toString(),
+                    loginWithFb: true,
+                });
+            }))
+            .toPromise();
     }
 }
 

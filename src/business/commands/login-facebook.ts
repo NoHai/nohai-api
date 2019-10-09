@@ -1,6 +1,6 @@
 import { ILoginFacebook } from './i-login-facebook';
 import { FacebookCredentialsInput } from '../models/inputs/facebook-credentials-input';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, of, from, iif } from 'rxjs';
 import { Tokens } from '../models/results/tokens';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { flatMap, map, catchError } from 'rxjs/operators';
@@ -13,16 +13,19 @@ export class LoginFacebook implements ILoginFacebook {
                 private readonly tokensRepository: ITokensRepository) { }
 
     execute(input: FacebookCredentialsInput): Observable<Tokens> {
-        const hashedInput = AuthHelper.hashFacebookCredentials(input);
-        const freshLogin = this.userRepository.insertFb(hashedInput)
-            .pipe(flatMap((cred) => this.saveToken(cred)));
+        let login: any = null;
 
-        return this.userRepository.byCredentials(input.login)
-            .pipe(catchError(() => freshLogin))
-            .pipe(flatMap(() => this.saveToken(input)));
+        return from(AuthHelper.facebookoLogin(input))
+            .pipe(map((cred) => {
+                login = cred;
+                return this.getUser(cred.login);
+            }))
+            .pipe(flatMap((user) => iif(() => user === undefined,
+                this.createUser(login),
+                this.saveToken(login))));
     }
 
-    private saveToken(input: FacebookCredentialsInput): Observable<Tokens> {
+    private saveToken(input: any): Observable<Tokens> {
         const accessTokenFlow: Observable<string> = this.buildAccessToken(input);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow: Observable<User> = this.userRepository.byCredentials(input.login);
@@ -37,7 +40,7 @@ export class LoginFacebook implements ILoginFacebook {
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
     }
 
-    private buildAccessToken(credentials: FacebookCredentialsInput): Observable<string> {
+    private buildAccessToken(credentials: any): Observable<string> {
         return this.userRepository.byCredentials(credentials.login)
             .pipe(map((user) => ({
                 userId: user.id,
@@ -45,5 +48,15 @@ export class LoginFacebook implements ILoginFacebook {
                 lastName: user.lastName,
             })))
             .pipe(map((token) => AuthHelper.signToken(token)));
+    }
+
+    private createUser(input: any): Observable<Tokens> {
+        return this.userRepository.insert(input)
+            .pipe(flatMap((cred) => this.saveToken(cred)));
+    }
+
+    private getUser(login: string): Observable<User | undefined> {
+        return this.userRepository.byCredentials(login)
+            .pipe(catchError(() => of(undefined)));
     }
 }

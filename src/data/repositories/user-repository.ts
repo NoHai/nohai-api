@@ -1,5 +1,5 @@
-import { from, Observable, of } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
+import { from, Observable, of, throwError } from 'rxjs';
+import { map, flatMap, catchError } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { Credentials } from '../../business/models/results/credentials';
@@ -8,9 +8,8 @@ import { IUserRepository } from '../../business/repositories/i-user-repository';
 import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
-import { FacebookCredentials } from '../../business/models/results/facebook-credentials';
-import { FacebookCredentialsInput } from '../../business/models/inputs/facebook-credentials-input';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { Errors } from '../../utilities/errors';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -19,14 +18,9 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 
-    insertFb(input: FacebookCredentialsInput): Observable<FacebookCredentials> {
-        return of(UserFactory.entity.fromFacebookCredentialsInput(input))
-            .pipe(flatMap((entity) => entity.save()))
-            .pipe(map((entity) => CredentialsFactory.result.fromFacebookUserEntity(entity)));
-    }
-
     byCredentials(login: string): Observable<UserResult> {
         return from(UserEntity.findOneOrFail({ login }))
+            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
