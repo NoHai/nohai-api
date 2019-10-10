@@ -29,18 +29,21 @@ export class Event extends BaseEntity {
     @Column()
     cost!: number;
 
-    @Column()
-    date!: string;
+    @Column({ name: 'start_date'})
+    startDate!: string;
 
-    @Column()
-    hour!: string;
+    @Column({ name: 'end_date'})
+    endDate!: string;
+
+    @Column({ name: 'start_time'})
+    startTime!: string;
+
+    @Column({ name: 'end_time'})
+    endTime!: string;
 
     @OneToOne(() => User, (user) => user.id, { cascade: false, eager: true })
     @JoinColumn({ name: 'owner'})
     owner!: User;
-
-    @Column()
-    duration!: number;
 
     @Column()
     level!: number;

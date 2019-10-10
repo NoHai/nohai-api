@@ -50,7 +50,7 @@ export class EventRepository implements IEventRepository {
         return {
             order: {
                 description: 'ASC',
-                date: 'ASC',
+                endDate: 'ASC',
             },
             relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
@@ -67,7 +67,7 @@ export class EventRepository implements IEventRepository {
             .where('event.owner = :owner', { owner: this.userContext.userId })
             .orWhere('userEvents.user_id = :userId', { userId: this.userContext.userId })
             .orWhere('userEvents.user_id IS NULL')
-            .orderBy('event.date')
+            .orderBy('event.startDate')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
             .take(parameter.pagination.pageSize)
             .getManyAndCount();

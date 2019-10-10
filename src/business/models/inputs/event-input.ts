@@ -10,9 +10,10 @@ export class EventInput {
     sport!: Sport;
     freeSpots!: number;
     cost!: number;
-    date!: string;
-    hour!: string;
-    duration!: number;
+    startDate!: string;
+    endDate!: string;
+    startTime!: string;
+    endTime!: string;
     level!: number;
 
     constructor(init?: any) {
