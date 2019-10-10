@@ -12,6 +12,7 @@ export class NotificationHelper {
     static rejectNotificationTitle: string = 'Cerere respinsa';
     static userApprovedTitle: string = 'Ai aprobat aceasta cerere';
     static userRejectTitle: string = 'Ai respins aceasta cerere';
+    static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({

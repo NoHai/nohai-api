@@ -22,5 +22,13 @@ export class UserEventsFactory {
                 ...userEvent,
                 user: User.findOne(userEvent.userId),
             })),
+
+        fromUserEventResultsLight : (userEvents: UserEventsResult[]): any[] =>
+            userEvents.map((userEvent) => {
+                return {
+                    userId: userEvent.userId,
+                    eventId: userEvent.eventId,
+                };
+            }),
     };
 }

@@ -49,5 +49,10 @@ export class UserRepository implements IUserRepository {
                 entity.save();
             }));
     }
+
+    getWithCredentials(ids: any[]): Observable<any[]> {
+        return from(UserEntity.findByIds( ids))
+        .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
+    }
 }
 
