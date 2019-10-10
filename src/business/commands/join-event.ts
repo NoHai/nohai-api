@@ -1,4 +1,4 @@
-import { Observable, zip, from } from 'rxjs';
+import { Observable, zip, from, iif, throwError } from 'rxjs';
 import { IJoinEvent } from './i-join-event';
 import { INotificationRepository } from '../repositories/i-notification-repository';
 import { UserContext } from '../../utilities/user-context';
@@ -8,8 +8,8 @@ import { flatMap, map } from 'rxjs/operators';
 import { UserEventsInput } from '../models/inputs/user-events-input';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IEventRepository } from '../repositories/i-event-repository';
-import { NotificationType } from '../../data/enums/notification-type';
 import { UserEventsStatus } from '../../data/enums/user-events-status';
+import { Errors } from '../../utilities/errors';
 
 export class JoinEvent implements IJoinEvent {
 
@@ -21,6 +21,13 @@ export class JoinEvent implements IJoinEvent {
     }
 
     execute(eventId: string): Observable<boolean> {
+        return this.allSpotsOccupied(eventId)
+            .pipe(flatMap((result) => iif(() => result === true,
+                throwError(new Error(Errors.AllSpotsOccupied)),
+                this.joinUser(eventId))));
+    }
+
+    private joinUser(eventId: string) {
         const userEvent = new UserEventsInput({
             eventId,
             userId: this.userContext.userId,
@@ -31,8 +38,17 @@ export class JoinEvent implements IJoinEvent {
         const notificationTokenFlow = this.eventRepository.getById(eventId)
             .pipe(flatMap((event) => this.notificationTokenRepository.get(event.owner.id)))
             .pipe(map((tokens) => tokens.map((token) => token.token)));
-
         return zip(userEventFlow, notificationFlow, notificationTokenFlow)
             .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
+    }
+
+    private allSpotsOccupied(eventId: string): Observable<boolean> {
+        const numberOfParticipantsFlow = this.eventRepository.getById(eventId)
+            .pipe(map((event) => event.freeSpots));
+        const spotsOccupiesFlow = this.userEventsRepository.approvedSpots(eventId);
+
+        return zip(numberOfParticipantsFlow, spotsOccupiesFlow)
+            .pipe(map((result) => result[0] === result[1]));
+
     }
 }
