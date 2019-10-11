@@ -20,7 +20,6 @@ export class UserRepository implements IUserRepository {
 
     byCredentials(login: string): Observable<UserResult> {
         return from(UserEntity.findOneOrFail({ login }))
-            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
