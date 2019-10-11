@@ -17,13 +17,14 @@ export class CreateTokensTable1563045221728 implements MigrationInterface {
                 },
                 {
                     isUnique: true,
-                    name: 'access_token',
+                    name: 'refresh_token',
                     type: 'varchar',
                 },
                 {
-                    isUnique: true,
-                    name: 'refresh_token',
-                    type: 'varchar',
+                    isNullable: false,
+                    name: 'created_date',
+                    type: 'datetime',
+                    default: 'CURRENT_TIMESTAMP',
                 },
             ],
             name: 'tokens',
@@ -42,5 +43,4 @@ export class CreateTokensTable1563045221728 implements MigrationInterface {
     async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.dropTable('tokens');
     }
-
 }

@@ -25,28 +25,31 @@ export class ApproveRequest implements IApproveRequest {
                 private readonly emailService: EmailService) { }
 
     execute(input: string): Observable<any> {
-
         return this.remainingSpots(input)
-            .pipe(map((result) => {
-                if (result === 1) {
-                    return this.approveLastUser(input);
-                } else if (result > 1) {
-                    return this.approveUser(input);
-                } else {
-                    return throwError(Errors.AllSpotsOccupied);
-                }
-            }));
+            .pipe(flatMap((result) => iif(() => result === 0,
+                this.rejectUser(input),
+                this.approveBySpot(result, input))));
     }
 
-    private approveLastUser(notificationId: string) {
+    private approveBySpot(freeSpots: number, notificationId: string): Observable<boolean> {
+        if (freeSpots === 1) {
+            return this.approveLastUser(notificationId);
+        } else {
+            return this.approveUser(notificationId);
+        }
+    }
+
+    private approveLastUser(notificationId: string): Observable<boolean> {
         const approveUser = this.approveUser(notificationId);
         const sendEmailsToPending = this.sendEmailsToPendingUsers(notificationId);
         const rejectRemainingUsers = this.rejectRemainingUsers(notificationId);
 
-        return zip(approveUser, sendEmailsToPending, this.rejectRemainingUsers, rejectRemainingUsers)
-            .pipe(map((result) => result[0]));
+        return zip(approveUser, sendEmailsToPending, rejectRemainingUsers)
+            .pipe(map((result) => {
+                console.log(result[0]);
+                return result[0];
+            }));
     }
-
 
     private sendEmailsToPendingUsers(notificationId: string) {
         const eventFlow = this.notificationRepository.getById(notificationId)
@@ -72,7 +75,7 @@ export class ApproveRequest implements IApproveRequest {
         const updateNotifications = this.notificationRepository.getById(notificationId)
             .pipe(flatMap((notification) => this.userEventsRepository.find({
                 eventId: notification.eventId,
-                status: UserEventsStatus.Pending
+                status: UserEventsStatus.Pending,
             })))
             .pipe(map((userEvents) => UserEventsFactory.results.fromUserEventResultsLight(userEvents)))
             .pipe(map((paremeters) => this.notificationRepository.rejectAll({ where: paremeters })));
@@ -92,6 +95,7 @@ export class ApproveRequest implements IApproveRequest {
 
         const approveFlow = from(Notification.findOneOrFail({ id: input }))
             .pipe(flatMap((entity) => {
+                console.log(entity);
                 entity.status = NotificationStatus.Read;
                 entity.title = NotificationHelper.userApprovedTitle;
                 entity.notificationType = NotificationType.ApproveJoin;
@@ -104,7 +108,29 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(map((tokens) => tokens.map((token) => token.token)));
 
         return zip(updateUserEventFlow, approveFlow, notificationTokenFlow)
-            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
+            .pipe(flatMap((result) => {
+                console.log(result[0]);
+                console.log(result[1]);
+                console.log(result[2]);
+                NotificationHelper.sendNotification(result[1], result[2]);
+                return of(true);
+            }));
+    }
+
+    private rejectUser(notificationId: string) {
+
+        return from(Notification.findOneOrFail({ id: notificationId }))
+            .pipe(flatMap((entity) => {
+                entity.status = NotificationStatus.Read;
+                entity.title = NotificationHelper.noSpotsAvailableTitle;
+                entity.notificationType = NotificationType.RejectJoin;
+                return entity.save();
+            }))
+            .pipe(map(() => {
+                throwError(new Error(Errors.AllSpotsOccupied));
+                return of(false);
+            }));
+
     }
 
     private remainingSpots(notificationId: string): Observable<number> {

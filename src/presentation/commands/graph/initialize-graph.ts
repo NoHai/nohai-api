@@ -182,7 +182,7 @@ export class InitializeGraph implements IInitializeGraph {
                 },
                 schema,
                 customFormatErrorFn: (err) => {
-                    return ({ message: err.message });
+                    return ({ message: err.message});
                 },
             };
         });

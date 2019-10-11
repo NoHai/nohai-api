@@ -17,7 +17,7 @@ import { NotificationType } from '../enums/notification-type';
 
 export class NotificationRepository implements INotificationRepository {
     constructor(private readonly createPagination: CreatePagination,
-        private readonly userContext: UserContext) {
+                private readonly userContext: UserContext) {
     }
 
     get(parameter: PaginationParameter): Observable<Pagination> {
@@ -71,6 +71,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     approve(eventId: string, userId: string): Observable<NotificationResult> {
+        console.log('notification approve');
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
 

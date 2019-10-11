@@ -22,7 +22,7 @@ export class EmailHelper {
                 from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
                 subject: 'Locuri ocupate',
                 text: this.allSpotsOccupiesMessage(eventTitle),
-                html: this.getOccupiedSpotsEmailHtml(user, eventTitle),
+                html: this.getOccupiedSpotsEmailHtml(user.user, eventTitle),
             });
 
         });

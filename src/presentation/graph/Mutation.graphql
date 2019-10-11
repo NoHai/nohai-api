@@ -37,13 +37,13 @@ type Mutation {
     deleteUserEvents(id: String!) : Int
 
     """It's used to join to an event."""
-    joinEvent(eventId: String!): Boolean!
+    joinEvent(eventId: String!): Boolean
 
     """It's used to accept a join request."""
-    approveRequest(parameter: String!): Boolean!
+    approveRequest(parameter: String!): Boolean
 
     """It's used to reject a join request."""
-    rejectRequest(parameter: String!): Boolean!
+    rejectRequest(parameter: String!): Boolean
 
     """It's used to mark a notification as read."""
     markAsRead(parameter: String!): Notification!
