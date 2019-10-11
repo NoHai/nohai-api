@@ -24,14 +24,17 @@ type Event {
     "The cost per person of the event."
     cost: Float
 
-    "The date of the event."
-    date: String
+    "The start date of the event."
+    startDate: String
+
+    "The end date of the event."
+    endDate: String
 
     "The hour of the event."
-    hour: String
+    startTime: String
 
-    "Duration of the event."
-    duration: Int
+    "The end time of the event."
+    endTime: String
 
     "Level of the sport."
     level: Int
