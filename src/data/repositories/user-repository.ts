@@ -41,12 +41,13 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 
-    updateCredentials(credentials: CredentialsInput): Observable<void> {
+    updateCredentials(credentials: CredentialsInput): Observable<boolean> {
         return from(UserEntity.findOneOrFail({ login: credentials.login }))
-            .pipe(map((entity) => {
+            .pipe(flatMap((entity) => {
                 entity.password = AuthHelper.hashPassword(credentials.password);
                 entity.save();
-            }));
+                return of(true);
+            })).pipe(catchError(() => of(false)));
     }
 
     getWithCredentials(ids: any[]): Observable<any[]> {

@@ -1,5 +1,5 @@
-import { Observable, zip } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
+import { Observable, zip, throwError } from 'rxjs';
+import { map, flatMap, catchError } from 'rxjs/operators';
 import { Tokens } from '../models/results/tokens';
 import { User } from '../models/results/user';
 import { ITokensRepository } from '../repositories/i-tokens-repository';
@@ -15,6 +15,7 @@ export class RefreshToken implements IRefreshToken {
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow: Observable<User> = this.tokensRepository.getUser(refresh);
         return zip(userFlow, accessTokenFlow, refreshTokenFlow)
+            .pipe(catchError((error) => throwError(new Error(error))))
             .pipe(map((result) => new Tokens({
                 user: result[0],
                 accessToken: result[1],

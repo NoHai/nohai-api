@@ -17,10 +17,9 @@ export class RecoverPassword implements IRecoverPassword {
 
         const recoveryLinkFlow = this.userRepository.byCredentials(input)
                             .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
-                            .pipe(map((user) => ({
-                                userId: user.id,
+                            .pipe(map(() => ({
                                 email: input,
-                                expireIn: 60 * 60 * 24,
+                                expireDate: this.getExpiryDate(),
                             })))
                             .pipe(map((token) => `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`));
 
@@ -31,4 +30,10 @@ export class RecoverPassword implements IRecoverPassword {
                                      EmailHelper.recoverPasswordSuccessfully(input),
                                      EmailHelper.recoverPasswordError(input))));
     }
+
+    private getExpiryDate() {
+        const date = new Date();
+        return date.setHours(date.getHours() + 12);
+    }
+
 }
