@@ -21,5 +21,23 @@ export class UserFactory {
 
     static result = {
         fromUserEntity: (user: UserEntity) => new UserResult(user),
+        fromUserWithCredentials: (user: UserEntity) => {
+            const res = new UserResult(user);
+            return {
+                user: res,
+                email: user.login,
+            };
+        },
+    };
+
+    static results = {
+        fromUsersWithCredentials: (users: UserEntity[]): any[] =>
+            users.map((user) => {
+                const res = new UserResult(user);
+                return {
+                    user: res,
+                    email: user.login,
+                };
+            }),
     };
 }

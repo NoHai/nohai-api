@@ -4,4 +4,6 @@ export class Errors {
     static readonly IncorrectPassoword: string = 'User sau parola incorecte.';
     static readonly AlreadyRegisterd: string = 'Exista deja un cont cu aceasi adresa de email';
     static readonly UnableToLogin: string = 'Logare nereusita. Te rugam reincearca.';
+    static readonly AllSpotsOccupied: string = 'Ne pare rau dar toate locurile s-au ocupat intre timp';
+    static readonly UnableToSendEmail: string = 'Emailul nu s-a putut trimite';
 }

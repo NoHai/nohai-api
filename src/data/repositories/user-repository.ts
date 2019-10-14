@@ -20,7 +20,6 @@ export class UserRepository implements IUserRepository {
 
     byCredentials(login: string): Observable<UserResult> {
         return from(UserEntity.findOneOrFail({ login }))
-            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
@@ -48,6 +47,11 @@ export class UserRepository implements IUserRepository {
                 entity.password = AuthHelper.hashPassword(credentials.password);
                 entity.save();
             }));
+    }
+
+    getWithCredentials(ids: any[]): Observable<any[]> {
+        return from(UserEntity.findByIds( ids))
+        .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
     }
 }
 

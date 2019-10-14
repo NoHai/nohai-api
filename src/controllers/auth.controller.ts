@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { ICreateTokens } from '../business/commands/i-create-tokens';
 import { IRefreshToken } from '../business/commands/i-refresh-token';
-import { FacebookCredentials } from '../business/models/results/facebook-credentials';
 import request = require('request');
 
 export class AuthController {
@@ -22,9 +21,12 @@ export class AuthController {
     async refresh(req: Request, res: Response) {
         if (req.body) {
             const refreshToken: string = req.body.refreshToken;
-            const tokens = await this.refreshToken.execute(refreshToken).toPromise();
-
-            res.send(tokens);
+            try {
+                const tokens = await this.refreshToken.execute(refreshToken).toPromise();
+                res.send(tokens);
+            } catch (error) {
+                res.status(401);
+            }
         }
     }
 }

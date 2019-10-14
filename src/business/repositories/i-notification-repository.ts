@@ -20,4 +20,6 @@ export interface INotificationRepository {
     approve(eventId: string, userId: string): Observable<NotificationResult>;
 
     reject(eventId: string, userId: string): Observable<NotificationResult>;
+
+    rejectAll(parameter: any): Observable<NotificationResult[]>;
 }

@@ -15,11 +15,12 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     delete(eventId: string, userId: string): Observable<number | undefined> {
-        return from(UserEvents.delete({ eventId,  userId }))
+        return from(UserEvents.delete({ eventId, userId }))
             .pipe(map((res) => res.affected));
     }
 
     update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult> {
+        console.log('update user events');
         return from(UserEvents.findOneOrFail({ eventId, userId }))
             .pipe(map((userEvent) => {
                 userEvent.status = status;
@@ -32,5 +33,26 @@ export class UserEventsRepository implements IUserEventsRepository {
     get(eventId: string): Observable<UserEventsResult[]> {
         return from(UserEvents.find({ eventId }))
             .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
+    }
+
+    find(parameter: any): Observable<UserEventsResult[]> {
+        return from(UserEvents.find(parameter))
+            .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
+    }
+
+    getByStatus(eventId: string, status: UserEventsStatus): Observable<UserEventsResult[]> {
+        console.log(eventId);
+        console.log(status);
+        return from(UserEvents.find({ eventId, status }))
+            .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
+    }
+
+    deleteByStatus(eventId: string, status: UserEventsStatus): Observable<number | undefined> {
+        return from(UserEvents.delete({ eventId, status}))
+        .pipe(map((deleteResult) => deleteResult.affected));
+    }
+
+    approvedSpots(eventId: string): Observable<number> {
+        return from(UserEvents.count({ eventId, status: UserEventsStatus.Approved }));
     }
 }

@@ -16,7 +16,7 @@ export class RecoverPassword implements IRecoverPassword {
         const userFlow  = this.userRepository.byCredentials(input);
 
         const recoveryLinkFlow = this.userRepository.byCredentials(input)
-                            .pipe(catchError(() => throwError(Errors.NotRegistered)))
+                            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
                             .pipe(map((user) => ({
                                 userId: user.id,
                                 email: input,

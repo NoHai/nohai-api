@@ -13,6 +13,7 @@ import { User } from '../entities/user';
 import { UserContext } from '../../utilities/user-context';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { NotificationStatus } from '../enums/notification-status';
+import { NotificationType } from '../enums/notification-type';
 
 export class NotificationRepository implements INotificationRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -70,6 +71,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     approve(eventId: string, userId: string): Observable<NotificationResult> {
+        console.log('notification approve');
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
 
@@ -87,9 +89,20 @@ export class NotificationRepository implements INotificationRepository {
             .pipe(map((entity) => NotificationFactory.result.fromNotificationEntity(entity)));
     }
 
+    rejectAll(parameter: any): Observable<NotificationResult[]> {
+        return from(NotificationEntity.find(parameter))
+            .pipe(map((entities) => entities.map((notification) => {
+                notification.status = NotificationStatus.Read;
+                notification.notificationType = NotificationType.RejectJoin;
+                notification.title = NotificationHelper.noSpotsAvailableTitle;
+                return notification; })))
+            .pipe(flatMap((updateEntities) => from(NotificationEntity.save(updateEntities))))
+            .pipe(map((savedEntities) => NotificationFactory.results.fromNotificationEntities(savedEntities)));
+    }
+
     private buildOptions(parameter: PaginationParameter): any {
         return {
-            where : { userId: this.userContext.userId},
+            where: { userId: this.userContext.userId },
             order: {
                 createdDate: 'DESC',
             },

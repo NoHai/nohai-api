@@ -18,8 +18,9 @@ export class LoginFacebook implements ILoginFacebook {
         return from(AuthHelper.facebookoLogin(input))
             .pipe(map((cred) => {
                 login = cred;
-                return this.getUser(cred.login);
+                this.userRepository.byCredentials(cred.login);
             }))
+            .pipe(catchError(() => of(undefined)))
             .pipe(flatMap((user) => iif(() => user === undefined,
                 this.createUser(login),
                 this.saveToken(login))));
@@ -53,10 +54,5 @@ export class LoginFacebook implements ILoginFacebook {
     private createUser(input: any): Observable<Tokens> {
         return this.userRepository.insert(input)
             .pipe(flatMap((cred) => this.saveToken(cred)));
-    }
-
-    private getUser(login: string): Observable<User | undefined> {
-        return this.userRepository.byCredentials(login)
-            .pipe(catchError(() => of(undefined)));
     }
 }
