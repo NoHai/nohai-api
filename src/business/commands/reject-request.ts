@@ -40,7 +40,7 @@ export class RejectRequest implements IRejectRequest {
             .pipe(map((tokens) => tokens.map((token) => token.token)));
 
         return zip(deleteUserEventFlow, rejectFlow, notificationTokenFlow)
-            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
+            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2], result[1].eventId)));
 
     }
 

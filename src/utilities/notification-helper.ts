@@ -68,9 +68,9 @@ export class NotificationHelper {
         return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
     }
 
-    static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
+    static sendNotification(notification: any, tokens: string[], eventId: string): Observable<boolean> {
         if (tokens && tokens.length > 0) {
-            return from(SendNotification(tokens, notification.body, notification.title));
+            return from(SendNotification(tokens, notification.body, notification.title, eventId));
         } else {
             return of(false);
         }

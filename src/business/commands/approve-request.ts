@@ -112,7 +112,7 @@ export class ApproveRequest implements IApproveRequest {
                 console.log(result[0]);
                 console.log(result[1]);
                 console.log(result[2]);
-                NotificationHelper.sendNotification(result[1], result[2]);
+                NotificationHelper.sendNotification(result[1], result[2], result[1].eventId);
                 return of(true);
             }));
     }
