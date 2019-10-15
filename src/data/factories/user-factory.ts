@@ -3,6 +3,7 @@ import { UpdateUserInput } from '../../business/models/inputs/update-user-input'
 import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { Credentials } from '../../business/models/results/credentials';
 
 export class UserFactory {
     static entity = {
@@ -28,6 +29,11 @@ export class UserFactory {
                 email: user.login,
             };
         },
+        fromCredentials : (cred: Credentials) => new UserResult({
+            login: cred.login,
+            id: cred.id,
+            loginWithFb: cred.loginWithFb,
+        }),
     };
 
     static results = {

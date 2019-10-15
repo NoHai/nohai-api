@@ -6,7 +6,7 @@ import { CredentialsInput } from '../models/inputs/credentials-input';
 export class UpdateCredentials implements IUpdateCredentials {
     constructor(private readonly userRepository: IUserRepository) { }
 
-    execute(input: CredentialsInput): Observable<void> {
+    execute(input: CredentialsInput): Observable<boolean> {
       return this.userRepository.updateCredentials(input);
     }
 }
