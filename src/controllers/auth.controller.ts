@@ -23,9 +23,15 @@ export class AuthController {
             const refreshToken: string = req.body.refreshToken;
             try {
                 const tokens = await this.refreshToken.execute(refreshToken).toPromise();
-                res.send(tokens);
+                if (tokens === undefined) {
+                    res.status(400);
+                    res.end();
+                } else {
+                    res.send(tokens);
+                }
             } catch (error) {
-                res.status(401);
+                res.status(400);
+                res.end();
             }
         }
     }

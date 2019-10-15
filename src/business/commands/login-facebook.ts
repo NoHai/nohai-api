@@ -7,35 +7,27 @@ import { flatMap, map, catchError } from 'rxjs/operators';
 import { ITokensRepository } from '../repositories/i-tokens-repository';
 import { AuthHelper } from '../../utilities/auth-helper';
 import { User } from '../models/results/user';
+import { CredentialsInput } from '../models/inputs/credentials-input';
+import { UserFactory } from '../../data/factories/user-factory';
 
 export class LoginFacebook implements ILoginFacebook {
     constructor(private readonly userRepository: IUserRepository,
                 private readonly tokensRepository: ITokensRepository) { }
 
     execute(input: FacebookCredentialsInput): Observable<Tokens> {
-        let login: any = null;
-
         return from(AuthHelper.facebookoLogin(input))
-            .pipe(map((cred) => {
-                login = cred;
-                this.userRepository.byCredentials(cred.login);
-            }))
-            .pipe(catchError(() => of(undefined)))
-            .pipe(flatMap((user) => iif(() => user === undefined,
-                this.createUser(login),
-                this.saveToken(login))));
+            .pipe(flatMap((cred) => this.login(cred)));
     }
 
-    private saveToken(input: any): Observable<Tokens> {
-        const accessTokenFlow: Observable<string> = this.buildAccessToken(input);
+    private saveToken(user: User): Observable<Tokens> {
+        const accessTokenFlow: Observable<string> = this.buildAccessToken(user);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
-        const userFlow: Observable<User> = this.userRepository.byCredentials(input.login);
 
-        return zip(userFlow, accessTokenFlow, refreshTokenFlow)
+        return zip(accessTokenFlow, refreshTokenFlow)
             .pipe(map((result) => new Tokens({
-                user: result[0],
-                accessToken: result[1],
-                refreshToken: result[2],
+                user,
+                accessToken: result[0],
+                refreshToken: result[1],
                 expireIn: AuthHelper.expireIn,
             })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
@@ -51,8 +43,14 @@ export class LoginFacebook implements ILoginFacebook {
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
 
-    private createUser(input: any): Observable<Tokens> {
+    private login(input: CredentialsInput): Observable<Tokens> {
+        return this.userRepository.byCredentials(input.login)
+            .pipe(catchError(() => this.saveNewUser(input)))
+            .pipe(flatMap((user) => this.saveToken(user)));
+    }
+
+    private saveNewUser(input: CredentialsInput): Observable<User> {
         return this.userRepository.insert(input)
-            .pipe(flatMap((cred) => this.saveToken(cred)));
+            .pipe(map((cred) => UserFactory.result.fromCredentials(cred)));
     }
 }

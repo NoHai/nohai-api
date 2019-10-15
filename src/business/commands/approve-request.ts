@@ -65,7 +65,7 @@ export class ApproveRequest implements IApproveRequest {
         return zip(eventFlow, userFlow)
             .pipe(map((result) => EmailHelper.getAllSpotsOccupiedEmails(result[1], result[0])))
             .pipe(flatMap((emails) => this.emailService.sendMultipleEmails(emails)))
-            .pipe(flatMap((emailResult) => iif(() => emailResult[0].statusCode === 202,
+            .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
                 of(true),
                 of(false))));
 

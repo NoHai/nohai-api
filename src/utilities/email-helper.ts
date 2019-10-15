@@ -1,18 +1,23 @@
 import { Email } from './email';
-import { of, Observable } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { User } from '../business/models/results/user';
 import mjml2html from 'mjml';
+import { Errors } from './errors';
 
 export class EmailHelper {
 
-    static getRecoverPasswordEmail(user: User, email: string, link: string): Email {
-        return new Email({
-            to: email,
-            from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
-            subject: 'Recuperare parola NoHai',
-            text: this.recoverPasswordMessage(link),
-            html: this.getRecoveryEmailHtml(user, link),
-        });
+    static getRecoverPasswordEmail(user: User | undefined, email: string, link: string): Email | undefined {
+        if (!!user) {
+            return new Email({
+                to: email,
+                from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
+                subject: 'Recuperare parola NoHai',
+                text: this.recoverPasswordMessage(link),
+                html: this.getRecoveryEmailHtml(user, link),
+            });
+        } else {
+           throwError(new Error(Errors.UnableToSendEmail));
+        }
     }
 
     static getAllSpotsOccupiedEmails(users: any[], eventTitle: string): Email[] {

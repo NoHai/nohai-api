@@ -26,7 +26,7 @@ export class RecoverPassword implements IRecoverPassword {
         return zip(userFlow, recoveryLinkFlow)
                         .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))
                         .pipe(flatMap((email) => from(this.emailService.sendEmail(email))))
-                        .pipe(flatMap((emailResult) => iif(() => emailResult[0].statusCode === 202,
+                        .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
                                      EmailHelper.recoverPasswordSuccessfully(input),
                                      EmailHelper.recoverPasswordError(input))));
     }

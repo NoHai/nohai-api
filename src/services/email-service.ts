@@ -7,14 +7,18 @@ export class EmailService {
         emailSender.setApiKey(process.env.NOHAI_SENDGRID_API_KEY || '');
     }
 
-    async sendEmail(email: Email) {
-        const result = await emailSender.send(email, false);
-        return result;
+    async sendEmail(email: Email | undefined) {
+        if (!!email) {
+            const result = await emailSender.send(email, false);
+            return result;
+        }
     }
 
-    async sendMultipleEmails(emails: Email[]) {
+    async sendMultipleEmails(emails: Email[] | undefined) {
+        if (!!emails && emails.length > 0) {
         const result = await emailSender.send(emails);
         return result;
+        }
     }
 }
 
