@@ -1,4 +1,4 @@
-import { from, Observable, of } from 'rxjs';
+import { from, Observable, of, zip } from 'rxjs';
 import { map, switchMap, flatMap } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
@@ -11,6 +11,8 @@ import { Event } from '../entities/event';
 import { EventFactory } from '../factories/event-factory';
 import { UserContext } from '../../utilities/user-context';
 import { UserEvents } from '../entities/user-events';
+import moment = require('moment');
+import { Sport } from '../entities/sport';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -18,9 +20,16 @@ export class EventRepository implements IEventRepository {
     }
 
     insert(input: EventInput): Observable<EventResult> {
-        return of(EventFactory.entity.fromEventInput(input, this.userContext.userId))
-            .pipe(flatMap((entity) => entity.save()))
-            .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));
+        const startDate = moment(input.startDate);
+        const eventInput = of(EventFactory.entity.fromEventInput(input, this.userContext.userId));
+        const generateTitle = this.generateTitle(input, startDate);
+
+        return  zip(eventInput, generateTitle)
+            .pipe(flatMap((result) => {
+                result[0].title = result[1];
+                return result[0].save();
+                }))
+            .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
     update(input: UpdateEventInput): Observable<EventResult> {
@@ -49,8 +58,8 @@ export class EventRepository implements IEventRepository {
     private buildOptions(parameter: EventsParameter): any {
         return {
             order: {
-                description: 'ASC',
                 endDate: 'ASC',
+                title: 'ASC',
             },
             relations: ['address', 'sport'],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
@@ -65,9 +74,10 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.owner', 'owner')
             .leftJoinAndSelect(UserEvents, 'userEvents', 'userEvents.event_id = event.id')
             .where('event.owner = :owner', { owner: this.userContext.userId })
+            .andWhere('userEvents.user_id IS NULL')
             .orWhere('userEvents.user_id = :userId', { userId: this.userContext.userId })
-            .orWhere('userEvents.user_id IS NULL')
             .orderBy('event.startDate')
+            .addOrderBy('event.title')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
             .take(parameter.pagination.pageSize)
             .getManyAndCount();
@@ -88,5 +98,12 @@ export class EventRepository implements IEventRepository {
             .withItemsOptions(this.buildOptions(parameter))
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
+    }
+
+    private generateTitle(input: EventInput, startDate: moment.Moment) {
+        return from(Sport.findOneOrFail(input.sport.id))
+            .pipe(map((sport) => `${sport.name},
+                        ${startDate.locale('ro').format('dddd')}
+                        ${startDate.format('DD')} ${startDate.format('MMMM')} ora ${input.startTime}`));
     }
 }
