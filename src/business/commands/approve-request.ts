@@ -142,6 +142,8 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(map((event) => event.freeSpots));
 
         return zip(approvedSpots, freeSpots)
-            .pipe(map((result) => result[1] - result[0]));
+            .pipe(flatMap((result) => iif(() => result[1] === null
+                                        , of(999)
+                                        , of(result[1] - result[0]))));
     }
 }
