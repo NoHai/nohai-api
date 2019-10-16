@@ -1,7 +1,7 @@
 import admin from 'firebase-admin';
 import { ServiceAccount } from './service-account';
 
-export async function SendNotification(tokens: any, body: string, title: string, eventId: string): Promise<boolean> {
+export async function SendNotification(tokens: any, body: string, title: string): Promise<boolean> {
   const serviceAccount: any = ServiceAccount.getFirebabaseConfig();
   let messageSent: boolean = false;
 
@@ -15,8 +15,8 @@ export async function SendNotification(tokens: any, body: string, title: string,
     notification: {
       body,
       title,
-      icon: 'https://no-hai.ro/assets/app-icon.svg',
-      clickAction: `https://no-hai.ro/details/${eventId}`,
+      icon: 'https://no-hai.ro/assets/app-icon.png',
+      clickAction: `https://no-hai.ro/notification`,
     },
   };
 

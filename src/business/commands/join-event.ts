@@ -39,7 +39,7 @@ export class JoinEvent implements IJoinEvent {
             .pipe(flatMap((event) => this.notificationTokenRepository.get(event.owner.id)))
             .pipe(map((tokens) => tokens.map((token) => token.token)));
         return zip(userEventFlow, notificationFlow, notificationTokenFlow)
-            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2], eventId)));
+            .pipe(flatMap((result) => NotificationHelper.sendNotification(result[1], result[2])));
     }
 
     private allSpotsOccupied(eventId: string): Observable<boolean> {
