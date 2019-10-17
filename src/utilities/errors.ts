@@ -6,4 +6,5 @@ export class Errors {
     static readonly UnableToLogin: string = 'Logare nereusita. Te rugam reincearca.';
     static readonly AllSpotsOccupied: string = 'Ne pare rau dar toate locurile s-au ocupat intre timp';
     static readonly UnableToSendEmail: string = 'Emailul nu s-a putut trimite';
+    static readonly JoinRequestAlreadySent: string = 'O cerere de alaturare la eveniment a fost deja trimisa';
 }

@@ -71,7 +71,6 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     approve(eventId: string, userId: string): Observable<NotificationResult> {
-        console.log('notification approve');
         const eventFlow = from(Event.findOneOrFail(eventId));
         const userFlow = from(User.findOneOrFail(this.userContext.userId));
 

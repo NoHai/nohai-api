@@ -1,4 +1,4 @@
-import { Observable, zip, from, iif, throwError } from 'rxjs';
+import { Observable, zip, from, iif, throwError, of } from 'rxjs';
 import { IJoinEvent } from './i-join-event';
 import { INotificationRepository } from '../repositories/i-notification-repository';
 import { UserContext } from '../../utilities/user-context';
@@ -21,9 +21,9 @@ export class JoinEvent implements IJoinEvent {
     }
 
     execute(eventId: string): Observable<boolean> {
-        return this.allSpotsOccupied(eventId)
-            .pipe(flatMap((result) => iif(() => result === true,
-                throwError(new Error(Errors.AllSpotsOccupied)),
+        return zip(this.allSpotsOccupied(eventId), this.requestAlreadySent(eventId))
+            .pipe(flatMap((result) => iif(() => (result[0] === true || result[1] === true),
+                throwError(this.doNotAllowToJoin(result[0])),
                 this.joinUser(eventId))));
     }
 
@@ -50,5 +50,20 @@ export class JoinEvent implements IJoinEvent {
         return zip(numberOfParticipantsFlow, spotsOccupiesFlow)
             .pipe(map((result) => result[0] === result[1] || numberOfParticipantsFlow === null));
 
+    }
+
+    private requestAlreadySent(eventId: string): Observable<boolean> {
+        return this.userEventsRepository.find({ eventId, userId: this.userContext.userId })
+            .pipe(flatMap((result) => iif(() => result && result.length > 0,
+                of(true),
+                of(false))));
+    }
+
+    private doNotAllowToJoin(spotsOccupied: boolean) {
+        if (spotsOccupied === true) {
+            return new Error(Errors.AllSpotsOccupied);
+        } else {
+            return new Error(Errors.JoinRequestAlreadySent);
+        }
     }
 }

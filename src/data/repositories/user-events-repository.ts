@@ -20,7 +20,6 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult> {
-        console.log('update user events');
         return from(UserEvents.findOneOrFail({ eventId, userId }))
             .pipe(map((userEvent) => {
                 userEvent.status = status;
@@ -41,8 +40,6 @@ export class UserEventsRepository implements IUserEventsRepository {
     }
 
     getByStatus(eventId: string, status: UserEventsStatus): Observable<UserEventsResult[]> {
-        console.log(eventId);
-        console.log(status);
         return from(UserEvents.find({ eventId, status }))
             .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
     }

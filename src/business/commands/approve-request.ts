@@ -1,7 +1,7 @@
 import { IApproveRequest } from './i-approve-request';
 import { Observable, zip, from, of, iif, throwError } from 'rxjs';
 import { INotificationRepository } from '../repositories/i-notification-repository';
-import { map, flatMap } from 'rxjs/operators';
+import { map, flatMap, count } from 'rxjs/operators';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
@@ -25,10 +25,10 @@ export class ApproveRequest implements IApproveRequest {
                 private readonly emailService: EmailService) { }
 
     execute(input: string): Observable<any> {
-        return this.remainingSpots(input)
-            .pipe(flatMap((result) => iif(() => result === 0,
-                this.rejectUser(input),
-                this.approveBySpot(result, input))));
+        return zip(this.remainingSpots(input), this.requestAlreadySent(input))
+            .pipe(flatMap((result) => iif(() => result[1] === true,
+                throwError(new Error(Errors.JoinRequestAlreadySent)),
+                this.approve(input, result[0]))));
     }
 
     private approveBySpot(freeSpots: number, notificationId: string): Observable<boolean> {
@@ -45,10 +45,7 @@ export class ApproveRequest implements IApproveRequest {
         const rejectRemainingUsers = this.rejectRemainingUsers(notificationId);
 
         return zip(approveUser, sendEmailsToPending, rejectRemainingUsers)
-            .pipe(map((result) => {
-                console.log(result[0]);
-                return result[0];
-            }));
+            .pipe(map((result) => result[0]));
     }
 
     private sendEmailsToPendingUsers(notificationId: string) {
@@ -95,7 +92,6 @@ export class ApproveRequest implements IApproveRequest {
 
         const approveFlow = from(Notification.findOneOrFail({ id: input }))
             .pipe(flatMap((entity) => {
-                console.log(entity);
                 entity.status = NotificationStatus.Read;
                 entity.title = NotificationHelper.userApprovedTitle;
                 entity.notificationType = NotificationType.ApproveJoin;
@@ -109,9 +105,6 @@ export class ApproveRequest implements IApproveRequest {
 
         return zip(updateUserEventFlow, approveFlow, notificationTokenFlow)
             .pipe(flatMap((result) => {
-                console.log(result[0]);
-                console.log(result[1]);
-                console.log(result[2]);
                 NotificationHelper.sendNotification(result[1], result[2]);
                 return of(true);
             }));
@@ -126,7 +119,7 @@ export class ApproveRequest implements IApproveRequest {
                 entity.notificationType = NotificationType.RejectJoin;
                 return entity.save();
             }))
-            .pipe(map(() => {
+            .pipe(flatMap(() => {
                 throwError(new Error(Errors.AllSpotsOccupied));
                 return of(false);
             }));
@@ -145,5 +138,24 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(flatMap((result) => iif(() => result[1] === null
                                         , of(999)
                                         , of(result[1] - result[0]))));
+    }
+
+    private requestAlreadySent(notificationId: string): Observable<boolean> {
+        return this.notificationRepository.getById(notificationId)
+                .pipe(flatMap((notification) =>
+                    this.userEventsRepository.find({ userId: notification.createdUser,
+                    eventId: notification.eventId,
+                    status: UserEventsStatus.Approved})))
+                .pipe(flatMap((results) => iif(() => results && results.length > 0,
+                    of(true),
+                    of(false))));
+    }
+
+    private approve(input: string, remainingSpots: number): Observable<boolean> {
+        if (remainingSpots === 0) {
+           return this.rejectUser(input);
+        } else {
+           return  this.approveBySpot(remainingSpots, input);
+        }
     }
 }
