@@ -41,4 +41,7 @@ type Event {
 
     "Number of participants"
     numberOfParticipants: Int
+
+    "The created date of the event"
+    createdDate: DateTime
 }

@@ -13,6 +13,7 @@ import { UserContext } from '../../utilities/user-context';
 import { UserEvents } from '../entities/user-events';
 import moment = require('moment');
 import { Sport } from '../entities/sport';
+import { Brackets } from 'typeorm';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -72,10 +73,16 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
-            .leftJoinAndSelect(UserEvents, 'userEvents', 'userEvents.event_id = event.id')
-            .where('event.owner = :owner', { owner: this.userContext.userId })
-            .andWhere('userEvents.user_id IS NULL')
-            .orWhere('userEvents.user_id = :userId', { userId: this.userContext.userId })
+            .leftJoinAndSelect(UserEvents, 'userEvents',
+                        'userEvents.event_id = event.id AND userEvents.user_id = :userId',
+                        { userId: this.userContext.userId })
+            .where('userEvents.id IS NOT NULL')
+            .orWhere(
+                new Brackets( (qb) => {
+                        qb.where ('event.owner = :owner', { owner: this.userContext.userId });
+                        qb.andWhere('userEvents.id IS NULL');
+                }),
+            )
             .orderBy('event.startDate')
             .addOrderBy('event.title')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)

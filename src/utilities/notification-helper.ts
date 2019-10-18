@@ -22,7 +22,6 @@ export class NotificationHelper {
             userId: event.owner.id,
             avatarUrl: user.picture,
             createdUser: user.id,
-            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.JoinRequest,
             status: NotificationStatus.Unread,
         });
@@ -36,7 +35,6 @@ export class NotificationHelper {
             userId: toUser,
             avatarUrl: fromUser.picture,
             createdUser: event.owner.id,
-            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.ApproveJoin,
             status: NotificationStatus.Unread,
         });
@@ -50,7 +48,6 @@ export class NotificationHelper {
             userId: toUser,
             avatarUrl: fromUser.picture,
             createdUser: event.owner.id,
-            createdDate: (new Date()).toUTCString(),
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.Unread,
         });

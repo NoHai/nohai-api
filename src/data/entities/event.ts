@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { Address } from './address';
 import { Sport } from './sport';
 import { User } from './user';
@@ -47,6 +47,9 @@ export class Event extends BaseEntity {
 
     @Column()
     level!: number;
+
+    @CreateDateColumn({ name: 'created_date'})
+    createdDate!: Date;
 
     constructor(init?: Partial<Event>) {
         super();

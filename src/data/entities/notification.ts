@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('notification')
 export class Notification extends BaseEntity {
@@ -21,8 +21,8 @@ export class Notification extends BaseEntity {
     @Column({ name: 'avatar_url'})
     avatarUrl!: string;
 
-    @Column({ name: 'created_date'})
-    createdDate!: string;
+    @CreateDateColumn({ name: 'created_date'})
+    createdDate!: Date;
 
     @Column({ name: 'created_user'})
     createdUser!: string;

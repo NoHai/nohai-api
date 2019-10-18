@@ -3,6 +3,7 @@
  export class Event extends EventInput {
      id!: string;
      numberOfParticipants!: number;
+     createdDate: any;
 
     constructor(init?: any) {
         super(init);

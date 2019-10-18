@@ -1,3 +1,4 @@
+ scalar DateTime
  type Notification {
       "The id of the notification."
     id: String!
@@ -24,7 +25,7 @@
     status: Int
 
     "The created date of the notification."
-    createdDate: String
+    createdDate: DateTime
 
     "The created user of the notification."
     createdUser: String
