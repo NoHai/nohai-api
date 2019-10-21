@@ -1,7 +1,5 @@
 export enum NotificationType {
-    JoinRequest,
-    JoinResponse,
-    ApproveJoin,
-    RejectJoin,
-    CancelEvent,
+  JoinRequest,
+  ApproveJoin,
+  RejectJoin,
 }
