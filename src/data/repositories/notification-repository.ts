@@ -56,8 +56,9 @@ export class NotificationRepository implements INotificationRepository {
         return from(NotificationEntity.find({ userId: this.userContext.userId, status: 0 }))
             .pipe(map((notifications) => notifications.map((notification) => {
                 notification.status = NotificationStatus.Read;
-                notification.save();
+                return notification;
             })))
+            .pipe(flatMap((notifications) => from(NotificationEntity.save(notifications))))
             .pipe(map(() => true));
     }
 
