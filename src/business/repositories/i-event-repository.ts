@@ -13,4 +13,8 @@ export interface IEventRepository {
     get(parameter: EventsParameter): Observable<Pagination>;
 
     getById(id: string): Observable<EventResult>;
+
+    find(parameter: any): Observable<EventResult[]>;
+
+    delete(id: string): Observable<number | undefined>;
 }

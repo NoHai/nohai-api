@@ -8,15 +8,13 @@ export interface IUserEventsRepository {
 
     update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult>;
 
-    delete(eventId: string, userId: string): Observable<number | undefined>;
+    delete(parameter: any): Observable<number | undefined>;
 
     get(eventId: string): Observable<UserEventsResult[]>;
 
     approvedSpots(eventId: string): Observable<number>;
 
     getByStatus(eventId: string, status: UserEventsStatus): Observable<UserEventsResult[]>;
-
-    deleteByStatus(eventId: string, status: UserEventsStatus): Observable<number | undefined>;
 
     find(parameter: any): Observable<UserEventsResult[]>;
 }

@@ -13,11 +13,12 @@ export class NotificationHelper {
     static userApprovedTitle: string = 'Ai aprobat aceasta cerere';
     static userRejectTitle: string = 'Ai respins aceasta cerere';
     static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
+    static cancelEventTitle: string = 'Evenimentul a fost anulat';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
             title: NotificationHelper.joinNotificationTitle,
-            body: NotificationHelper.joinNotificationBody(event, user),
+            body: NotificationHelper.joinNotificationBody(event, user).trim(),
             eventId: event.id,
             userId: event.owner.id,
             avatarUrl: user.picture,
@@ -30,7 +31,7 @@ export class NotificationHelper {
     static buildApproveNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
             title: NotificationHelper.approveNotificationTitle,
-            body: NotificationHelper.approveRequestBody(event),
+            body: NotificationHelper.approveRequestBody(event).trim(),
             eventId: event.id,
             userId: toUser,
             avatarUrl: fromUser.picture,
@@ -43,7 +44,7 @@ export class NotificationHelper {
     static buildRejectNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
             title: NotificationHelper.rejectNotificationTitle,
-            body: NotificationHelper.rejectRequestBody(event),
+            body: NotificationHelper.rejectRequestBody(event).trim(),
             eventId: event.id,
             userId: toUser,
             avatarUrl: fromUser.picture,
@@ -51,6 +52,28 @@ export class NotificationHelper {
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.Unread,
         });
+    }
+
+    static buildCancelEventNotification(event: any, toUser: string): Notification {
+        return new Notification({
+            title: NotificationHelper.rejectNotificationTitle,
+            body: NotificationHelper.rejectRequestBody(event).trim(),
+            eventId: event.id,
+            userId: toUser,
+            avatarUrl: event.owner.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.RejectJoin,
+            status: NotificationStatus.Unread,
+        });
+    }
+
+    static buildCancelEventNotifications(event: any, toUsers: string[]): Notification[] {
+        const notifications: Notification[] = [];
+        toUsers.forEach((userId) => {
+            notifications.push(NotificationHelper.buildCancelEventNotification(event, userId));
+        });
+
+        return notifications;
     }
 
     static joinNotificationBody(event: Event, user: User): string {
@@ -66,6 +89,8 @@ export class NotificationHelper {
     }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
+        console.log(notification);
+        console.log(tokens);
         if (tokens && tokens.length > 0) {
             return from(SendNotification(tokens, notification.body, notification.title));
         } else {

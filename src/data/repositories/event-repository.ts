@@ -52,6 +52,17 @@ export class EventRepository implements IEventRepository {
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
+    find(parameter: any): Observable<EventResult[]> {
+        console.log(parameter);
+        return from(Event.find(parameter))
+            .pipe(map((event) => EventFactory.results.fromEventEntities(event)));
+    }
+
+    delete(id: string): Observable<number | undefined> {
+        return from(Event.delete(id))
+            .pipe(map((deleteResult) => deleteResult.affected));
+    }
+
     private buildPagination(pagination: any): Pagination {
         return new Pagination({ ...pagination, items: EventFactory.results.fromEventEntities(pagination.items) });
     }

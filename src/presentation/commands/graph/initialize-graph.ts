@@ -34,6 +34,7 @@ import { IRecoverPassword } from '../../../business/commands/i-recover-password'
 import { IUpdateCredentials } from '../../../business/commands/i-update-credentials';
 import { AuthHelper } from '../../../utilities/auth-helper';
 import bodyParser from 'body-parser';
+import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -89,6 +90,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly markAllAsRead: IMarkAllAsRead,
                 private readonly recoverPassword: IRecoverPassword,
                 private readonly updateCredentials: IUpdateCredentials,
+                private readonly cancelEvent: ICancelEvent,
     ) {
     }
 
@@ -179,10 +181,12 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.recoverPassword.execute(context.parameter).toPromise(), false),
                     updateCredentials: (context: any) => this.executer(expContext,
                         () => this.updateCredentials.execute(context.input).toPromise(), false),
+                    cancelEvent: (context: any) => this.executer(expContext,
+                        () => this.cancelEvent.execute(context.parameter).toPromise()),
                 },
                 schema,
                 customFormatErrorFn: (err) => {
-                    return ({ message: err.message});
+                    return ({ message: err.message });
                 },
             };
         });

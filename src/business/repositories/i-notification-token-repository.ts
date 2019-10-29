@@ -7,4 +7,6 @@ export interface INotificationTokenRepository {
     insert(input: string): Observable<NotificationTokenResult>;
 
     delete(userId: string, token: string): Observable<number | undefined>;
+
+    find(parameter: any): Observable<NotificationTokenResult[]>;
 }

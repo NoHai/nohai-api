@@ -14,10 +14,10 @@ export class UserEventsRepository implements IUserEventsRepository {
             .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
     }
 
-    delete(eventId: string, userId: string): Observable<number | undefined> {
-        return from(UserEvents.delete({ eventId, userId }))
-            .pipe(map((res) => res.affected));
-    }
+    delete(parameter: any): Observable<number | undefined> {
+            return from(UserEvents.delete(parameter))
+                .pipe(map((res) => res.affected));
+        }
 
     update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult> {
         return from(UserEvents.findOneOrFail({ eventId, userId }))
@@ -42,11 +42,6 @@ export class UserEventsRepository implements IUserEventsRepository {
     getByStatus(eventId: string, status: UserEventsStatus): Observable<UserEventsResult[]> {
         return from(UserEvents.find({ eventId, status }))
             .pipe(map((entities) => UserEventsFactory.results.fromUserEventsEntities(entities)));
-    }
-
-    deleteByStatus(eventId: string, status: UserEventsStatus): Observable<number | undefined> {
-        return from(UserEvents.delete({ eventId, status}))
-        .pipe(map((deleteResult) => deleteResult.affected));
     }
 
     approvedSpots(eventId: string): Observable<number> {
