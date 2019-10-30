@@ -42,8 +42,7 @@ export class CancelEvent implements ICancelEvent {
         return this.userEventsRepository.find({ eventId})
             .pipe(flatMap((participants) => iif(() => participants !== undefined && participants.length > 0,
                                                     of(true),
-                                                    of(false))))
-            .pipe(tap(console.log));
+                                                    of(false))));
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {

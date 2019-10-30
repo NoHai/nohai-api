@@ -53,7 +53,6 @@ export class EventRepository implements IEventRepository {
     }
 
     find(parameter: any): Observable<EventResult[]> {
-        console.log(parameter);
         return from(Event.find(parameter))
             .pipe(map((event) => EventFactory.results.fromEventEntities(event)));
     }
