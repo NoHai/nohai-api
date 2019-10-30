@@ -2,7 +2,7 @@ import { IEventRepository } from '../repositories/i-event-repository';
 import { UserContext } from '../../utilities/user-context';
 import { of, Observable, iif, zip, from } from 'rxjs';
 import { ICancelEvent } from './i-cancel-event';
-import { map, flatMap, tap, count } from 'rxjs/operators';
+import { map, flatMap, tap, count, catchError, filter } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
@@ -38,12 +38,12 @@ export class CancelEvent implements ICancelEvent {
                                     this.notifyUsersAndDeleteEvent(id))));
     }
 
-
     private hasParticpants(eventId: string): Observable<boolean> {
         return this.userEventsRepository.find({ eventId})
             .pipe(flatMap((participants) => iif(() => participants !== undefined && participants.length > 0,
                                                     of(true),
-                                                    of(false))));
+                                                    of(false))))
+            .pipe(tap(console.log));
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {
@@ -52,23 +52,20 @@ export class CancelEvent implements ICancelEvent {
     }
 
     private deleteEventRelated(id: string) {
-        const deleteUsersEvents = this.userEventsRepository.delete({ eventId: id});
-        const deleteEventFlow = this.eventRepository.delete(id);
-
-        return zip(deleteUsersEvents, deleteEventFlow)
-        .pipe(flatMap((result) => iif(() => result[1] !== undefined, of(true), of(false))));
+        return this.userEventsRepository.delete({ eventId: id})
+            .pipe(flatMap(() => this.eventRepository.delete(id)))
+            .pipe(flatMap((rowsAffected) => iif(() => rowsAffected !== undefined, of(true), of(false))));
     }
 
     private notifyUsersAndDeleteEvent(id: string) {
         const userEventsFlow = this.userEventsRepository.find({ eventId: id})
-        .pipe(map((users) => users.map((u) => u.userId)));
+            .pipe(map((users) => users.map((u) => u.userId)));
 
         const usersFlow = this.userEventsRepository.find({ eventId: id})
                 .pipe(map((userEvents) =>  userEvents.map((u) => u.userId)))
                 .pipe(flatMap((ids) => this.userRepository.getWithCredentials(ids)));
 
         const eventFlow = this.eventRepository.getById(id);
-        const deleteOldNotification  = this.notificationRepository.delete({ eventId: id});
 
         const notificationTokenFlow = this.userEventsRepository.find({ eventId: id})
                 .pipe(map((users) => users.map((u) => u.userId)))
@@ -76,20 +73,27 @@ export class CancelEvent implements ICancelEvent {
 
 
         const sendNotificationsFlow = zip(userEventsFlow, eventFlow, notificationTokenFlow)
-                            .pipe(map((result) => {
-                                const notifications = NotificationHelper.buildCancelEventNotifications(result[1], result[0]);
-                                notifications.map((notification) => this.sendNotification(notification,
-                                                result[2].filter( (n) => n.userId === notification.userId)));
-                                }));
+                                    .pipe(map((result) => {
+                                        const notifications = NotificationHelper.buildCancelEventNotifications(result[1], result[0]);
+                                        notifications.map((notification) => this.sendNotification(notification,
+                                                        result[2].filter( (n) => n.userId === notification.userId)));
+                                        }))
+                                    .pipe(catchError((error) => {
+                                        console.log(error);
+                                        return of(false);
+                                    }))
+                                    .pipe(map(() => true));
 
         const sendEmailsFlow =  zip(eventFlow, usersFlow)
-                    .pipe(map((result) => EmailHelper.getCancelEventEmails(result[1], result[0].title)))
+                                .pipe(map((result) => EmailHelper.getCancelEventEmails(result[1], result[0].title)))
                                 .pipe(flatMap((emails) => this.emailService.sendMultipleEmails(emails)))
                                 .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
                                     of(true),
                                     of(false))));
 
-        return zip(sendNotificationsFlow, sendEmailsFlow, deleteOldNotification)
-            .pipe(flatMap((result) => iif(() => result[2] !== undefined, this.deleteEventRelated(id), of(false))));
+        return   this.notificationRepository.delete({ eventId: id})
+                                    .pipe(flatMap(() => sendNotificationsFlow))
+                                    .pipe(flatMap(() => sendEmailsFlow))
+                                    .pipe(flatMap(() => this.deleteEventRelated(id)));
     }
 }
