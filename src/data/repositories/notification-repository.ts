@@ -100,6 +100,11 @@ export class NotificationRepository implements INotificationRepository {
             .pipe(map((savedEntities) => NotificationFactory.results.fromNotificationEntities(savedEntities)));
     }
 
+    delete(parameter: any): Observable<number | undefined> {
+        return from(NotificationEntity.delete(parameter))
+            .pipe(map((deleteResult) => deleteResult.affected));
+    }
+
     private buildOptions(parameter: PaginationParameter): any {
         return {
             where: { userId: this.userContext.userId },

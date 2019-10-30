@@ -56,4 +56,7 @@ type Mutation {
 
     """It's used to recover password."""
     updateCredentials(input: CredentialsInput!): Boolean
+
+      """It's used to cancel an  event."""
+    cancelEvent(parameter: String!): Boolean
 }

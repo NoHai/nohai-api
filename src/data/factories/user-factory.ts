@@ -45,5 +45,7 @@ export class UserFactory {
                     email: user.login,
                 };
             }),
+        fromUserEntities: (users: UserEntity[]): UserResult[] =>
+            users.map((user) => new UserResult(user)),
     };
 }

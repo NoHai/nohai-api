@@ -31,4 +31,9 @@ export class NotificationTokenRepository implements INotificationTokenRepository
             .pipe(switchMap((entities) => from(entities)))
             .pipe(map((entity) =>  NotificationTokenFactory.results.fromNotificationTokenEntities(entity)));
     }
+
+    find(parameter: any): Observable<NotificationTokenResult[]> {
+        return from(NotificationToken.find(parameter))
+        .pipe(map((entities) => NotificationTokenFactory.results.fromNotificationTokenEntities(entities)));
+    }
 }

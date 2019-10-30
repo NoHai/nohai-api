@@ -44,6 +44,7 @@ import { EmailService } from '../../../services/email-service';
 import { RecoverPassword } from '../../../business/commands/recover-password';
 import { UpdateCredentials } from '../../../business/commands/update-credentials';
 import { AuthController } from '../../../controllers/auth.controller';
+import { CancelEvent } from '../../../business/commands/cancel-event';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -82,6 +83,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { markAllAsRead: asClass(MarkAllAsRead).transient().classic() },
         { recoverPassword: asClass(RecoverPassword).transient().classic() },
         { updateCredentials: asClass(UpdateCredentials).transient().classic() },
+        { cancelEvent: asClass(CancelEvent).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

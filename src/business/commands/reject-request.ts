@@ -19,8 +19,8 @@ export class RejectRequest implements IRejectRequest {
     execute(input: string): Observable<boolean> {
         const deleteUserEventFlow = this.notificationRepository.getById(input)
             .pipe(flatMap((notification) =>
-                this.userEventsRepository.delete(notification.eventId,
-                    notification.createdUser)));
+                this.userEventsRepository.delete({ eventId: notification.eventId,
+                    userId: notification.createdUser})));
 
         const rejectFlow = from(Notification.findOneOrFail({ id: input }))
             .pipe(flatMap((entity) => {

@@ -78,7 +78,8 @@ export class ApproveRequest implements IApproveRequest {
             .pipe(map((paremeters) => this.notificationRepository.rejectAll({ where: paremeters })));
 
         const deleteUserEvents = this.notificationRepository.getById(notificationId)
-            .pipe(map((notification) => this.userEventsRepository.deleteByStatus(notification.eventId, UserEventsStatus.Pending)));
+            .pipe(map((notification) => this.userEventsRepository.delete({ eventId: notification.eventId,
+                                                                        status: UserEventsStatus.Pending})));
 
         return zip(updateNotifications, deleteUserEvents)
             .pipe(map((result) => result[0]));
