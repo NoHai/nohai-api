@@ -54,26 +54,17 @@ export class NotificationHelper {
         });
     }
 
-    static buildCancelEventNotification(event: any, toUser: string): Notification {
+    static buildLeaveEventNotification(event: any, fromUser: User, toUser: string): Notification {
         return new Notification({
             title: NotificationHelper.rejectNotificationTitle,
-            body: NotificationHelper.rejectRequestBody(event).trim(),
+            body: NotificationHelper.rejectRequestBody(event),
             eventId: event.id,
             userId: toUser,
-            avatarUrl: event.owner.picture,
+            avatarUrl: fromUser.picture,
             createdUser: event.owner.id,
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.Unread,
         });
-    }
-
-    static buildCancelEventNotifications(event: any, toUsers: string[]): Notification[] {
-        const notifications: Notification[] = [];
-        toUsers.forEach((userId) => {
-            notifications.push(NotificationHelper.buildCancelEventNotification(event, userId));
-        });
-
-        return notifications;
     }
 
     static joinNotificationBody(event: Event, user: User): string {
@@ -87,6 +78,7 @@ export class NotificationHelper {
     static rejectRequestBody(event: Event): string {
         return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
     }
+
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
         if (tokens && tokens.length > 0) {
