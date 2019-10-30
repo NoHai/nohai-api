@@ -67,6 +67,19 @@ export class NotificationHelper {
         });
     }
 
+    static buildLeaveEventNotification(event: any, fromUser: User, toUser: string): Notification {
+        return new Notification({
+            title: NotificationHelper.rejectNotificationTitle,
+            body: NotificationHelper.rejectRequestBody(event),
+            eventId: event.id,
+            userId: toUser,
+            avatarUrl: fromUser.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.RejectJoin,
+            status: NotificationStatus.Unread,
+        });
+    }
+
     static joinNotificationBody(event: Event, user: User): string {
         return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title}`;
     }
