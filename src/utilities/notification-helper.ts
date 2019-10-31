@@ -70,6 +70,7 @@ export class NotificationHelper {
 
     static buildCancelEventNotifications(event: any, toUsers: string[]): Notification[] {
         const notifications: Notification[] = [];
+        console.log(toUsers);
         toUsers.forEach((userId) => {
             notifications.push(NotificationHelper.buildCancelEventNotification(event, userId));
         });
@@ -92,23 +93,23 @@ export class NotificationHelper {
 
 
     static joinNotificationBody(event: Event, user: User): string {
-        return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title}`;
+        return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title.trim()}`;
     }
 
     static approveRequestBody(event: Event): string {
-        return `Cererea ta de alaturare la evenimentul: ${event.title} a fost aprobata. Te asteptam!`;
+        return `Cererea ta de alaturare la evenimentul: ${event.title.trim()} a fost aprobata. Te asteptam!`;
     }
 
     static rejectRequestBody(event: Event): string {
-        return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
+        return `Cererea ta de alaturare la evenimentul: ${event.title.trim()} a fost respinsa. Ne pare rau!`;
     }
 
     static cancelEventBody(eventTitle: string) {
-        return `Evenimentul ${eventTitle} a fost anulat.`;
+        return `Evenimentul ${eventTitle.trim()} a fost anulat.`;
     }
 
     static leaveEventBody(eventTitle: string, user: any) {
-        return `${user.firstName} ${user.lastName} nu mai poate ajunge la evenimentul tau: ${eventTitle}`;
+        return `${user.firstName} ${user.lastName} nu mai poate ajunge la evenimentul tau: ${eventTitle.trim()}`;
     }
 
 
