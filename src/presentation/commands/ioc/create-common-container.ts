@@ -45,6 +45,7 @@ import { RecoverPassword } from '../../../business/commands/recover-password';
 import { UpdateCredentials } from '../../../business/commands/update-credentials';
 import { AuthController } from '../../../controllers/auth.controller';
 import { CancelEvent } from '../../../business/commands/cancel-event';
+import { LeaveEvent } from '../../../business/commands/leave-event';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -84,6 +85,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { recoverPassword: asClass(RecoverPassword).transient().classic() },
         { updateCredentials: asClass(UpdateCredentials).transient().classic() },
         { cancelEvent: asClass(CancelEvent).transient().classic() },
+        { leaveEvent: asClass(LeaveEvent).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

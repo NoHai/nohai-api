@@ -102,7 +102,7 @@ export class NotificationRepository implements INotificationRepository {
 
     delete(parameter: any): Observable<number | undefined> {
         return from(NotificationEntity.delete(parameter))
-            .pipe(map((deleteResult) => deleteResult.affected));
+            .pipe(flatMap((deleteResult) => of(deleteResult.affected)));
     }
 
     private buildOptions(parameter: PaginationParameter): any {

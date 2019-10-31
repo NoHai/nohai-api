@@ -36,7 +36,6 @@ export class EmailHelper {
     }
 
     static getCancelEventEmails(users: any[], eventTitle: string): Email[] {
-        console.log(users);
         const emails = users.map((user) => {
             return new Email({
                 to: user.email,
@@ -49,6 +48,16 @@ export class EmailHelper {
         });
 
         return emails;
+    }
+
+    static getLeaveEventEmail(user: any, leaveUser: any, eventTitle: string) {
+        return new Email({
+            to: user.login,
+            from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
+            subject: 'Participare anulata',
+            text: this.leaveEventMessage(leaveUser, eventTitle),
+            html: this.getLeaveEventEmailHtml(user, leaveUser, eventTitle),
+        });
     }
 
     static recoverPasswordSuccessfully(email: string): Observable<string> {
@@ -68,8 +77,12 @@ export class EmailHelper {
         return `Ne pare rau sa te anuntam, dar toate locurile la evenimentul ${eventTitle} au fost ocupate.`;
     }
 
-    private static cancelEventMessage(eventTite: string): string {
-        return `Evenimentul ${eventTite} a fost anulat.`;
+    private static cancelEventMessage(eventTitle: string): string {
+        return `Evenimentul ${eventTitle} a fost anulat.`;
+    }
+
+    private static leaveEventMessage(leaveUser: any, eventTitle: string): string {
+        return `${leaveUser.firstName} ${leaveUser.lastName} nu mai ajunge la evenimentul ${eventTitle}`;
     }
 
     private static getRecoveryEmailHtml(user: User, link: string): string {
@@ -129,6 +142,28 @@ export class EmailHelper {
             <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
             dar ${eventTitle} a fost anulat.</mj-text>
             <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
+            <mj-text font-family="helvetica">Iti multumim</mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section>
+        <mj-column>
+            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
+        </mj-column>
+        </mj-section>
+        </mj-body>
+        </mjml>
+        `).html;
+    }
+
+    private static getLeaveEventEmailHtml(user: User, leaveUser: User, eventTitle: string): string {
+        return mjml2html(`
+        <mjml>
+        <mj-body>
+        <mj-section>
+            <mj-column>
+            <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+            <mj-text font-family="helvetica">Participantul ${leaveUser.firstName} ${leaveUser.lastName}
+            nu mai poate participa la ${eventTitle}.</mj-text>
             <mj-text font-family="helvetica">Iti multumim</mj-text>
             </mj-column>
         </mj-section>
