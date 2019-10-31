@@ -14,6 +14,7 @@ export class NotificationHelper {
     static userRejectTitle: string = 'Ai respins aceasta cerere';
     static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
     static cancelEventTitle: string = 'Evenimentul a fost anulat';
+    static leaveEventTitle: string = 'Participare anulata';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
@@ -56,13 +57,13 @@ export class NotificationHelper {
 
     static buildCancelEventNotification(event: any, toUser: string): Notification {
         return new Notification({
-            title: NotificationHelper.rejectNotificationTitle,
-            body: NotificationHelper.rejectRequestBody(event).trim(),
+            title: NotificationHelper.cancelEventTitle,
+            body: NotificationHelper.cancelEventBody(event.title).trim(),
             eventId: event.id,
             userId: toUser,
             avatarUrl: event.owner.picture,
             createdUser: event.owner.id,
-            notificationType: NotificationType.RejectJoin,
+            notificationType: NotificationType.Cancel,
             status: NotificationStatus.Unread,
         });
     }
@@ -76,6 +77,20 @@ export class NotificationHelper {
         return notifications;
     }
 
+    static buildLeaveEventNotification(event: any, user: any): Notification {
+        return new Notification({
+            title: NotificationHelper.leaveEventTitle,
+            body: NotificationHelper.leaveEventBody(event.title, user).trim(),
+            eventId: event.id,
+            userId: event.owner.id,
+            avatarUrl: user.picture,
+            createdUser: user.id,
+            notificationType: NotificationType.Leave,
+            status: NotificationStatus.Unread,
+        });
+    }
+
+
     static joinNotificationBody(event: Event, user: User): string {
         return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title}`;
     }
@@ -86,6 +101,14 @@ export class NotificationHelper {
 
     static rejectRequestBody(event: Event): string {
         return `Cererea ta de alaturare la evenimentul: ${event.title} a fost respinsa. Ne pare rau!`;
+    }
+
+    static cancelEventBody(eventTitle: string) {
+        return `Evenimentul ${eventTitle} a fost anulat.`;
+    }
+
+    static leaveEventBody(eventTitle: string, user: any) {
+        return `${user.firstName} ${user.lastName} nu mai poate ajunge la evenimentul tau: ${eventTitle}`;
     }
 
 

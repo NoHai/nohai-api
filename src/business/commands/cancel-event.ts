@@ -74,8 +74,10 @@ export class CancelEvent implements ICancelEvent {
         const sendNotificationsFlow = zip(userEventsFlow, eventFlow, notificationTokenFlow)
                                     .pipe(map((result) => {
                                         const notifications = NotificationHelper.buildCancelEventNotifications(result[1], result[0]);
-                                        notifications.map((notification) => this.sendNotification(notification,
-                                                        result[2].filter( (n) => n.userId === notification.userId)));
+                                        notifications.map((notification) => {
+                                            notification.save();
+                                            const tokens = result[2].filter( (n) => n.userId === notification.userId);
+                                            this.sendNotification(notification, tokens); });
                                         }))
                                     .pipe(catchError((error) => {
                                         console.log(error);

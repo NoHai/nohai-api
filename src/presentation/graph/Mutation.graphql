@@ -59,4 +59,7 @@ type Mutation {
 
       """It's used to cancel an  event."""
     cancelEvent(parameter: String!): Boolean
+
+      """It's used to leave an  event."""
+    leaveEvent(parameter: String!): Boolean
 }
