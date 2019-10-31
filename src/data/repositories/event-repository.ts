@@ -27,7 +27,7 @@ export class EventRepository implements IEventRepository {
 
         return  zip(eventInput, generateTitle)
             .pipe(flatMap((result) => {
-                result[0].title = result[1];
+                result[0].title = result[1].trim();
                 return result[0].save();
                 }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
