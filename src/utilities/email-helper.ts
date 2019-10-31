@@ -60,6 +60,16 @@ export class EmailHelper {
         });
     }
 
+    static getKickoutUserEmail(kickoutUser: any, eventTitle: string) {
+        return new Email({
+            to: kickoutUser.login,
+            from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
+            subject: 'Participare respinsa',
+            text: this.kickoutUserMessage(eventTitle),
+            html: this.getKickoutEmailHtml(kickoutUser, eventTitle),
+        });
+    }
+
     static recoverPasswordSuccessfully(email: string): Observable<string> {
         return of(`Link-ul de recuperare parola s-a trimis la adresa ${email} si este valid o zi.`);
     }
@@ -82,7 +92,11 @@ export class EmailHelper {
     }
 
     private static leaveEventMessage(leaveUser: any, eventTitle: string): string {
-        return `${leaveUser.firstName} ${leaveUser.lastName} nu mai ajunge la evenimentul ${eventTitle}`;
+        return `${leaveUser.firstName} ${leaveUser.lastName} nu mai ajunge la evenimentul ${eventTitle}.`;
+    }
+
+    private static kickoutUserMessage(eventTitle: string): string {
+        return `Ne pare rau, dar administratorul evenimentului ${eventTitle}, te-a eliminat`;
     }
 
     private static getRecoveryEmailHtml(user: User, link: string): string {
@@ -164,6 +178,29 @@ export class EmailHelper {
             <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
             <mj-text font-family="helvetica">Participantul ${leaveUser.firstName} ${leaveUser.lastName}
             nu mai poate participa la ${eventTitle}.</mj-text>
+            <mj-text font-family="helvetica">Iti multumim</mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section>
+        <mj-column>
+            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
+        </mj-column>
+        </mj-section>
+        </mj-body>
+        </mjml>
+        `).html;
+    }
+
+    private static getKickoutEmailHtml(kickoutUser: User, eventTitle: string): string {
+        return mjml2html(`
+        <mjml>
+        <mj-body>
+        <mj-section>
+            <mj-column>
+            <mj-text font-family="helvetica">Salut ${kickoutUser.firstName} ${kickoutUser.lastName},</mj-text>
+            <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administrattorul evenimentului
+                 ${eventTitle} te-a retras din eveniment.</mj-text>
+            <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
             <mj-text font-family="helvetica">Iti multumim</mj-text>
             </mj-column>
         </mj-section>

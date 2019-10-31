@@ -63,7 +63,11 @@ export class EventRepository implements IEventRepository {
     }
 
     private buildPagination(pagination: any): Pagination {
-        return new Pagination({ ...pagination, items: EventFactory.results.fromEventEntities(pagination.items) });
+        const todayDate = moment.now();
+        console.log(todayDate);
+        return new Pagination({ ...pagination,
+            items: EventFactory.results.fromEventEntities(pagination.items)
+                    .filter((item) => moment(item.startDate).isSameOrAfter(todayDate))});
     }
 
     private buildOptions(parameter: EventsParameter): any {
@@ -119,8 +123,7 @@ export class EventRepository implements IEventRepository {
 
     private generateTitle(input: EventInput, startDate: moment.Moment) {
         return from(Sport.findOneOrFail(input.sport.id))
-            .pipe(map((sport) => `${sport.name},
-                        ${startDate.locale('ro').format('dddd')}
-                        ${startDate.format('DD')} ${startDate.format('MMMM')} ora ${input.startTime}`));
+            // tslint:disable-next-line: max-line-length
+            .pipe(map((sport) => `${sport.name}, ${startDate.locale('ro').format('dddd')} ${startDate.format('DD')} ${startDate.format('MMMM')} ora ${input.startTime}`));
     }
 }

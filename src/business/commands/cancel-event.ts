@@ -53,7 +53,7 @@ export class CancelEvent implements ICancelEvent {
 
     private deleteEventRelated(id: string) {
         return this.userEventsRepository.delete({ eventId: id})
-            // .pipe(flatMap(() => this.eventRepository.delete(id)))
+            .pipe(flatMap(() => this.eventRepository.delete(id)))
             .pipe(flatMap((rowsAffected) => iif(() => rowsAffected !== undefined, of(true), of(false))));
     }
 
