@@ -1,0 +1,7 @@
+"""A parameter model used for different actions that need the user and the event."""
+input EventUserParameter {
+    "It's used to send the user id."
+    userId: String
+    "It's used to send the event id."
+    eventId: String!
+}

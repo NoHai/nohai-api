@@ -46,6 +46,7 @@ import { UpdateCredentials } from '../../../business/commands/update-credentials
 import { AuthController } from '../../../controllers/auth.controller';
 import { CancelEvent } from '../../../business/commands/cancel-event';
 import { LeaveEvent } from '../../../business/commands/leave-event';
+import { KickoutUser } from '../../../business/commands/kickout-user';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -86,6 +87,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { updateCredentials: asClass(UpdateCredentials).transient().classic() },
         { cancelEvent: asClass(CancelEvent).transient().classic() },
         { leaveEvent: asClass(LeaveEvent).transient().classic() },
+        { kickoutUser: asClass(KickoutUser).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

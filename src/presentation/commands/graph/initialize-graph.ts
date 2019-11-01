@@ -36,6 +36,7 @@ import { AuthHelper } from '../../../utilities/auth-helper';
 import bodyParser from 'body-parser';
 import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 import { ILeaveEvent } from '../../../business/commands/i-leave-event';
+import { IKickoutUser } from '../../../business/commands/i-kickout-user';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -93,6 +94,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly updateCredentials: IUpdateCredentials,
                 private readonly cancelEvent: ICancelEvent,
                 private readonly leaveEvent: ILeaveEvent,
+                private readonly kickoutUser: IKickoutUser,
     ) {
     }
 
@@ -187,6 +189,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.cancelEvent.execute(context.parameter).toPromise()),
                     leaveEvent: (context: any) => this.executer(expContext,
                             () => this.leaveEvent.execute(context.parameter).toPromise()),
+                    kickoutUser: (context: any) => this.executer(expContext,
+                                () => this.kickoutUser.execute(context.parameter).toPromise()),
                 },
                 schema,
                 customFormatErrorFn: (err) => {

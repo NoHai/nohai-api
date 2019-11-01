@@ -48,7 +48,7 @@ export class JoinEvent implements IJoinEvent {
         const spotsOccupiesFlow = this.userEventsRepository.approvedSpots(eventId);
 
         return zip(numberOfParticipantsFlow, spotsOccupiesFlow)
-            .pipe(map((result) => result[0] === result[1] || numberOfParticipantsFlow === null));
+            .pipe(map((result) => result[0] === result[1] && numberOfParticipantsFlow !== null));
 
     }
 

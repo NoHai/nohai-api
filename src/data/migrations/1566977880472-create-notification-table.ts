@@ -11,6 +11,7 @@ export class CreateNotificationTable1566977880472 implements MigrationInterface 
                     type: 'varchar(36)',
                 },
                 {
+                    isNullable: true,
                     name: 'event_id',
                     type: 'varchar(36)',
                 },
@@ -45,7 +46,6 @@ export class CreateNotificationTable1566977880472 implements MigrationInterface 
         await queryRunner.createForeignKey('notification', new TableForeignKey({
             columnNames: ['event_id'],
             name: 'FK_notification_event',
-            onUpdate: 'CASCADE',
             referencedColumnNames: ['id'],
             referencedTableName: 'event',
         }));
