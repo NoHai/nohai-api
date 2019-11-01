@@ -38,7 +38,7 @@
     "remove:graph": "rimraf dist/presentation/graph",
     "remove:migrations": "rimraf dist/data/migrations",
     "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "now-build": "npm run lint:fix&& npm run production:build&& npm run production"
+    "now-build": "npm run production:build"
   },
   "repository": {
     "type": "git",
