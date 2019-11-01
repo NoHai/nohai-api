@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "nohai-api",
+    "alias": ["nohai-api"],
+    "scope": "nohai-team",
+    "build": {
+      "env": {
+        "TYPEORM_CONNECTION":  "@nohai-api-typeorm-connection",
+        "TYPEORM_HOST":  "@nohai-api-typeorm-host",
+        "TYPEORM_USERNAME": "@nohai-api-typeorm-username",
+        "TYPEORM_PASSWORD": "@nohai-api-typeorm-password",
+        "TYPEORM_DATABASE": "@nohai-api-typeorm-database",
+        "TYPEORM_PORT": "@nohai-api-typeorm-port",
+        "TYPEORM_SYNCHRONIZE": "@nohai-api-typeorm-synchronize",
+        "TYPEORM_LOGGING":  "@nohai-api-typeorm-logging",
+        "TYPEORM_ENTITIES":  "@nohai-api-typeorm-entities",
+        "TYPEORM_ENTITIES_DIR": "@nohai-api-typeorm-entities-dir",
+        "TYPEORM_SUBSCRIBERS_DIR": "@nohai-api-typeorm-subscribers-dir",
+        "NOHAI_PORT":"@nohai-api-port",
+        "NOHAI_JWT_SECRET":"@nohai-api-jwt-secret",
+        "NOHAI_SENDGRID_API_KEY":"@nohai-api-sendgrid-api-secret",
+        "NOHAI_CUSTOMER_SERVICE_EMAIL":"@nohai-api-customer-service-email",
+        "NOHAI_FIREBASE_PRIVATE_KEY_ID":"@nohai-api-firebase-key-id",
+        "NOHAI_FIREBASE_PRIVATE_KEY":"@nohai-api-firebase-private-key",
+        "NOHAI_FIREBASE_CLIENT_EMAIL":"@nohai-api-firebase-client-email",
+        "NOHAI_FIREBASE_CLIENT_ID":"@nohai-api-firebase-client-id"
+      }
+    },
+    "builds": [
+      { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "build" } }
+    ],
+    "routes": [
+      {
+        "src": "/assets/(.*)",
+        "headers": { "cache-control": "s-maxage=31536000,immutable" },
+        "dest": "/assets/$1"
+      },
+      {
+        "src": "/static/(.*)",
+        "headers": { "cache-control": "s-maxage=31536000,immutable" },
+        "dest": "/static/$1"
+      },
+      { "src": "/favicon.ico", "dest": "/favicon.ico" },
+      { "src": "/asset-manifest.json", "dest": "/asset-manifest.json" },
+      {
+        "src": "/manifest.json",
+        "dest": "/manifest.json",
+        "headers": { "cache-control": "max-age=0,no-cache,no-store,must-revalidate" }
+      },
+      { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
+      {
+        "src": "/service-worker.js",
+        "headers": { "cache-control": "s-maxage=0" },
+        "dest": "/service-worker.js"
+      },
+      { "src": "/(.*)", "headers": { "cache-control": "s-maxage=0" }, "dest": "/index.html" }
+    ]
+  }
+  
