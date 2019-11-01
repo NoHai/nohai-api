@@ -1,7 +1,7 @@
 import { IApproveRequest } from './i-approve-request';
 import { Observable, zip, from, of, iif, throwError } from 'rxjs';
 import { INotificationRepository } from '../repositories/i-notification-repository';
-import { map, flatMap, count } from 'rxjs/operators';
+import { map, flatMap, count, catchError } from 'rxjs/operators';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
@@ -40,12 +40,11 @@ export class ApproveRequest implements IApproveRequest {
     }
 
     private approveLastUser(notificationId: string): Observable<boolean> {
-        const approveUser = this.approveUser(notificationId);
-        const sendEmailsToPending = this.sendEmailsToPendingUsers(notificationId);
-        const rejectRemainingUsers = this.rejectRemainingUsers(notificationId);
-
-        return zip(approveUser, sendEmailsToPending, rejectRemainingUsers)
-            .pipe(map((result) => result[0]));
+        return   this.approveUser(notificationId)
+                    .pipe(flatMap(() => this.sendEmailsToPendingUsers(notificationId)),
+                          flatMap(() => this.rejectRemainingUsers(notificationId)),
+                          flatMap(() => of(true)))
+                    .pipe(catchError(() => of(false)));
     }
 
     private sendEmailsToPendingUsers(notificationId: string) {

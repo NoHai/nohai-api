@@ -11,6 +11,7 @@ export class CreateNotificationTable1566977880472 implements MigrationInterface 
                     type: 'varchar(36)',
                 },
                 {
+                    isNullable: true,
                     name: 'event_id',
                     type: 'varchar(36)',
                 },

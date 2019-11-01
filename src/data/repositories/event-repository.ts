@@ -63,8 +63,7 @@ export class EventRepository implements IEventRepository {
     }
 
     private buildPagination(pagination: any): Pagination {
-        const todayDate = moment.now();
-        console.log(todayDate);
+        const todayDate = moment().format('YYYY-MM-DD');
         return new Pagination({ ...pagination,
             items: EventFactory.results.fromEventEntities(pagination.items)
                     .filter((item) => moment(item.startDate).isSameOrAfter(todayDate))});

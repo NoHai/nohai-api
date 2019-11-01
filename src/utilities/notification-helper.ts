@@ -13,7 +13,7 @@ export class NotificationHelper {
     static userApprovedTitle: string = 'Ai aprobat aceasta cerere';
     static userRejectTitle: string = 'Ai respins aceasta cerere';
     static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
-    static cancelEventTitle: string = 'Evenimentul a fost anulat';
+    static cancelEventTitle: string = 'Eveniment anulat';
     static leaveEventTitle: string = 'Participare anulata';
 
     static buildJoinNotification(event: any, user: User): Notification {
@@ -59,7 +59,6 @@ export class NotificationHelper {
         return new Notification({
             title: NotificationHelper.cancelEventTitle,
             body: NotificationHelper.cancelEventBody(event.title).trim(),
-            eventId: event.id,
             userId: toUser,
             avatarUrl: event.owner.picture,
             createdUser: event.owner.id,
@@ -70,7 +69,6 @@ export class NotificationHelper {
 
     static buildCancelEventNotifications(event: any, toUsers: string[]): Notification[] {
         const notifications: Notification[] = [];
-        console.log(toUsers);
         toUsers.forEach((userId) => {
             notifications.push(NotificationHelper.buildCancelEventNotification(event, userId));
         });
