@@ -37,7 +37,8 @@
     "copy:graph": "copyfiles -f src/presentation/graph/*.graphql dist/presentation/graph&& copyfiles -f src/presentation/graph/results/*.graphql dist/presentation/graph/results&& copyfiles -f src/presentation/graph/parameters/*.graphql dist/presentation/graph/parameters&& copyfiles -f src/presentation/graph/inputs/*.graphql dist/presentation/graph/inputs",
     "remove:graph": "rimraf dist/presentation/graph",
     "remove:migrations": "rimraf dist/data/migrations",
-    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "now-build": "npm run lint:fix&& npm run production:build&& npm run production"
   },
   "repository": {
     "type": "git",
