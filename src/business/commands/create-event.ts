@@ -1,12 +1,11 @@
-import { Observable, of, pipe, zip, from } from 'rxjs';
+import { Observable, of, zip, from } from 'rxjs';
 import { EventInput } from '../models/inputs/event-input';
 import { Event as EventResult } from '../models/results/event';
 import { IEventRepository } from '../repositories/i-event-repository';
 import { ICreateEvent } from './i-create-event';
-import { INotificationRepository } from '../repositories/i-notification-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { IUserRepository } from '../repositories/i-user-repository';
-import { map, flatMap, filter, catchError } from 'rxjs/operators';
+import { flatMap, catchError } from 'rxjs/operators';
 import { UserContext } from '../../utilities/user-context';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { In } from 'typeorm';
@@ -20,41 +19,40 @@ export class CreateEvent implements ICreateEvent {
                 private userContext: UserContext) {
     }
 
-    execute(input: EventInput): Observable<EventResult> {
-        return this.eventRepository.insert(input)
-            .pipe(flatMap((event) => this.sendNotificationsToUsers(event)));
+    execute(input: EventInput): Observable<any> {
+        const userIdsFlow = this.userRepository.find({ favoriteSport: input.sport.id })
+            .pipe(flatMap((users) => users !== undefined
+                ? of(users.map((user) => user.id).filter((id) => id !== this.userContext.userId))
+                : of(users)));
+        const insertFlow = this.eventRepository.insert(input);
+
+        return zip(insertFlow, userIdsFlow)
+            .pipe(flatMap((result) => this.sendNotificationsToUsers(result[0], result[1] === undefined ? [] : result[1])));
     }
 
-    private sendNotificationsToUsers(event: EventResult) {
-        console.log(event);
-        const userIdsFlow =  of(event)
-            .pipe(flatMap((ev) => this.userRepository.find({ favoriteSport: ev.sport.id})),
-                  flatMap((users) => users !== undefined
-                                                ? of(users.map((user) => user.id).filter((id) => id !== this.userContext.userId))
-                                                : of(users) ));
-        const notificationTokenFlow = this.userRepository.find({ favoriteSport: event.sport.id})
-            .pipe(map((users) => users ?  users.map((u) => u.id) : []))
-            .pipe(filter((userIds) => userIds && userIds !== undefined && userIds.length > 0))
-            .pipe(flatMap((ids) =>  this.notificationTokenRepository.find({ where: { userId: In(ids)} })));
+    private sendNotificationsToUsers(event: EventResult, userIds: string[]) {
+        if (userIds && userIds.length > 0) {
+            const eventFlow = this.eventRepository.getById(event.id);
+            const notificationTokenFlow = this.notificationTokenRepository.find({ where: { userId: In(userIds) } });
 
-        return zip(userIdsFlow, notificationTokenFlow)
-                    .pipe(flatMap((result) => {
-                            console.log(result);
-                            const notifications = NotificationHelper.buildCreateEventNotifications(event, result[0]);
-                            notifications.map((notification) => {
-                                const tokens = result[1].filter( (n) => n.userId === notification.userId);
-                                this.sendNotification(notification, tokens); });
-                            return of(event);
-                            }))
-                    .pipe(catchError((error) => {
-                        console.log(error);
-                        return of(event);
-                    }));
+            return zip(eventFlow, notificationTokenFlow)
+                .pipe(flatMap((result) => {
+                    const notifications = NotificationHelper.buildCreateEventNotifications(result[0], userIds);
+                    notifications.map((notification) => {
+                        const tokens = result[1].filter((n) => n.userId === notification.userId);
+                        this.sendNotification(notification, tokens);
+                    });
+                    return of(result[0]);
+                }))
+                .pipe(catchError(() => {
+                    return of(event);
+                }));
+        } else {
+            return of(event);
+        }
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {
-        console.log('send notification');
-        console.log(notification);
         return from(notification.save())
             .pipe(flatMap((noti) => NotificationHelper.sendNotification(noti, tokens.map((to) => to.token))));
     }

@@ -16,6 +16,7 @@ export class NotificationHelper {
     static cancelEventTitle: string = 'Eveniment anulat';
     static leaveEventTitle: string = 'Participare anulata';
     static createEventNotificationTitle: string = 'Avem o sugestie pentru tine';
+    static kickoutUserNotificationTitle: string = 'Retragere eveniment';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
@@ -111,7 +112,19 @@ export class NotificationHelper {
             notificationType: NotificationType.Suggestion,
             status: NotificationStatus.Unread,
         });
+    }
 
+    static buildKickoutUserNotification(event: any, userId: string) {
+        return new Notification({
+            title: NotificationHelper.kickoutUserNotificationTitle,
+            body: NotificationHelper.kickoutUserBody(event.title),
+            eventId: event.id,
+            userId,
+            avatarUrl: event.owner.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.Kickout,
+            status: NotificationStatus.Unread,
+        });
     }
 
     static joinNotificationBody(event: Event, user: User): string {
@@ -138,6 +151,9 @@ export class NotificationHelper {
         return `Credem ca o sa iti placa evenimentul: ${eventTitle}`;
     }
 
+    static kickoutUserBody(eventTitle: string) {
+        return `Administratorul evenimentului ${eventTitle} te-a retras din activitate.`;
+    }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
         if (tokens && tokens.length > 0) {

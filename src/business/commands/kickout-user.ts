@@ -28,7 +28,7 @@ export class KickoutUser implements IKickoutUser {
     }
 
     private sendNotification(event: any, user: any, tokens: any) {
-        const notification = NotificationHelper.buildLeaveEventNotification(event, user);
+        const notification = NotificationHelper.buildKickoutUserNotification(event, user.id);
         notification.save();
         return NotificationHelper.sendNotification(notification, tokens);
     }
