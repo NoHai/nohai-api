@@ -42,9 +42,6 @@ export class KickoutUser implements IKickoutUser {
     }
 
     private removeUserFromEvent(eventId: string, userId: string) {
-        console.log('remove from event');
-        console.log(eventId);
-        console.log(userId);
         const deleteUserEventFlow = this.userEventsRepository.delete({ eventId, userId });
         const userFlow = this.userRepository.getById(userId);
         const eventFlow = this.eventRepository.getById(eventId);

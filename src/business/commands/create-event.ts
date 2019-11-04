@@ -26,29 +26,35 @@ export class CreateEvent implements ICreateEvent {
     }
 
     private sendNotificationsToUsers(event: EventResult) {
-        const userIdsFlow =  this.userRepository.find({ favoriteSport: event.sport.id})
-            .pipe(map((users) => users !== undefined
-                                    ? users.map((user) => user.id).filter((id) => id !== this.userContext.userId)
-                                    : users ));
+        console.log(event);
+        const userIdsFlow =  of(event)
+            .pipe(flatMap((ev) => this.userRepository.find({ favoriteSport: ev.sport.id})),
+                  flatMap((users) => users !== undefined
+                                                ? of(users.map((user) => user.id).filter((id) => id !== this.userContext.userId))
+                                                : of(users) ));
         const notificationTokenFlow = this.userRepository.find({ favoriteSport: event.sport.id})
             .pipe(map((users) => users ?  users.map((u) => u.id) : []))
             .pipe(filter((userIds) => userIds && userIds !== undefined && userIds.length > 0))
             .pipe(flatMap((ids) =>  this.notificationTokenRepository.find({ where: { userId: In(ids)} })));
 
         return zip(userIdsFlow, notificationTokenFlow)
-                    .pipe(map((result) => {
+                    .pipe(flatMap((result) => {
+                            console.log(result);
                             const notifications = NotificationHelper.buildCreateEventNotifications(event, result[0]);
                             notifications.map((notification) => {
                                 const tokens = result[1].filter( (n) => n.userId === notification.userId);
                                 this.sendNotification(notification, tokens); });
-                            return of(true);
-                    }))
-                    .pipe(catchError(() => of(false)))
-                    .pipe(map(() => event));
-
+                            return of(event);
+                            }))
+                    .pipe(catchError((error) => {
+                        console.log(error);
+                        return of(event);
+                    }));
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {
+        console.log('send notification');
+        console.log(notification);
         return from(notification.save())
             .pipe(flatMap((noti) => NotificationHelper.sendNotification(noti, tokens.map((to) => to.token))));
     }
