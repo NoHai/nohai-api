@@ -1,7 +1,7 @@
 import { Observable, of, zip, iif, from } from 'rxjs';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { UserContext } from '../../utilities/user-context';
-import { flatMap, map } from 'rxjs/operators';
+import { flatMap, map, catchError } from 'rxjs/operators';
 import { UserRepository } from '../../data/repositories/user-repository';
 import { EventRepository } from '../../data/repositories/event-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
@@ -22,7 +22,7 @@ export class KickoutUser implements IKickoutUser {
     execute(parameter: any): Observable<boolean> {
       return this.checkIfUserHasRights(parameter.eventId)
         .pipe(flatMap((hasRights) => iif(() => hasRights === true,
-            this.removeUserFromEvent(parameter.event, parameter.userId),
+            this.removeUserFromEvent(parameter.eventId, parameter.userId),
             of(false))));
 
     }
@@ -42,6 +42,9 @@ export class KickoutUser implements IKickoutUser {
     }
 
     private removeUserFromEvent(eventId: string, userId: string) {
+        console.log('remove from event');
+        console.log(eventId);
+        console.log(userId);
         const deleteUserEventFlow = this.userEventsRepository.delete({ eventId, userId });
         const userFlow = this.userRepository.getById(userId);
         const eventFlow = this.eventRepository.getById(eventId);
@@ -52,7 +55,9 @@ export class KickoutUser implements IKickoutUser {
             .pipe(flatMap((result) => {
                 this.sendEmails(result[1], result[2].title);
                 return this.sendNotification(result[2], result[1], result[3]);
-            }));
+            }))
+            .pipe(catchError(() => of(false)))
+            .pipe(flatMap(() => of(true)));
     }
 
     private checkIfUserHasRights(eventId: string) {

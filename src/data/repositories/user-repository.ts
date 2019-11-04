@@ -54,5 +54,11 @@ export class UserRepository implements IUserRepository {
         return from(UserEntity.findByIds( ids))
         .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
     }
+
+    find(parameter: any): Observable<UserResult[] | undefined> {
+        return from (UserEntity.find(parameter))
+            .pipe(map((entities) => UserFactory.results.fromUserEntities(entities)))
+            .pipe(catchError(() => of(undefined)));
+    }
 }
 
