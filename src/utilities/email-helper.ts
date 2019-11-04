@@ -194,12 +194,12 @@ export class EmailHelper {
     private static getKickoutEmailHtml(kickoutUser: User, eventTitle: string): string {
         return mjml2html(`
         <mjml>
-        <mj-body>
+        <mj-body>p
         <mj-section>
             <mj-column>
             <mj-text font-family="helvetica">Salut ${kickoutUser.firstName} ${kickoutUser.lastName},</mj-text>
-            <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administrattorul evenimentului
-                 ${eventTitle} te-a retras din eveniment.</mj-text>
+            <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administratorul evenimentului
+                 ${eventTitle} te-a retras din activitate.</mj-text>
             <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
             <mj-text font-family="helvetica">Iti multumim</mj-text>
             </mj-column>

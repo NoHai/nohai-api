@@ -5,8 +5,6 @@ export class ServiceAccount {
       ? process.env.NOHAI_FIREBASE_PRIVATE_KEY
       : JSON.parse(process.env.NOHAI_FIREBASE_PRIVATE_KEY as string);
 
-    console.log(firebasePrivateKey);
-
     return {
       type: 'service_account',
       project_id: 'nohai-pushnotification',

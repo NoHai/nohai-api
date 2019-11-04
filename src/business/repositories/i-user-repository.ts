@@ -18,4 +18,6 @@ export interface IUserRepository {
     getWithCredentials(ids: any[]): Observable<any[]>;
 
     updateCredentials(input: CredentialsInput): Observable<boolean>;
+
+    find(parameter: any): Observable<User[] | undefined>;
 }

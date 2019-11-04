@@ -15,6 +15,8 @@ export class NotificationHelper {
     static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
     static cancelEventTitle: string = 'Eveniment anulat';
     static leaveEventTitle: string = 'Participare anulata';
+    static createEventNotificationTitle: string = 'Avem o sugestie pentru tine';
+    static kickoutUserNotificationTitle: string = 'Retragere eveniment';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
@@ -89,6 +91,41 @@ export class NotificationHelper {
         });
     }
 
+    static buildCreateEventNotifications(event: any, toUsers: string[] | undefined): Notification[] {
+        const notifications: Notification[] = [];
+        if (toUsers !== undefined) {
+            toUsers.forEach((userId) => {
+                notifications.push(NotificationHelper.buildCreateEventNotification(event, userId));
+            });
+        }
+        return notifications;
+    }
+
+    static buildCreateEventNotification(event: any, userId: string) {
+        return new Notification({
+            title: NotificationHelper.createEventNotificationTitle,
+            body: NotificationHelper.createEventBody(event.title),
+            eventId: event.id,
+            userId,
+            avatarUrl: event.owner.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.Suggestion,
+            status: NotificationStatus.Unread,
+        });
+    }
+
+    static buildKickoutUserNotification(event: any, userId: string) {
+        return new Notification({
+            title: NotificationHelper.kickoutUserNotificationTitle,
+            body: NotificationHelper.kickoutUserBody(event.title),
+            eventId: event.id,
+            userId,
+            avatarUrl: event.owner.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.Kickout,
+            status: NotificationStatus.Unread,
+        });
+    }
 
     static joinNotificationBody(event: Event, user: User): string {
         return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title.trim()}`;
@@ -110,6 +147,13 @@ export class NotificationHelper {
         return `${user.firstName} ${user.lastName} nu mai poate ajunge la evenimentul tau: ${eventTitle.trim()}`;
     }
 
+    static createEventBody(eventTitle: string) {
+        return `Credem ca o sa iti placa evenimentul: ${eventTitle}`;
+    }
+
+    static kickoutUserBody(eventTitle: string) {
+        return `Administratorul evenimentului ${eventTitle} te-a retras din activitate.`;
+    }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
         if (tokens && tokens.length > 0) {
