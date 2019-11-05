@@ -39,6 +39,9 @@ export class User extends BaseEntity {
     @Column({ name: 'favorite_sport'})
     favoriteSport!: string;
 
+    @Column()
+    enabled!: boolean;
+
     constructor(init?: any) {
         super();
         Object.assign(this, init);
