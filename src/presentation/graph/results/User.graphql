@@ -31,5 +31,5 @@ type User {
     loginWithFb: Boolean
 
    "The favorite main sport."
-    favoriteSport: String
+    favoriteSport: Sport
 }

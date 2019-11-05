@@ -4,6 +4,7 @@ import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { AuthHelper } from '../../utilities/auth-helper';
 import { Credentials } from '../../business/models/results/credentials';
+import { Sport } from '../entities/sport';
 
 export class UserFactory {
     static entity = {
@@ -21,7 +22,10 @@ export class UserFactory {
     };
 
     static result = {
-        fromUserEntity: (user: UserEntity) => new UserResult(user),
+        fromUserEntity: (user: UserEntity) => new UserResult({
+            ...user,
+            favoriteSport: Sport.findOne(user.favoriteSport),
+        }),
         fromUserWithCredentials: (user: UserEntity) => {
             const res = new UserResult(user);
             return {
