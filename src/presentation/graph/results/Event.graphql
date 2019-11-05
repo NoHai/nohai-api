@@ -25,10 +25,10 @@ type Event {
     cost: Float
 
     "The start date of the event."
-    startDate: String
+    startDate: DateTime
 
     "The end date of the event."
-    endDate: String
+    endDate: DateTime
 
     "The hour of the event."
     startTime: String
