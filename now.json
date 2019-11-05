@@ -3,7 +3,7 @@
   "name": "nohai-api",
   "alias": ["nohai-api"],
   "scope": "nohai-team",
-  "build": {
+  "build":{
     "env": {
       "TYPEORM_CONNECTION": "@nohai-api-typeorm-connection",
       "TYPEORM_HOST": "@nohai-api-typeorm-host",
@@ -29,10 +29,36 @@
       "NOHAI_FIREBASE_CLIENT_ID": "@nohai-api-firebase-client-id"
     }
   },
+  "env": {
+    "TYPEORM_CONNECTION": "@nohai-api-typeorm-connection",
+    "TYPEORM_HOST": "@nohai-api-typeorm-host",
+    "TYPEORM_USERNAME": "@nohai-api-typeorm-username",
+    "TYPEORM_PASSWORD": "@nohai-api-typeorm-password",
+    "TYPEORM_DATABASE": "@nohai-api-typeorm-database",
+    "TYPEORM_PORT": "@nohai-api-typeorm-port",
+    "TYPEORM_SYNCHRONIZE": "@nohai-api-typeorm-synchronize",
+    "TYPEORM_LOGGING": "@nohai-api-typeorm-logging",
+    "TYPEORM_ENTITIES": "@nohai-api-typeorm-entities",
+    "TYPEORM_ENTITIES_DIR": "@nohai-api-typeorm-entities-dir",
+    "TYPEORM_SUBSCRIBERS_DIR": "@nohai-api-typeorm-subscribers-dir",
+    "TYPEORM_MIGRATIONS": "@nohai-api-typeorm-migrations",
+    "TYPEORM_MIGRATIONS_DIR": "@nohai-api-typeorm--migrations-dir",
+    "TYPEORM_MIGRATIONS_RUN": "@nohai-api-typeorm-migrations-run",
+    "NOHAI_PORT": "@nohai-api-port",
+    "NOHAI_JWT_SECRET": "@nohai-api-jwt-secret",
+    "NOHAI_SENDGRID_API_KEY": "@nohai-api-sendgrid-api-secret",
+    "NOHAI_CUSTOMER_SERVICE_EMAIL": "@nohai-api-customer-service-email",
+    "NOHAI_FIREBASE_PRIVATE_KEY_ID": "@nohai-api-firebase-key-id",
+    "NOHAI_FIREBASE_PRIVATE_KEY": "@nohai-api-firebase-private-key",
+    "NOHAI_FIREBASE_CLIENT_EMAIL": "@nohai-api-firebase-client-email",
+    "NOHAI_FIREBASE_CLIENT_ID": "@nohai-api-firebase-client-id"
+  },
+
   "builds": [
     {
       "src": "dist/index.js",
-      "use": "@now/node"
+      "use": "@now/node-server",
+      "config": { "maxLambdaSize": "50mb" }
     }
   ],
   "routes": [
