@@ -30,10 +30,10 @@ export class Event extends BaseEntity {
     cost!: number;
 
     @Column({ name: 'start_date'})
-    startDate!: string;
+    startDate!: Date;
 
     @Column({ name: 'end_date'})
-    endDate!: string;
+    endDate!: Date;
 
     @Column({ name: 'start_time'})
     startTime!: string;

@@ -10,8 +10,8 @@ export class EventInput {
     sport!: Sport;
     freeSpots!: number;
     cost!: number;
-    startDate!: string;
-    endDate!: string;
+    startDate!: Date;
+    endDate!: Date;
     startTime!: string;
     endTime!: string;
     level!: number;

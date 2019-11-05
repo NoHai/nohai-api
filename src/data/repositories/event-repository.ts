@@ -13,7 +13,7 @@ import { UserContext } from '../../utilities/user-context';
 import { UserEvents } from '../entities/user-events';
 import moment = require('moment');
 import { Sport } from '../entities/sport';
-import { Brackets } from 'typeorm';
+import { Brackets, MoreThanOrEqual } from 'typeorm';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -25,11 +25,11 @@ export class EventRepository implements IEventRepository {
         const eventInput = of(EventFactory.entity.fromEventInput(input, this.userContext.userId));
         const generateTitle = this.generateTitle(input, startDate);
 
-        return  zip(eventInput, generateTitle)
+        return zip(eventInput, generateTitle)
             .pipe(flatMap((result) => {
                 result[0].title = result[1].trim();
                 return result[0].save();
-                }))
+            }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
@@ -63,16 +63,20 @@ export class EventRepository implements IEventRepository {
     }
 
     private buildPagination(pagination: any): Pagination {
-        const todayDate = moment().format('YYYY-MM-DD');
-        return new Pagination({ ...pagination,
-            items: EventFactory.results.fromEventEntities(pagination.items)
-                    .filter((item) => moment(item.startDate).isSameOrAfter(todayDate))});
+        return new Pagination({
+            ...pagination,
+            items: EventFactory.results.fromEventEntities(pagination.items),
+        });
     }
 
     private buildOptions(parameter: EventsParameter): any {
+        const todayDate = moment().format('YYYY-MM-DD').toString();
         return {
+            where: {
+                startDate: MoreThanOrEqual(todayDate),
+            },
             order: {
-                endDate: 'ASC',
+                startDate: 'ASC',
                 title: 'ASC',
             },
             relations: ['address', 'sport'],
@@ -87,13 +91,13 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
             .leftJoinAndSelect(UserEvents, 'userEvents',
-                        'userEvents.event_id = event.id AND userEvents.user_id = :userId',
-                        { userId: this.userContext.userId })
+                'userEvents.event_id = event.id AND userEvents.user_id = :userId',
+                { userId: this.userContext.userId })
             .where('userEvents.id IS NOT NULL')
             .orWhere(
-                new Brackets( (qb) => {
-                        qb.where ('event.owner = :owner', { owner: this.userContext.userId });
-                        qb.andWhere('userEvents.id IS NULL');
+                new Brackets((qb) => {
+                    qb.where('event.owner = :owner', { owner: this.userContext.userId });
+                    qb.andWhere('userEvents.id IS NULL');
                 }),
             )
             .orderBy('event.startDate')
@@ -102,7 +106,7 @@ export class EventRepository implements IEventRepository {
             .take(parameter.pagination.pageSize)
             .getManyAndCount();
 
-        return new Pagination ({
+        return new Pagination({
             items: EventFactory.results.fromEventEntities(items),
             pageIndex: parameter.pagination.pageIndex,
             pageSize: parameter.pagination.pageSize,

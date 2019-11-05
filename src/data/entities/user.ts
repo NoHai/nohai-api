@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Sport } from './sport';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -36,8 +37,12 @@ export class User extends BaseEntity {
     @Column({ name: 'login_with_fb'})
     loginWithFb!: boolean;
 
-    @Column({ name: 'favorite_sport'})
-    favoriteSport!: string;
+    @OneToOne(() => Sport, (sport) => sport.id, { cascade: false, eager: true })
+    @JoinColumn({ name: 'favorite_sport'})
+    favoriteSport!: Sport;
+
+    @Column()
+    enabled!: boolean;
 
     constructor(init?: any) {
         super();

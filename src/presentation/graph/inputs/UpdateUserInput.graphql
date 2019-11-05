@@ -16,5 +16,5 @@ input UpdateUserInput {
     weight: Float 
 
     "The favorite main sport."
-    favoriteSport: String
+    favoriteSport: SportInput
 }

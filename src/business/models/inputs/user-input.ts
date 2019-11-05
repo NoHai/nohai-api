@@ -1,3 +1,5 @@
+import { Sport } from '../results/sport';
+
 export class UserInput {
     firstName!: string;
     lastName!: string;
@@ -5,7 +7,7 @@ export class UserInput {
     height!: number;
     weight!: number;
     city!: string;
-    favoriteSport!: string;
+    favoriteSport!: Sport;
     loginWithFb!: boolean;
 
     constructor(init?: any) {
