@@ -37,6 +37,7 @@ import bodyParser from 'body-parser';
 import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 import { ILeaveEvent } from '../../../business/commands/i-leave-event';
 import { IKickoutUser } from '../../../business/commands/i-kickout-user';
+import { ICancelPendingRequest } from '../../../business/commands/i-cancel-pending-request';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -66,35 +67,36 @@ export class InitializeGraph implements IInitializeGraph {
     }
 
     constructor(private readonly express: any,
-                private readonly createEvent: ICreateEvent,
-                private readonly createUser: ICreateUser,
-                private readonly createTokens: ICreateTokens,
-                private readonly updateUser: IUpdateUser,
-                private readonly eventById: IGetEventById,
-                private readonly events: IGetEvents,
-                private readonly eventDetails: IGetEventDetails,
-                private readonly sports: IGetSports,
-                private readonly createNotification: ICreateNotification,
-                private readonly getNotifications: IGetNotifications,
-                private readonly createNotificationToken: ICreateNotificationToken,
-                private readonly getNotificationTokens: IGetNotificationTokens,
-                private readonly deleteNotificationToken: IDeleteNotificationToken,
-                private readonly joinEvent: IJoinEvent,
-                private readonly getUserById: IGetUserById,
-                private readonly createUserContext: ICreateUserContext,
-                private readonly refreshToken: IRefreshToken,
-                private readonly loginFacebook: ILoginFacebook,
-                private readonly approveRequest: IApproveRequest,
-                private readonly rejectRequest: IRejectRequest,
-                private readonly cities: IGetCities,
-                private readonly counties: IGetCounties,
-                private readonly markAsRead: IMarkAsRead,
-                private readonly markAllAsRead: IMarkAllAsRead,
-                private readonly recoverPassword: IRecoverPassword,
-                private readonly updateCredentials: IUpdateCredentials,
-                private readonly cancelEvent: ICancelEvent,
-                private readonly leaveEvent: ILeaveEvent,
-                private readonly kickoutUser: IKickoutUser,
+        private readonly createEvent: ICreateEvent,
+        private readonly createUser: ICreateUser,
+        private readonly createTokens: ICreateTokens,
+        private readonly updateUser: IUpdateUser,
+        private readonly eventById: IGetEventById,
+        private readonly events: IGetEvents,
+        private readonly eventDetails: IGetEventDetails,
+        private readonly sports: IGetSports,
+        private readonly createNotification: ICreateNotification,
+        private readonly getNotifications: IGetNotifications,
+        private readonly createNotificationToken: ICreateNotificationToken,
+        private readonly getNotificationTokens: IGetNotificationTokens,
+        private readonly deleteNotificationToken: IDeleteNotificationToken,
+        private readonly joinEvent: IJoinEvent,
+        private readonly getUserById: IGetUserById,
+        private readonly createUserContext: ICreateUserContext,
+        private readonly refreshToken: IRefreshToken,
+        private readonly loginFacebook: ILoginFacebook,
+        private readonly approveRequest: IApproveRequest,
+        private readonly rejectRequest: IRejectRequest,
+        private readonly cities: IGetCities,
+        private readonly counties: IGetCounties,
+        private readonly markAsRead: IMarkAsRead,
+        private readonly markAllAsRead: IMarkAllAsRead,
+        private readonly recoverPassword: IRecoverPassword,
+        private readonly updateCredentials: IUpdateCredentials,
+        private readonly cancelEvent: ICancelEvent,
+        private readonly leaveEvent: ILeaveEvent,
+        private readonly kickoutUser: IKickoutUser,
+        private readonly cancelPendingRequest: ICancelPendingRequest,
     ) {
     }
 
@@ -188,15 +190,17 @@ export class InitializeGraph implements IInitializeGraph {
                     cancelEvent: (context: any) => this.executer(expContext,
                         () => this.cancelEvent.execute(context.parameter).toPromise()),
                     leaveEvent: (context: any) => this.executer(expContext,
-                            () => this.leaveEvent.execute(context.parameter).toPromise()),
+                        () => this.leaveEvent.execute(context.parameter).toPromise()),
                     kickoutUser: (context: any) => this.executer(expContext,
-                                () => this.kickoutUser.execute(context.parameter).toPromise()),
+                        () => this.kickoutUser.execute(context.parameter).toPromise()),
+                    cancelPendingRequest: (context: any) => this.executer(expContext,
+                         () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
                 },
-                schema,
-                customFormatErrorFn: (err) => {
-                    return ({ message: err.message });
-                },
-            };
+    schema,
+    customFormatErrorFn: (err) => {
+        return({ message: err.message });
+    },
+};
         });
     }
 }
