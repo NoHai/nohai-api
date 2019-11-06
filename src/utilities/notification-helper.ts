@@ -17,6 +17,7 @@ export class NotificationHelper {
     static leaveEventTitle: string = 'Participare anulata';
     static createEventNotificationTitle: string = 'Avem o sugestie pentru tine';
     static kickoutUserNotificationTitle: string = 'Retragere eveniment';
+    static editEventNotificationTitle: string = 'Modificare eveniment';
 
     static buildJoinNotification(event: any, user: User): Notification {
         return new Notification({
@@ -114,6 +115,16 @@ export class NotificationHelper {
         });
     }
 
+    static buildEditEventNotifications(event: any, toUsers: string[] | undefined): Notification[] {
+        const notifications: Notification[] = [];
+        if (toUsers !== undefined) {
+            toUsers.forEach((userId) => {
+                notifications.push(NotificationHelper.buildEditEventNotification(event, userId));
+            });
+        }
+        return notifications;
+    }
+
     static buildKickoutUserNotification(event: any, userId: string) {
         return new Notification({
             title: NotificationHelper.kickoutUserNotificationTitle,
@@ -123,6 +134,18 @@ export class NotificationHelper {
             avatarUrl: event.owner.picture,
             createdUser: event.owner.id,
             notificationType: NotificationType.Kickout,
+            status: NotificationStatus.Unread,
+        });
+    }
+
+    static buildEditEventNotification(event: any, toUser: string): Notification {
+        return new Notification({
+            title: NotificationHelper.editEventNotificationTitle,
+            body: NotificationHelper.editEventBody(event.title),
+            userId: toUser,
+            avatarUrl: event.owner.picture,
+            createdUser: event.owner.id,
+            notificationType: NotificationType.Edit,
             status: NotificationStatus.Unread,
         });
     }
@@ -153,6 +176,10 @@ export class NotificationHelper {
 
     static kickoutUserBody(eventTitle: string) {
         return `Administratorul evenimentului ${eventTitle} te-a retras din activitate.`;
+    }
+
+    static editEventBody(eventTitle: string){
+        return `Evenimentul ${eventTitle} a fost modificat.`;
     }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
