@@ -8,15 +8,19 @@ import { flatMap, catchError } from 'rxjs/operators';
 
 export class CancelPendingRequest implements ICancelPendingRequest {
 
-    constructor(private readonly notificatioRepository: INotificationRepository,
+    constructor(private readonly notificationRepository: INotificationRepository,
                 private readonly userEventsRepository: IUserEventsRepository,
                 private readonly userContext: UserContext) {
 
     }
 
     execute(parameter: string): Observable<boolean> {
-        return this.notificatioRepository.delete({ eventId: parameter, userId: this.userContext.userId, type: NotificationType.JoinRequest})
-            .pipe(flatMap(() => this.userEventsRepository.delete({ eventId: parameter, userId: this.userContext.userId})))
+        return this.notificationRepository.delete({
+            eventId: parameter,
+            userId: this.userContext.userId,
+            type: NotificationType.JoinRequest,
+        })
+            .pipe(flatMap(() => this.userEventsRepository.delete({ eventId: parameter, userId: this.userContext.userId })))
             .pipe(flatMap((deleteResult) => iif(() => deleteResult !== undefined && deleteResult > 0, of(true), of(false))))
             .pipe(catchError(() => of(false)));
     }
