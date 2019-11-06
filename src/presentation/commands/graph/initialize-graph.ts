@@ -37,6 +37,7 @@ import bodyParser from 'body-parser';
 import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 import { ILeaveEvent } from '../../../business/commands/i-leave-event';
 import { IKickoutUser } from '../../../business/commands/i-kickout-user';
+import { ICancelPendingRequest } from '../../../business/commands/i-cancel-pending-request';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -95,6 +96,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly cancelEvent: ICancelEvent,
                 private readonly leaveEvent: ILeaveEvent,
                 private readonly kickoutUser: IKickoutUser,
+                private readonly cancelPendingRequest: ICancelPendingRequest,
     ) {
     }
 
@@ -188,15 +190,17 @@ export class InitializeGraph implements IInitializeGraph {
                     cancelEvent: (context: any) => this.executer(expContext,
                         () => this.cancelEvent.execute(context.parameter).toPromise()),
                     leaveEvent: (context: any) => this.executer(expContext,
-                            () => this.leaveEvent.execute(context.parameter).toPromise()),
+                        () => this.leaveEvent.execute(context.parameter).toPromise()),
                     kickoutUser: (context: any) => this.executer(expContext,
-                                () => this.kickoutUser.execute(context.parameter).toPromise()),
+                        () => this.kickoutUser.execute(context.parameter).toPromise()),
+                    cancelPendingRequest: (context: any) => this.executer(expContext,
+                            () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
                 },
-                schema,
-                customFormatErrorFn: (err) => {
-                    return ({ message: err.message });
-                },
-            };
+    schema,
+    customFormatErrorFn: (err) => {
+        return({ message: err.message });
+    },
+};
         });
     }
 }

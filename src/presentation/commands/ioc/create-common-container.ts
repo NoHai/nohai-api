@@ -47,6 +47,7 @@ import { AuthController } from '../../../controllers/auth.controller';
 import { CancelEvent } from '../../../business/commands/cancel-event';
 import { LeaveEvent } from '../../../business/commands/leave-event';
 import { KickoutUser } from '../../../business/commands/kickout-user';
+import { CancelPendingRequest } from '../../../business/commands/cancel-pending-request';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -76,7 +77,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { joinEvent: asClass(JoinEvent).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
         { refreshToken: asClass(RefreshToken).transient().classic() },
-        { loginFacebook : asClass(LoginFacebook).transient().classic() },
+        { loginFacebook: asClass(LoginFacebook).transient().classic() },
         { approveRequest: asClass(ApproveRequest).transient().classic() },
         { rejectRequest: asClass(RejectRequest).transient().classic() },
         { cities: asClass(GetCities).transient().classic() },
@@ -88,6 +89,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { cancelEvent: asClass(CancelEvent).transient().classic() },
         { leaveEvent: asClass(LeaveEvent).transient().classic() },
         { kickoutUser: asClass(KickoutUser).transient().classic() },
+        { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
@@ -114,7 +116,7 @@ export class CreateCommonContainer implements ICreateContainer {
     ];
 
     private readonly providers: ReadonlyArray<any> = [
-        { emailService:  asClass(EmailService).singleton().classic() },
+        { emailService: asClass(EmailService).singleton().classic() },
         { authController: asClass(AuthController).singleton().classic() },
     ];
 

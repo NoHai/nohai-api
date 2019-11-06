@@ -1,5 +1,5 @@
 import { Observable, of, from, zip } from 'rxjs';
-import { map, switchMap, flatMap } from 'rxjs/operators';
+import { map, switchMap, flatMap, tap } from 'rxjs/operators';
 import { INotificationRepository } from '../../business/repositories/i-notification-repository';
 import { Notification as NotificationResult } from '../../business/models/results/notification';
 import { Notification as NotificationEntity } from '../entities/notification';
@@ -101,6 +101,7 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     delete(parameter: any): Observable<number | undefined> {
+        console.log(parameter);
         return from(NotificationEntity.delete(parameter))
             .pipe(flatMap((deleteResult) => of(deleteResult.affected)));
     }
