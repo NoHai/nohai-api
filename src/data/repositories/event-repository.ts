@@ -90,6 +90,15 @@ export class EventRepository implements IEventRepository {
         };
     }
 
+    private countTotalOptions() {
+        const todayDate = moment().format('YYYY-MM-DD').toString();
+        return {
+            where: {
+                startDate: MoreThanOrEqual(todayDate),
+            },
+        };
+    }
+
     private async getHistoryEvents(parameter: EventsParameter): Promise<Pagination> {
         const [items, count] = await Event.createQueryBuilder('event')
             .leftJoinAndSelect('event.sport', 'sport')
@@ -125,6 +134,7 @@ export class EventRepository implements IEventRepository {
             .withEntity(Event)
             .withParameter(parameter.pagination)
             .withItemsOptions(this.buildOptions(parameter))
+            .withTotalCountOptions(this.countTotalOptions())
             .execute()
             .pipe(map((pagination) => this.buildPagination(pagination)));
     }
