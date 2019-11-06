@@ -156,6 +156,7 @@ export class NotificationHelper {
     }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
+        console.log(tokens);
         if (tokens && tokens.length > 0) {
             return from(SendNotification(tokens, notification.body, notification.title));
         } else {

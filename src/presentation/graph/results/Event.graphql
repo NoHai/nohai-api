@@ -44,4 +44,7 @@ type Event {
 
     "The created date of the event"
     createdDate: DateTime
+
+    "The status of the event"
+    enabled: Boolean
 }

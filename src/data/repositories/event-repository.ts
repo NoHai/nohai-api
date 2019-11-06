@@ -1,5 +1,5 @@
 import { from, Observable, of, zip } from 'rxjs';
-import { map, switchMap, flatMap } from 'rxjs/operators';
+import { map, switchMap, flatMap, catchError } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { EventsParameter } from '../../business/models/parameters/events-parameter';
@@ -57,9 +57,14 @@ export class EventRepository implements IEventRepository {
             .pipe(map((event) => EventFactory.results.fromEventEntities(event)));
     }
 
-    delete(id: string): Observable<number | undefined> {
-        return from(Event.delete(id))
-            .pipe(map((deleteResult) => deleteResult.affected));
+    delete(id: string): Observable<boolean> {
+        return from(Event.findOneOrFail(id))
+            .pipe(map((entity) => {
+                entity.enabled = false;
+                entity.save();
+                return true;
+            }))
+            .pipe(catchError(() => of(false)));
     }
 
     private buildPagination(pagination: any): Pagination {
