@@ -51,6 +51,9 @@ export class Event extends BaseEntity {
     @CreateDateColumn({ name: 'created_date'})
     createdDate!: Date;
 
+    @Column()
+    enabled!: boolean;
+
     constructor(init?: Partial<Event>) {
         super();
         Object.assign(this, init);

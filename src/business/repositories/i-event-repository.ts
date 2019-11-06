@@ -16,5 +16,5 @@ export interface IEventRepository {
 
     find(parameter: any): Observable<EventResult[]>;
 
-    delete(id: string): Observable<number | undefined>;
+    delete(id: string): Observable<boolean>;
 }
