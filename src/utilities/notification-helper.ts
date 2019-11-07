@@ -178,7 +178,7 @@ export class NotificationHelper {
         return `Administratorul evenimentului ${eventTitle} te-a retras din activitate.`;
     }
 
-    static editEventBody(eventTitle: string){
+    static editEventBody(eventTitle: string) {
         return `Evenimentul ${eventTitle} a fost modificat.`;
     }
 

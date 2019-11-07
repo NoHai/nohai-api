@@ -101,7 +101,6 @@ export class NotificationRepository implements INotificationRepository {
     }
 
     delete(parameter: any): Observable<number | undefined> {
-        console.log(parameter);
         return from(NotificationEntity.delete(parameter))
             .pipe(flatMap((deleteResult) => of(deleteResult.affected)));
     }

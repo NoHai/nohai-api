@@ -52,7 +52,7 @@ export class Event extends BaseEntity {
     createdDate!: Date;
 
     @Column()
-    enabled!: boolean;
+    status!: number;
 
     constructor(init?: Partial<Event>) {
         super();

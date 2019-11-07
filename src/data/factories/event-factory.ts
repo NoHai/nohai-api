@@ -9,9 +9,7 @@ import { Sport } from '../entities/sport';
 import { UserFactory } from './user-factory';
 import { UserEvents } from '../entities/user-events';
 import { NotificationType } from '../enums/notification-type';
-import { from, zip } from 'rxjs';
-import moment from 'moment';
-import { tap, map, flatMap } from 'rxjs/operators';
+import { EventStatus } from '../enums/event-status';
 
 export class EventFactory {
     static entity = {
@@ -25,6 +23,7 @@ export class EventFactory {
             ...event,
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
+            status: EventStatus.Edited,
         }),
     };
 

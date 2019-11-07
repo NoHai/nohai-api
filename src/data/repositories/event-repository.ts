@@ -14,6 +14,7 @@ import { UserEvents } from '../entities/user-events';
 import moment = require('moment');
 import { Sport } from '../entities/sport';
 import { Brackets, MoreThanOrEqual } from 'typeorm';
+import { EventStatus } from '../enums/event-status';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -60,7 +61,7 @@ export class EventRepository implements IEventRepository {
     delete(id: string): Observable<boolean> {
         return from(Event.findOneOrFail(id))
             .pipe(map((entity) => {
-                entity.enabled = false;
+                entity.status = EventStatus.Cancelled;
                 entity.save();
                 return true;
             }))
