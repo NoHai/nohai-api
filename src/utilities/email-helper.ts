@@ -16,7 +16,7 @@ export class EmailHelper {
                 html: this.getRecoveryEmailHtml(user, link),
             });
         } else {
-           throwError(new Error(Errors.UnableToSendEmail));
+            throwError(new Error(Errors.UnableToSendEmail));
         }
     }
 
@@ -85,6 +85,17 @@ export class EmailHelper {
         return emails;
     }
 
+    static getConfirmationEmail(emailAddress: string, link: string) {
+        return new Email({
+            to: emailAddress,
+            from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
+            subject: 'Confirmare cont NoHai',
+            text: this.confirmMessage(link),
+            html: this.getConfirmationEmailHtml(link),
+        });
+    }
+
+
     static recoverPasswordSuccessfully(email: string): Observable<string> {
         return of(`Link-ul de recuperare parola s-a trimis la adresa ${email} si este valid o zi.`);
     }
@@ -116,6 +127,10 @@ export class EmailHelper {
 
     private static editEventMessage(eventTitle: string): string {
         return `Evenimentul ${eventTitle} a fost modificat.`;
+    }
+
+    private static confirmMessage(link: string): string {
+        return `Pentru a confirma contul NoHai creat, acceseaza link-ul ${link}.`;
     }
 
     private static getRecoveryEmailHtml(user: User, link: string): string {
@@ -241,6 +256,30 @@ export class EmailHelper {
             <mj-column>
             <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
             <mj-text font-family="helvetica">Detaliile evenimentului ${eventTitle} au fost modificate.</mj-text>
+            <mj-text font-family="helvetica">Iti multumim</mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section>
+        <mj-column>
+            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
+        </mj-column>
+        </mj-section>
+        </mj-body>
+        </mjml>
+        `).html;
+    }
+
+    private static getConfirmationEmailHtml(link: string) {
+        return mjml2html(`
+        <mjml>
+        <mj-body>p
+        <mj-section>
+            <mj-column>
+            <mj-text font-family="helvetica">No hai cu noi,</mj-text>
+            <mj-text font-family="helvetica">Pentru a confirma contul tau te rugam sa accesezi link-ul de mai jos. </mj-text>
+            <mj-text>
+              <a href="${link}">Confirmare cont</a>
+            </mj-text>
             <mj-text font-family="helvetica">Iti multumim</mj-text>
             </mj-column>
         </mj-section>
