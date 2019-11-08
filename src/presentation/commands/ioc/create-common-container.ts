@@ -50,6 +50,7 @@ import { CancelPendingRequest } from '../../../business/commands/cancel-pending-
 import { SearchEvents } from '../../../business/commands/search-events';
 import { SaveEvent } from '../../../business/commands/save-event';
 import { UpdateEvent } from '../../../business/commands/update-event';
+import { ActivateUser } from '../../../business/commands/activate-user';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -94,6 +95,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { kickoutUser: asClass(KickoutUser).transient().classic() },
         { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
         { saveEvent: asClass(SaveEvent).transient().classic() },
+        { activateUser: asClass(ActivateUser).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
