@@ -21,6 +21,12 @@ export class UserFactory {
         fromId: (id: string) => new UserEntity({ id }),
     };
 
+    static credentials = {
+        fromUserEntity: (user: UserEntity) => new Credentials({
+            ...user,
+        }),
+    };
+
     static result = {
         fromUserEntity: (user: UserEntity) => new UserResult({
             ...user,
@@ -33,7 +39,7 @@ export class UserFactory {
                 email: user.login,
             };
         },
-        fromCredentials : (cred: Credentials) => new UserResult({
+        fromCredentials: (cred: Credentials) => new UserResult({
             login: cred.login,
             id: cred.id,
             loginWithFb: cred.loginWithFb,

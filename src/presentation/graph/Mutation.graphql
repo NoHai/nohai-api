@@ -68,4 +68,7 @@ type Mutation {
 
      """It's used to cancel a pending request to an event."""
     cancelPendingRequest(parameter: String!): Boolean
+
+    "It's used to activate the user"
+    activateUser(parameter: String!): Credentials
 }
