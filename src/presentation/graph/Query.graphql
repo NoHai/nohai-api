@@ -26,4 +26,7 @@ type Query {
 
      "It's used to fetch the counties from server."
     counties(parameter: String): [County]
+
+     "It's used to search through the events from server."
+    searchEvents(parameter: SearchEventsParameter): Events
 }

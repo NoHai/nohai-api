@@ -1,0 +1,20 @@
+"""A parameter model used for seraching events from server."""
+input SearchEventsParameter {
+    "It's used to show events with only these sports."
+    sports: [String]
+
+    "It's used to show events that start on that date."
+    startDate: DateTime
+
+    "It's used to show events contain only these words."
+    searchText: String
+
+    "It's used to show events only at that status."
+    status: Int
+
+    "It's used to show history or not."
+    showHistory: Boolean
+
+    "It's used to send paginate the result."
+    pagination: PaginationParameter!
+}

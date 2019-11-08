@@ -48,6 +48,7 @@ import { CancelEvent } from '../../../business/commands/cancel-event';
 import { LeaveEvent } from '../../../business/commands/leave-event';
 import { KickoutUser } from '../../../business/commands/kickout-user';
 import { CancelPendingRequest } from '../../../business/commands/cancel-pending-request';
+import { SearchEvents } from '../../../business/commands/search-events';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -90,6 +91,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { leaveEvent: asClass(LeaveEvent).transient().classic() },
         { kickoutUser: asClass(KickoutUser).transient().classic() },
         { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
+        { searchEvents: asClass(SearchEvents).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [

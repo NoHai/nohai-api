@@ -38,6 +38,7 @@ import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 import { ILeaveEvent } from '../../../business/commands/i-leave-event';
 import { IKickoutUser } from '../../../business/commands/i-kickout-user';
 import { ICancelPendingRequest } from '../../../business/commands/i-cancel-pending-request';
+import { ISearchEvents } from '../../../business/commands/i-search-events';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -97,6 +98,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly leaveEvent: ILeaveEvent,
                 private readonly kickoutUser: IKickoutUser,
                 private readonly cancelPendingRequest: ICancelPendingRequest,
+                private readonly searchEvents: ISearchEvents,
     ) {
     }
 
@@ -195,6 +197,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.kickoutUser.execute(context.parameter).toPromise()),
                     cancelPendingRequest: (context: any) => this.executer(expContext,
                             () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
+                    searchEvents: (context: any) => this.executer(expContext,
+                                () => this.searchEvents.execute(context.parameter).toPromise(), false),
                 },
     schema,
     customFormatErrorFn: (err) => {
