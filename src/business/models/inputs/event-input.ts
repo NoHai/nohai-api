@@ -3,6 +3,7 @@ import { Sport } from '../../../data/entities/sport';
 import { User } from '../../../data/entities/user';
 
 export class EventInput {
+    id?: string;
     owner!: User;
     title!: string;
     description!: string;

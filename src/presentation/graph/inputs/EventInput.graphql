@@ -1,5 +1,8 @@
 ﻿"""An input model used for posting an event to server."""
 input EventInput {
+    "The id of the event."
+    id: String
+
     "The name of the event."
     title: String
 

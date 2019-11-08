@@ -1,5 +1,4 @@
 import { EventInput } from '../../business/models/inputs/event-input';
-import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { Event as EventResult } from '../../business/models/results/event';
 import { Address } from '../entities/address';
 import { Event as EventEntity } from '../entities/event';
@@ -18,12 +17,6 @@ export class EventFactory {
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
             owner: UserFactory.entity.fromId(userId),
-        }),
-        fromUpdateEventInput: (event: UpdateEventInput): EventEntity => new EventEntity({
-            ...event,
-            address: AddressFactory.entity.fromAddressResult(event.address),
-            sport: SportFactory.entity.fromSportResult(event.sport),
-            status: EventStatus.Edited,
         }),
     };
 

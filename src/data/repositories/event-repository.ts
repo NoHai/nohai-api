@@ -1,7 +1,6 @@
 import { from, Observable, of, zip } from 'rxjs';
 import { map, switchMap, flatMap, catchError } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
-import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { EventsParameter } from '../../business/models/parameters/events-parameter';
 import { Event as EventResult } from '../../business/models/results/event';
 import { Pagination } from '../../business/models/results/pagination';
@@ -36,8 +35,8 @@ export class EventRepository implements IEventRepository {
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
-    update(input: UpdateEventInput): Observable<EventResult> {
-        return of(EventFactory.entity.fromUpdateEventInput(input))
+    update(input: EventInput): Observable<EventResult> {
+        return of(EventFactory.entity.fromEventInput(input, input.owner.id))
             .pipe(switchMap((entity) => entity.save()))
             .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));
     }

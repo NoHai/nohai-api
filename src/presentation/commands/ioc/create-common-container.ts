@@ -49,6 +49,8 @@ import { LeaveEvent } from '../../../business/commands/leave-event';
 import { KickoutUser } from '../../../business/commands/kickout-user';
 import { CancelPendingRequest } from '../../../business/commands/cancel-pending-request';
 import { SearchEvents } from '../../../business/commands/search-events';
+import { SaveEvent } from '../../../business/commands/save-event';
+import { UpdateEvent } from '../../../business/commands/update-event';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -65,6 +67,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { createEvent: asClass(CreateEvent).transient().classic() },
         { createUser: asClass(CreateUser).transient().classic() },
         { createTokens: asClass(CreateTokens).transient().classic() },
+        { updateEvent: asClass(UpdateEvent).transient().classic() },
         { updateUser: asClass(UpdateUser).transient().classic() },
         { eventById: asClass(GetEventById).transient().classic() },
         { events: asClass(GetEvents).transient().classic() },
@@ -92,6 +95,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { kickoutUser: asClass(KickoutUser).transient().classic() },
         { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
         { searchEvents: asClass(SearchEvents).transient().classic() },
+        { saveEvent: asClass(SaveEvent).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
