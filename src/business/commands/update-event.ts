@@ -87,7 +87,7 @@ export class UpdateEvent implements IUpdateEvent {
             .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
                 of(true),
                 of(false))))
-            .pipe(catchError((erro) => {
+            .pipe(catchError(() => {
                 return of(false);
             }));
 
