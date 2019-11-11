@@ -1,0 +1,5 @@
+"""A generic input model used for any entity that only needs to pass the id."""
+input IdInput{
+      "The id of the entity."
+    id: String
+}

@@ -4,7 +4,7 @@
      id!: string;
      numberOfParticipants!: number;
      createdDate: any;
-     status!: boolean;
+     status!: number;
 
     constructor(init?: any) {
         super(init);

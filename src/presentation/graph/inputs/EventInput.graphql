@@ -35,4 +35,7 @@ input EventInput {
 
     "Level of the sport."
     level: Int
+
+    "The owner of the event."
+    owner: IdInput
 }

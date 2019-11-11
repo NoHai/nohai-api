@@ -17,6 +17,7 @@ export class EventFactory {
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
             owner: UserFactory.entity.fromId(userId),
+            status: event.id ? EventStatus.Edited : EventStatus.Active,
         }),
     };
 
