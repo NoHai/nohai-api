@@ -140,6 +140,7 @@ export class NotificationHelper {
 
     static buildEditEventNotification(event: any, toUser: string): Notification {
         return new Notification({
+            eventId: event.id,
             title: NotificationHelper.editEventNotificationTitle,
             body: NotificationHelper.editEventBody(event.title),
             userId: toUser,
