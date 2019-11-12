@@ -7,7 +7,6 @@ import { map, tap } from 'rxjs/operators';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { IGetEventById } from '../../../business/commands/i-get-event-by-id';
-import { IGetEvents } from '../../../business/commands/i-get-events';
 import { IGetSports } from '../../../business/commands/i-get-sports';
 import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
@@ -73,7 +72,6 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly createTokens: ICreateTokens,
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
-                private readonly events: IGetEvents,
                 private readonly eventDetails: IGetEventDetails,
                 private readonly sports: IGetSports,
                 private readonly createNotification: ICreateNotification,
@@ -98,7 +96,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly leaveEvent: ILeaveEvent,
                 private readonly kickoutUser: IKickoutUser,
                 private readonly cancelPendingRequest: ICancelPendingRequest,
-                private readonly searchEvents: ISearchEvents,
+                private readonly events: ISearchEvents,
     ) {
     }
 
@@ -197,7 +195,7 @@ export class InitializeGraph implements IInitializeGraph {
                     cancelPendingRequest: (context: any) => this.executer(expContext,
                             () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
                     searchEvents: (context: any) => this.executer(expContext,
-                                () => this.searchEvents.execute(context.parameter).toPromise(), false),
+                                () => this.events.execute(context.parameter).toPromise(), false),
                 },
     schema,
     customFormatErrorFn: (err) => {

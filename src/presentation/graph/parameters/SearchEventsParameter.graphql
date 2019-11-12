@@ -9,9 +9,6 @@ input SearchEventsParameter {
     "It's used to show events contain only these words."
     searchText: String
 
-    "It's used to show events only at that status."
-    status: Int
-
     "It's used to show history or not."
     showHistory: Boolean
 

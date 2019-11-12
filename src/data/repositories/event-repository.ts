@@ -14,7 +14,6 @@ import moment = require('moment');
 import { Sport } from '../entities/sport';
 import { Brackets } from 'typeorm';
 import { EventStatus } from '../enums/event-status';
-import { PaginationUtility } from '../../utilities/pagination-utility';
 import { SearchEventsParameter } from '../../business/models/parameters/search-events-parameter';
 
 export class EventRepository implements IEventRepository {
@@ -41,13 +40,13 @@ export class EventRepository implements IEventRepository {
             .pipe(map((entity) => EventFactory.result.fromEventEntity(entity)));
     }
 
-    get(parameter: EventsParameter): Observable<Pagination> {
-        if (parameter.showHistory === true) {
-            return from(this.getHistoryEvents(parameter));
-        } else {
-            return this.getAllEvents(parameter);
-        }
-    }
+    // get(parameter: EventsParameter): Observable<Pagination> {
+    //     if (parameter.showHistory === true) {
+    //         return from(this.getHistoryEvents(parameter));
+    //     } else {
+    //         return this.getAllEvents(parameter);
+    //     }
+    // }
 
     getById(id: any): Observable<EventResult> {
         return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
@@ -55,7 +54,10 @@ export class EventRepository implements IEventRepository {
     }
 
     find(parameter: SearchEventsParameter): Observable<Pagination> {
-        return from(this.searchEvents(parameter))
+        const searchEventsFlow = parameter.showHistory === true
+            ? from(this.searchHistoryEvents(parameter))
+            : from(this.searchEvents(parameter));
+        return searchEventsFlow
             .pipe(map((result) => {
                 const [items, count] = result;
                 return new Pagination({
@@ -78,15 +80,89 @@ export class EventRepository implements IEventRepository {
             .pipe(catchError(() => of(false)));
     }
 
-    private buildPagination(pagination: any): Pagination {
-        return new Pagination({
-            ...pagination,
-            items: EventFactory.results.fromEventEntities(pagination.items),
-        });
+    // private buildPagination(pagination: any): Pagination {
+    //     return new Pagination({
+    //         ...pagination,
+    //         items: EventFactory.results.fromEventEntities(pagination.items),
+    //     });
+    // }
+
+    // private async getHistoryEvents(parameter: EventsParameter): Promise<Pagination> {
+    //     const [items, count] = await Event.createQueryBuilder('event')
+    //         .leftJoinAndSelect('event.sport', 'sport')
+    //         .leftJoinAndSelect('event.address', 'address')
+    //         .leftJoinAndSelect('event.owner', 'owner')
+    //         .leftJoinAndSelect(UserEvents, 'userEvents',
+    //             'userEvents.event_id = event.id AND userEvents.user_id = :userId',
+    //             { userId: this.userContext.userId })
+    //         .where('userEvents.id IS NOT NULL')
+    //         .orWhere(
+    //             new Brackets((qb) => {
+    //                 qb.where('event.owner = :owner', { owner: this.userContext.userId });
+    //                 qb.andWhere('userEvents.id IS NULL');
+    //             }),
+    //         )
+    //         .orderBy('event.startDate')
+    //         .addOrderBy('event.title')
+    //         .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
+    //         .take(parameter.pagination.pageSize)
+    //         .getManyAndCount();
+
+    //     return new Pagination({
+    //         items: EventFactory.results.fromEventEntities(items),
+    //         pageIndex: parameter.pagination.pageIndex,
+    //         pageSize: parameter.pagination.pageSize,
+    //         totalCount: count,
+    //         customCount: 0,
+    //     });
+    // }
+
+    // private getAllEvents(parameter: EventsParameter) {
+    //     return this.createPagination
+    //         .withEntity(Event)
+    //         .withParameter(parameter.pagination)
+    //         .withItemsOptions(PaginationUtility.eventsOptions(parameter))
+    //         .withTotalCountOptions(PaginationUtility.countTotalEvents())
+    //         .execute()
+    //         .pipe(map((pagination) => this.buildPagination(pagination)));
+    // }
+
+    private generateTitle(input: EventInput, startDate: moment.Moment) {
+        return from(Sport.findOneOrFail(input.sport.id))
+            // tslint:disable-next-line: max-line-length
+            .pipe(map((sport) => `${sport.name}, ${startDate.locale('ro').format('dddd')} ${startDate.format('DD')} ${startDate.format('MMMM')} ora ${input.startTime}`));
     }
 
-    private async getHistoryEvents(parameter: EventsParameter): Promise<Pagination> {
-        const [items, count] = await Event.createQueryBuilder('event')
+    private async searchEvents(parameter: SearchEventsParameter) {
+        const startDate = parameter.startDate
+            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
+            : null;
+        const startDateCondition = parameter.startDate ? 'event.startDate = :startDate' : 'event.startDate IS NOT NULL';
+
+        return await Event.createQueryBuilder('event')
+            .leftJoinAndSelect('event.sport', 'sport')
+            .leftJoinAndSelect('event.address', 'address')
+            .leftJoinAndSelect('event.owner', 'owner')
+            .where(startDateCondition, { startDate })
+            .andWhere(new Brackets((qb) => {
+                qb.where('event.title like :search', { search: `%${parameter.searchText}%` });
+                qb.orWhere('event.description like :search', { search: `%${parameter.searchText}%` });
+                qb.orWhere('address.city like :search', { search: `%${parameter.searchText}%` });
+            }))
+            .orderBy('event.startDate')
+            .addOrderBy('event.title')
+            .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
+            .take(parameter.pagination.pageSize)
+            .getManyAndCount();
+    }
+
+    private async searchHistoryEvents(parameter: SearchEventsParameter) {
+        const startDate = parameter.startDate
+            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
+            : null;
+        const startDateCondition = parameter.startDate ? 'event.startDate = :startDate' : 'event.startDate IS NOT NULL';
+
+        return await Event.createQueryBuilder('event')
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
@@ -100,55 +176,13 @@ export class EventRepository implements IEventRepository {
                     qb.andWhere('userEvents.id IS NULL');
                 }),
             )
-            .orderBy('event.startDate')
-            .addOrderBy('event.title')
-            .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
-            .take(parameter.pagination.pageSize)
-            .getManyAndCount();
-
-        return new Pagination({
-            items: EventFactory.results.fromEventEntities(items),
-            pageIndex: parameter.pagination.pageIndex,
-            pageSize: parameter.pagination.pageSize,
-            totalCount: count,
-            customCount: 0,
-        });
-    }
-
-    private getAllEvents(parameter: EventsParameter) {
-        return this.createPagination
-            .withEntity(Event)
-            .withParameter(parameter.pagination)
-            .withItemsOptions(PaginationUtility.eventsOptions(parameter))
-            .withTotalCountOptions(PaginationUtility.countTotalEvents())
-            .execute()
-            .pipe(map((pagination) => this.buildPagination(pagination)));
-    }
-
-    private generateTitle(input: EventInput, startDate: moment.Moment) {
-        return from(Sport.findOneOrFail(input.sport.id))
-            // tslint:disable-next-line: max-line-length
-            .pipe(map((sport) => `${sport.name}, ${startDate.locale('ro').format('dddd')} ${startDate.format('DD')} ${startDate.format('MMMM')} ora ${input.startTime}`));
-    }
-
-    private async searchEvents(parameter: SearchEventsParameter) {
-        const startDate = parameter.startDate
-            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
-            : null;
-        console.log(startDate);
-        const startDateCondition = parameter.startDate ? 'event.startDate = :startDate' : 'event.startDate IS NOT NULL';
-
-        return await Event.createQueryBuilder('event')
-            .leftJoinAndSelect('event.sport', 'sport')
-            .leftJoinAndSelect('event.address', 'address')
-            .leftJoinAndSelect('event.owner', 'owner')
-            .where('event.status = :status', { status: parameter.status })
+            .andWhere(startDateCondition, { startDate })
             .andWhere(new Brackets((qb) => {
                 qb.where('event.title like :search', { search: `%${parameter.searchText}%` });
                 qb.orWhere('event.description like :search', { search: `%${parameter.searchText}%` });
                 qb.orWhere('address.city like :search', { search: `%${parameter.searchText}%` });
             }))
-            .andWhere( startDateCondition, { startDate} )
+            .andWhere(startDateCondition, { startDate })
             .orderBy('event.startDate')
             .addOrderBy('event.title')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)

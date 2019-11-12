@@ -39,14 +39,12 @@ export class PaginationUtility {
             relations: ['address', 'sport'],
             where: [{
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
-                status: parameter.status,
                 title: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
                 address: { city: Like(`%${parameter.searchText}%`)},
             },
             {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
-                status: parameter.status,
                 description: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
                 address: { city: Like(`%${parameter.searchText}%`)},
@@ -65,14 +63,12 @@ export class PaginationUtility {
         return {
             where: [{
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
-                status: parameter.status,
                 title: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
                 address: { city: Like(`%${parameter.searchText}%`)},
             },
             {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
-                status: parameter.status,
                 description: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
             },

@@ -10,8 +10,6 @@ export interface IEventRepository {
 
     update(input: EventInput): Observable<EventResult>;
 
-    get(parameter: EventsParameter): Observable<Pagination>;
-
     getById(id: string): Observable<EventResult>;
 
     find(parameter: SearchEventsParameter): Observable<Pagination>;

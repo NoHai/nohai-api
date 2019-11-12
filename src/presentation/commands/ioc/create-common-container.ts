@@ -5,7 +5,6 @@ import { CreateEvent } from '../../../business/commands/create-event';
 import { CreateTokens } from '../../../business/commands/create-tokens';
 import { CreateUser } from '../../../business/commands/create-user';
 import { GetEventById } from '../../../business/commands/get-event-by-id';
-import { GetEvents } from '../../../business/commands/get-events';
 import { GetSports } from '../../../business/commands/get-sports';
 import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
@@ -70,7 +69,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { updateEvent: asClass(UpdateEvent).transient().classic() },
         { updateUser: asClass(UpdateUser).transient().classic() },
         { eventById: asClass(GetEventById).transient().classic() },
-        { events: asClass(GetEvents).transient().classic() },
+        { events: asClass(SearchEvents).transient().classic() },
         { eventDetails: asClass(GetEventDetails).transient().classic() },
         { sports: asClass(GetSports).transient().classic() },
         { createNotification: asClass(CreateNotification).transient().classic() },
@@ -94,7 +93,6 @@ export class CreateCommonContainer implements ICreateContainer {
         { leaveEvent: asClass(LeaveEvent).transient().classic() },
         { kickoutUser: asClass(KickoutUser).transient().classic() },
         { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
-        { searchEvents: asClass(SearchEvents).transient().classic() },
         { saveEvent: asClass(SaveEvent).transient().classic() },
     ];
 
