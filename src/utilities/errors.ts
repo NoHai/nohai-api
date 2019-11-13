@@ -7,4 +7,5 @@ export class Errors {
     static readonly AllSpotsOccupied: string = 'Ne pare rau dar toate locurile s-au ocupat intre timp';
     static readonly UnableToSendEmail: string = 'Emailul nu s-a putut trimite';
     static readonly JoinRequestAlreadySent: string = 'O cerere de alaturare la eveniment a fost deja trimisa';
+    static readonly RequireAdministratorRights: string = 'Doar administratorul evenimentului poate realiza aceasta actiune.';
 }

@@ -1,5 +1,4 @@
 import { EventInput } from '../../business/models/inputs/event-input';
-import { UpdateEventInput } from '../../business/models/inputs/update-event-input';
 import { Event as EventResult } from '../../business/models/results/event';
 import { Address } from '../entities/address';
 import { Event as EventEntity } from '../entities/event';
@@ -9,9 +8,7 @@ import { Sport } from '../entities/sport';
 import { UserFactory } from './user-factory';
 import { UserEvents } from '../entities/user-events';
 import { NotificationType } from '../enums/notification-type';
-import { from, zip } from 'rxjs';
-import moment from 'moment';
-import { tap, map, flatMap } from 'rxjs/operators';
+import { EventStatus } from '../enums/event-status';
 
 export class EventFactory {
     static entity = {
@@ -20,11 +17,7 @@ export class EventFactory {
             address: AddressFactory.entity.fromAddressResult(event.address),
             sport: SportFactory.entity.fromSportResult(event.sport),
             owner: UserFactory.entity.fromId(userId),
-        }),
-        fromUpdateEventInput: (event: UpdateEventInput): EventEntity => new EventEntity({
-            ...event,
-            address: AddressFactory.entity.fromAddressResult(event.address),
-            sport: SportFactory.entity.fromSportResult(event.sport),
+            status: event.id ? EventStatus.Edited : EventStatus.Active,
         }),
     };
 

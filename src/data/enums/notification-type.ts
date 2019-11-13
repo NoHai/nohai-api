@@ -6,4 +6,5 @@ export enum NotificationType {
   Leave,
   Kickout,
   Suggestion,
+  Edit,
 }

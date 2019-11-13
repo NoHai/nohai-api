@@ -17,13 +17,14 @@ export class UserEventsFactory {
     };
 
     static results = {
-        fromUserEventsEntities: (userEvents: UserEventsEntity[]): UserEventsResult[] =>
-            userEvents.map((userEvent) => new UserEventsResult({
+        fromUserEventsEntities: (userEvents: UserEventsEntity[]): UserEventsResult[] => {
+            return userEvents.map((userEvent) => new UserEventsResult({
                 ...userEvent,
                 user: User.findOne(userEvent.userId),
-            })),
+            }));
+        },
 
-        fromUserEventResultsLight : (userEvents: UserEventsResult[]): any[] =>
+        fromUserEventResultsLight: (userEvents: UserEventsResult[]): any[] =>
             userEvents.map((userEvent) => {
                 return {
                     userId: userEvent.userId,

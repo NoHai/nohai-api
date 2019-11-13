@@ -4,11 +4,9 @@ import * as fs from 'fs';
 import { buildSchema, GraphQLSchema } from 'graphql';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ICreateEvent } from '../../../business/commands/i-create-event';
 import { ICreateTokens } from '../../../business/commands/i-create-tokens';
 import { ICreateUser } from '../../../business/commands/i-create-user';
 import { IGetEventById } from '../../../business/commands/i-get-event-by-id';
-import { IGetEvents } from '../../../business/commands/i-get-events';
 import { IGetSports } from '../../../business/commands/i-get-sports';
 import { IUpdateUser } from '../../../business/commands/i-update-user';
 import { Nothing } from '../../../business/models/nothing';
@@ -38,6 +36,8 @@ import { ICancelEvent } from '../../../business/commands/i-cancel-event';
 import { ILeaveEvent } from '../../../business/commands/i-leave-event';
 import { IKickoutUser } from '../../../business/commands/i-kickout-user';
 import { ICancelPendingRequest } from '../../../business/commands/i-cancel-pending-request';
+import { ISearchEvents } from '../../../business/commands/i-search-events';
+import { ISaveEvent } from '../../../business/commands/i-save-event';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -67,12 +67,11 @@ export class InitializeGraph implements IInitializeGraph {
     }
 
     constructor(private readonly express: any,
-                private readonly createEvent: ICreateEvent,
+                private readonly saveEvent: ISaveEvent,
                 private readonly createUser: ICreateUser,
                 private readonly createTokens: ICreateTokens,
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
-                private readonly events: IGetEvents,
                 private readonly eventDetails: IGetEventDetails,
                 private readonly sports: IGetSports,
                 private readonly createNotification: ICreateNotification,
@@ -97,6 +96,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly leaveEvent: ILeaveEvent,
                 private readonly kickoutUser: IKickoutUser,
                 private readonly cancelPendingRequest: ICancelPendingRequest,
+                private readonly events: ISearchEvents,
     ) {
     }
 
@@ -144,7 +144,7 @@ export class InitializeGraph implements IInitializeGraph {
                 graphiql: true,
                 rootValue: {
                     auth: (context: any) => this.executer(expContext, () => this.createTokens.execute(context.input).toPromise(), false),
-                    createEvent: (context: any) => this.executer(expContext, () => this.createEvent.execute(context.input).toPromise()),
+                    saveEvent: (context: any) => this.executer(expContext, () => this.saveEvent.execute(context.input).toPromise()),
                     createUser: (context: any) => this.executer(expContext,
                         () => this.createUser.execute(context.input).toPromise(), false),
                     eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise()),
@@ -152,7 +152,6 @@ export class InitializeGraph implements IInitializeGraph {
                     eventDetails: (context: any) => this.executer(expContext,
                         () => this.eventDetails.execute(context.parameter).toPromise()),
                     sports: (context: any) => this.executer(expContext, () => this.sports.execute(context.input).toPromise()),
-                    updateEvent: (context: any) => this.executer(expContext, () => this.createEvent.execute(context.input).toPromise()),
                     updateUser: (context: any) => this.executer(expContext, () => this.updateUser.execute(context.input).toPromise()),
                     createNotification: (context: any) => this.executer(expContext,
                         () => this.createNotification.execute(context.input).toPromise()),
@@ -194,13 +193,15 @@ export class InitializeGraph implements IInitializeGraph {
                     kickoutUser: (context: any) => this.executer(expContext,
                         () => this.kickoutUser.execute(context.parameter).toPromise()),
                     cancelPendingRequest: (context: any) => this.executer(expContext,
-                            () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
+                        () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
+                    searchEvents: (context: any) => this.executer(expContext,
+                        () => this.events.execute(context.parameter).toPromise(), false),
                 },
-    schema,
-    customFormatErrorFn: (err) => {
-        return({ message: err.message });
-    },
-};
+                schema,
+                customFormatErrorFn: (err) => {
+                    return ({ message: err.message });
+                },
+            };
         });
     }
 }

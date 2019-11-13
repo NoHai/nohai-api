@@ -5,7 +5,6 @@ import { CreateEvent } from '../../../business/commands/create-event';
 import { CreateTokens } from '../../../business/commands/create-tokens';
 import { CreateUser } from '../../../business/commands/create-user';
 import { GetEventById } from '../../../business/commands/get-event-by-id';
-import { GetEvents } from '../../../business/commands/get-events';
 import { GetSports } from '../../../business/commands/get-sports';
 import { UpdateUser } from '../../../business/commands/update-user';
 import { CreateDatabase } from '../../../data/commands/create-database';
@@ -48,6 +47,9 @@ import { CancelEvent } from '../../../business/commands/cancel-event';
 import { LeaveEvent } from '../../../business/commands/leave-event';
 import { KickoutUser } from '../../../business/commands/kickout-user';
 import { CancelPendingRequest } from '../../../business/commands/cancel-pending-request';
+import { SearchEvents } from '../../../business/commands/search-events';
+import { SaveEvent } from '../../../business/commands/save-event';
+import { UpdateEvent } from '../../../business/commands/update-event';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -64,9 +66,10 @@ export class CreateCommonContainer implements ICreateContainer {
         { createEvent: asClass(CreateEvent).transient().classic() },
         { createUser: asClass(CreateUser).transient().classic() },
         { createTokens: asClass(CreateTokens).transient().classic() },
+        { updateEvent: asClass(UpdateEvent).transient().classic() },
         { updateUser: asClass(UpdateUser).transient().classic() },
         { eventById: asClass(GetEventById).transient().classic() },
-        { events: asClass(GetEvents).transient().classic() },
+        { events: asClass(SearchEvents).transient().classic() },
         { eventDetails: asClass(GetEventDetails).transient().classic() },
         { sports: asClass(GetSports).transient().classic() },
         { createNotification: asClass(CreateNotification).transient().classic() },
@@ -90,6 +93,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { leaveEvent: asClass(LeaveEvent).transient().classic() },
         { kickoutUser: asClass(KickoutUser).transient().classic() },
         { cancelPendingRequest: asClass(CancelPendingRequest).transient().classic() },
+        { saveEvent: asClass(SaveEvent).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
