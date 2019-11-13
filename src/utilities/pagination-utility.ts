@@ -41,13 +41,13 @@ export class PaginationUtility {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
                 title: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
-                address: { city: Like(`%${parameter.searchText}%`)},
+                address: { city: Like(`%${parameter.searchText}%`) },
             },
             {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
                 description: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
-                address: { city: Like(`%${parameter.searchText}%`)},
+                address: { city: Like(`%${parameter.searchText}%`) },
             },
             ],
             skip: parameter.pagination.pageSize * parameter.pagination.pageIndex,
@@ -65,7 +65,7 @@ export class PaginationUtility {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
                 title: Like(`%${parameter.searchText}%`),
                 sport: parameter.sports ? In(parameter.sports) : Not(IsNull()),
-                address: { city: Like(`%${parameter.searchText}%`)},
+                address: { city: Like(`%${parameter.searchText}%`) },
             },
             {
                 startDate: startDate ? MoreThanOrEqual(startDate) : Not(IsNull()),
@@ -74,6 +74,27 @@ export class PaginationUtility {
             },
             ],
         };
+    }
+
+    static sportsEventCondition(parameter: SearchEventsParameter) {
+        return parameter.sports && parameter.sports.length > 0
+            ? 'event.sport IN (:sports)'
+            : 'event.sport IS NOT NULL';
+    }
+
+    static startDateEventCondition(parameter: SearchEventsParameter, setDefault: boolean) {
+        const startDate = PaginationUtility.startDate(parameter, setDefault);
+        return startDate != null
+            ? 'event.startDate >= :startDate'
+            : 'event.startDate IS NOT NULL';
+    }
+
+    static startDate(parameter: SearchEventsParameter, setDefault: boolean) {
+        return parameter.startDate
+            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
+            : setDefault
+                ? moment().format('YYYY-MM-DD').toString()
+                : null;
     }
 
 }

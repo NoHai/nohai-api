@@ -51,7 +51,6 @@ export class UserRepository implements IUserRepository {
     }
 
     getWithCredentials(ids: any[]): Observable<any[]> {
-        console.log('getWithCredentials');
         return from(UserEntity.findByIds( ids))
         .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
     }

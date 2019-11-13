@@ -14,6 +14,7 @@ import { Sport } from '../entities/sport';
 import { Brackets } from 'typeorm';
 import { EventStatus } from '../enums/event-status';
 import { SearchEventsParameter } from '../../business/models/parameters/search-events-parameter';
+import { PaginationUtility } from '../../utilities/pagination-utility';
 
 export class EventRepository implements IEventRepository {
     constructor(private readonly createPagination: CreatePagination,
@@ -78,18 +79,12 @@ export class EventRepository implements IEventRepository {
     }
 
     private async searchEvents(parameter: SearchEventsParameter) {
-        const startDate = parameter.startDate
-            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
-            : null;
-        const startDateCondition = parameter.startDate ? 'event.startDate >= :startDate' : 'event.startDate IS NOT NULL';
-        const sportCondition = parameter.sports  && parameter.sports.length > 0 ? 'event.sport IN (:sports)' : 'event.sport IS NOT NULL';
-
         return await Event.createQueryBuilder('event')
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
-            .where(startDateCondition, { startDate })
-            .andWhere(sportCondition, { sports: parameter.sports })
+            .where(PaginationUtility.startDateEventCondition(parameter, true), { startDate: PaginationUtility.startDate(parameter, true) })
+            .andWhere(PaginationUtility.sportsEventCondition(parameter), { sports: parameter.sports })
             .andWhere('event.status <> 0')
             .andWhere(new Brackets((qb) => {
                 qb.where('event.title like :search', { search: `%${parameter.searchText}%` });
@@ -104,12 +99,6 @@ export class EventRepository implements IEventRepository {
     }
 
     private async searchHistoryEvents(parameter: SearchEventsParameter) {
-        const startDate = parameter.startDate
-            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
-            : null;
-        const startDateCondition = parameter.startDate ? 'event.startDate >= :startDate' : 'event.startDate IS NOT NULL';
-        const sportCondition = parameter.sports  && parameter.sports.length > 0 ? 'event.sport IN (:sports)' : 'event.sport IS NOT NULL';
-
         return await Event.createQueryBuilder('event')
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
@@ -117,21 +106,24 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect(UserEvents, 'userEvents',
                 'userEvents.event_id = event.id AND userEvents.user_id = :userId',
                 { userId: this.userContext.userId })
-            .where('userEvents.id IS NOT NULL')
-            .orWhere(
-                new Brackets((qb) => {
-                    qb.where('event.owner = :owner', { owner: this.userContext.userId });
-                    qb.andWhere('userEvents.id IS NULL');
-                }),
-            )
-            .andWhere(startDateCondition, { startDate })
-            .andWhere(sportCondition, { sports: parameter.sports })
+            .where(new Brackets((qb) => {
+                qb.where('userEvents.id IS NOT NULL');
+                qb.orWhere(
+                    new Brackets((qb1) => {
+                        qb1.where('event.owner = :owner', { owner: this.userContext.userId });
+                        qb1.andWhere('userEvents.id IS NULL');
+                    }),
+                );
+            },
+            ))
+            .andWhere(PaginationUtility.startDateEventCondition(parameter, false),
+                { startDate: PaginationUtility.startDate(parameter, false) })
+            .andWhere(PaginationUtility.sportsEventCondition(parameter), { sports: parameter.sports })
             .andWhere(new Brackets((qb) => {
                 qb.where('event.title like :search', { search: `%${parameter.searchText}%` });
                 qb.orWhere('event.description like :search', { search: `%${parameter.searchText}%` });
                 qb.orWhere('address.city like :search', { search: `%${parameter.searchText}%` });
             }))
-            .andWhere(startDateCondition, { startDate })
             .orderBy('event.startDate')
             .addOrderBy('event.title')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
