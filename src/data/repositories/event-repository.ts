@@ -81,7 +81,7 @@ export class EventRepository implements IEventRepository {
         const startDate = parameter.startDate
             ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
             : null;
-        const startDateCondition = parameter.startDate ? 'event.startDate => :startDate' : 'event.startDate IS NOT NULL';
+        const startDateCondition = parameter.startDate ? 'event.startDate >= :startDate' : 'event.startDate IS NOT NULL';
         const sportCondition = parameter.sports  && parameter.sports.length > 0 ? 'event.sport IN (:sports)' : 'event.sport IS NOT NULL';
 
         return await Event.createQueryBuilder('event')
@@ -107,7 +107,7 @@ export class EventRepository implements IEventRepository {
         const startDate = parameter.startDate
             ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
             : null;
-        const startDateCondition = parameter.startDate ? 'event.startDate = :startDate' : 'event.startDate IS NOT NULL';
+        const startDateCondition = parameter.startDate ? 'event.startDate >= :startDate' : 'event.startDate IS NOT NULL';
         const sportCondition = parameter.sports  && parameter.sports.length > 0 ? 'event.sport IN (:sports)' : 'event.sport IS NOT NULL';
 
         return await Event.createQueryBuilder('event')
