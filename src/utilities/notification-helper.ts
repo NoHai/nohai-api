@@ -62,6 +62,7 @@ export class NotificationHelper {
         return new Notification({
             title: NotificationHelper.cancelEventTitle,
             body: NotificationHelper.cancelEventBody(event.title).trim(),
+            eventId: event.id,
             userId: toUser,
             avatarUrl: event.owner.picture,
             createdUser: event.owner.id,
@@ -184,7 +185,6 @@ export class NotificationHelper {
     }
 
     static sendNotification(notification: any, tokens: string[]): Observable<boolean> {
-        console.log(tokens);
         if (tokens && tokens.length > 0) {
             return from(SendNotification(tokens, notification.body, notification.title));
         } else {

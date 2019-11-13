@@ -71,8 +71,6 @@ export class EmailHelper {
     }
 
     static getEditEventEmails(users: any[], eventTitle: string): Email[] {
-        console.log('get edit event emails');
-        console.log(users);
         const emails = users.map((user) => {
             return new Email({
                 to: user.email,

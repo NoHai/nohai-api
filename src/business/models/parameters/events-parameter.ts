@@ -7,5 +7,4 @@ export class EventsParameter {
     constructor(init?: any) {
         Object.assign(this, init);
     }
-
 }

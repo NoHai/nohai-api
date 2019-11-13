@@ -15,7 +15,6 @@ export class EmailService {
     }
 
     async sendMultipleEmails(emails: Email[] | undefined) {
-        console.log(emails);
         if (!!emails && emails.length > 0) {
         const result = await emailSender.send(emails);
         return result;

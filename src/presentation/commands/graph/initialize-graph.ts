@@ -193,15 +193,15 @@ export class InitializeGraph implements IInitializeGraph {
                     kickoutUser: (context: any) => this.executer(expContext,
                         () => this.kickoutUser.execute(context.parameter).toPromise()),
                     cancelPendingRequest: (context: any) => this.executer(expContext,
-                            () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
+                        () => this.cancelPendingRequest.execute(context.parameter).toPromise()),
                     searchEvents: (context: any) => this.executer(expContext,
-                                () => this.events.execute(context.parameter).toPromise(), false),
+                        () => this.events.execute(context.parameter).toPromise(), false),
                 },
-    schema,
-    customFormatErrorFn: (err) => {
-        return({ message: err.message });
-    },
-};
+                schema,
+                customFormatErrorFn: (err) => {
+                    return ({ message: err.message });
+                },
+            };
         });
     }
 }
