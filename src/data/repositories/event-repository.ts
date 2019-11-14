@@ -124,7 +124,7 @@ export class EventRepository implements IEventRepository {
                 qb.orWhere('event.description like :search', { search: `%${parameter.searchText}%` });
                 qb.orWhere('address.city like :search', { search: `%${parameter.searchText}%` });
             }))
-            .orderBy('event.startDate')
+            .orderBy('event.startDate', 'DESC')
             .addOrderBy('event.title')
             .skip(parameter.pagination.pageSize * parameter.pagination.pageIndex)
             .take(parameter.pagination.pageSize)

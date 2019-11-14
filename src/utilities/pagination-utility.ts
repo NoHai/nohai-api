@@ -90,10 +90,18 @@ export class PaginationUtility {
     }
 
     static startDate(parameter: SearchEventsParameter, setDefault: boolean) {
+        const todayDate = moment().format('YYYY-MM-DD').toString();
+        const startDate = moment(parameter.startDate).format('YYYY-MM-DD').toString();
+        const eventDate = parameter.showHistory
+                         ? startDate
+                         : moment().isSameOrAfter(moment(parameter.startDate))
+                            ? todayDate
+                            : startDate;
+
         return parameter.startDate
-            ? moment(parameter.startDate).format('YYYY-MM-DD').toString()
+            ? eventDate
             : setDefault
-                ? moment().format('YYYY-MM-DD').toString()
+                ? todayDate
                 : null;
     }
 
