@@ -3,7 +3,7 @@ import { UserEventsInput } from '../../business/models/inputs/user-events-input'
 import { UserEvents as UserEventsResult } from '../../business/models/results/user-events';
 import { Observable, of, from } from 'rxjs';
 import { UserEventsFactory } from '../factories/user-events-factory';
-import { switchMap, map, flatMap, tap } from 'rxjs/operators';
+import { switchMap, map, flatMap } from 'rxjs/operators';
 import { UserEvents } from '../entities/user-events';
 import { UserEventsStatus } from '../enums/user-events-status';
 

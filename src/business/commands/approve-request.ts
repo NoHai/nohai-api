@@ -1,7 +1,7 @@
 import { IApproveRequest } from './i-approve-request';
 import { Observable, zip, from, of, iif, throwError } from 'rxjs';
 import { INotificationRepository } from '../repositories/i-notification-repository';
-import { map, flatMap, count, catchError } from 'rxjs/operators';
+import { map, flatMap, catchError } from 'rxjs/operators';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';

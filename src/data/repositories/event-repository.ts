@@ -17,8 +17,7 @@ import { SearchEventsParameter } from '../../business/models/parameters/search-e
 import { PaginationUtility } from '../../utilities/pagination-utility';
 
 export class EventRepository implements IEventRepository {
-    constructor(private readonly createPagination: CreatePagination,
-                private readonly userContext: UserContext) {
+    constructor(private readonly userContext: UserContext) {
     }
 
     insert(input: EventInput): Observable<EventResult> {

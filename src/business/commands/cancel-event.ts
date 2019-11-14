@@ -2,7 +2,7 @@ import { IEventRepository } from '../repositories/i-event-repository';
 import { UserContext } from '../../utilities/user-context';
 import { of, Observable, iif, zip, from } from 'rxjs';
 import { ICancelEvent } from './i-cancel-event';
-import { map, flatMap, tap, count, catchError, filter } from 'rxjs/operators';
+import { map, flatMap, catchError, filter } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';

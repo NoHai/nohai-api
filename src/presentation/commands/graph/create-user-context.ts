@@ -6,9 +6,7 @@ import { Observable, of } from 'rxjs';
 import { UserContext } from '../../../utilities/user-context';
 
 export class CreateUserContext implements ICreateUserContext {
-
     constructor(private readonly userContext: UserContext) {
-
     }
 
     execute(input?: any): Observable<Nothing> {

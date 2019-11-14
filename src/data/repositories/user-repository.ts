@@ -1,4 +1,4 @@
-import { from, Observable, of, throwError } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
@@ -9,7 +9,6 @@ import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
 import { AuthHelper } from '../../utilities/auth-helper';
-import { Errors } from '../../utilities/errors';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
