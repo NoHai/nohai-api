@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { CredentialsInput } from '../business/models/inputs/credentials-input';
 import { ICreateTokens } from '../business/commands/i-create-tokens';
 import { IRefreshToken } from '../business/commands/i-refresh-token';
-import request = require('request');
 
 export class AuthController {
     constructor(private readonly createTokens: ICreateTokens,

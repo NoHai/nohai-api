@@ -6,7 +6,7 @@ export class AlterUserTable1572947991641 implements MigrationInterface {
         await queryRunner.addColumn('user', new TableColumn({
             isNullable: false,
             default: 0,
-            type: 'bit',
+            type: 'tinyint(1)',
             name: 'enabled',
         }));
     }

@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { EventInput } from '../models/inputs/event-input';
-import { EventsParameter } from '../models/parameters/events-parameter';
 import { Event as EventResult } from '../models/results/event';
 import { Pagination } from '../models/results/pagination';
 import { SearchEventsParameter } from '../models/parameters/search-events-parameter';

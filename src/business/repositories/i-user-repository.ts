@@ -20,4 +20,6 @@ export interface IUserRepository {
     updateCredentials(input: CredentialsInput): Observable<boolean>;
 
     find(parameter: any): Observable<User[] | undefined>;
+
+    activate(login: string): Observable<boolean>;
 }

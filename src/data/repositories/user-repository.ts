@@ -1,4 +1,4 @@
-import { from, Observable, of, throwError } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
@@ -9,7 +9,6 @@ import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
 import { AuthHelper } from '../../utilities/auth-helper';
-import { Errors } from '../../utilities/errors';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -19,7 +18,7 @@ export class UserRepository implements IUserRepository {
     }
 
     byCredentials(login: string): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail({ login }))
+        return from(UserEntity.findOneOrFail({ login, enabled: true }))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
@@ -51,14 +50,23 @@ export class UserRepository implements IUserRepository {
     }
 
     getWithCredentials(ids: any[]): Observable<any[]> {
-        return from(UserEntity.findByIds( ids))
-        .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
+        return from(UserEntity.findByIds(ids))
+            .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
     }
 
     find(parameter: any): Observable<UserResult[] | undefined> {
-        return from (UserEntity.find(parameter))
+        return from(UserEntity.find(parameter))
             .pipe(map((entities) => UserFactory.results.fromUserEntities(entities)))
             .pipe(catchError(() => of(undefined)));
+    }
+
+    activate(login: string): Observable<boolean> {
+        return from(User.findOneOrFail({ login }))
+            .pipe(flatMap((entity) => {
+                entity.enabled = true;
+                return entity.save({ reload: true });
+            }))
+            .pipe(map((savedEntity) => savedEntity.enabled));
     }
 }
 

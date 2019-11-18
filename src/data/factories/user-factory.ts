@@ -14,11 +14,18 @@ export class UserFactory {
             return new UserEntity({
                 ...hashedInput,
                 picture,
+                enabled : input.loginWithFb === true ? true : false,
             });
         },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
         fromUserResult: (user: UserResult) => new UserEntity(user),
         fromId: (id: string) => new UserEntity({ id }),
+    };
+
+    static credentials = {
+        fromUserEntity: (user: UserEntity) => new Credentials({
+            ...user,
+        }),
     };
 
     static result = {
@@ -33,7 +40,7 @@ export class UserFactory {
                 email: user.login,
             };
         },
-        fromCredentials : (cred: Credentials) => new UserResult({
+        fromCredentials: (cred: Credentials) => new UserResult({
             login: cred.login,
             id: cred.id,
             loginWithFb: cred.loginWithFb,
