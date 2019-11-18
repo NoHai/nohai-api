@@ -35,7 +35,7 @@ export class CreateUser implements ICreateUser {
             expireDate: date,
         };
 
-        const confirmLink = `https://no-hai.ro/confirmation/${AuthHelper.signToken(token)}`;
+        const confirmLink = `https://no-hai.ro/email-validation/${AuthHelper.signToken(token)}`;
         const email = EmailHelper.getConfirmationEmail(credentials.login, confirmLink);
 
         return of(this.emailService.sendEmail(email));
