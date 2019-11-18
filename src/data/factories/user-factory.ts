@@ -14,6 +14,7 @@ export class UserFactory {
             return new UserEntity({
                 ...hashedInput,
                 picture,
+                enabled : input.loginWithFb === true ? true : false,
             });
         },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
