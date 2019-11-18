@@ -50,14 +50,23 @@ export class UserRepository implements IUserRepository {
     }
 
     getWithCredentials(ids: any[]): Observable<any[]> {
-        return from(UserEntity.findByIds( ids))
-        .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
+        return from(UserEntity.findByIds(ids))
+            .pipe(map((results) => UserFactory.results.fromUsersWithCredentials(results)));
     }
 
     find(parameter: any): Observable<UserResult[] | undefined> {
-        return from (UserEntity.find(parameter))
+        return from(UserEntity.find(parameter))
             .pipe(map((entities) => UserFactory.results.fromUserEntities(entities)))
             .pipe(catchError(() => of(undefined)));
+    }
+
+    activate(login: string): Observable<boolean> {
+        return from(User.findOneOrFail({ login }))
+            .pipe(flatMap((entity) => {
+                entity.enabled = true;
+                return entity.save({ reload: true });
+            }))
+            .pipe(map((savedEntity) => savedEntity.enabled));
     }
 }
 

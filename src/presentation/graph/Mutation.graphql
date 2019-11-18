@@ -67,5 +67,5 @@ type Mutation {
     cancelPendingRequest(parameter: String!): Boolean
 
     "It's used to activate the user"
-    activateUser(parameter: String!): Credentials
+    activateUser(parameter: String!): Boolean
 }

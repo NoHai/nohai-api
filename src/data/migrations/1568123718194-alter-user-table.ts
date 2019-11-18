@@ -6,7 +6,7 @@ export class AlterUserTable1568123718194 implements MigrationInterface {
         await queryRunner.addColumn('user', new TableColumn({
             isNullable: true,
             name: 'login_with_fb',
-            type: 'bit',
+            type: 'tinyint(1)',
         }));
     }
 
