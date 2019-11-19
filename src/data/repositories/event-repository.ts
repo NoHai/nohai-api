@@ -82,7 +82,11 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
-            .where(PaginationUtility.startDateEventCondition(parameter, true), { startDate: PaginationUtility.startDate(parameter, true) })
+            .where(PaginationUtility.startDateEventCondition(parameter, true),
+                {
+                    startDate: PaginationUtility.startDate(parameter, true),
+                    startTime: PaginationUtility.getTodaysTime(),
+                })
             .andWhere(PaginationUtility.sportsEventCondition(parameter), { sports: parameter.sports })
             .andWhere('event.status <> 0')
             .andWhere(new Brackets((qb) => {

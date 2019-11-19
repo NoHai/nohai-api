@@ -12,7 +12,7 @@ export class PaginationUtility {
     static startDateEventCondition(parameter: SearchEventsParameter, setDefault: boolean) {
         const startDate = PaginationUtility.startDate(parameter, setDefault);
         return startDate != null
-            ? 'event.startDate >= :startDate'
+            ? 'event.startDate > :startDate OR (event.startDate = :startDate AND event.startTime > :startTime)'
             : 'event.startDate IS NOT NULL';
     }
 
@@ -20,16 +20,20 @@ export class PaginationUtility {
         const todayDate = moment().format('YYYY-MM-DD').toString();
         const startDate = moment(parameter.startDate).format('YYYY-MM-DD').toString();
         const eventDate = parameter.showHistory
-                         ? startDate
-                         : moment().isSameOrAfter(moment(parameter.startDate))
-                            ? todayDate
-                            : startDate;
+            ? startDate
+            : moment().isSameOrAfter(moment(parameter.startDate))
+                ? todayDate
+                : startDate;
 
         return parameter.startDate
             ? eventDate
             : setDefault
                 ? todayDate
                 : null;
+    }
+
+    static getTodaysTime() {
+        return moment().format('HH:mm').toString();
     }
 
 }

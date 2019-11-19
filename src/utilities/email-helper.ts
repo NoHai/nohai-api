@@ -3,6 +3,7 @@ import { of, Observable, throwError } from 'rxjs';
 import { User } from '../business/models/results/user';
 import mjml2html from 'mjml';
 import { Errors } from './errors';
+import { AuthHelper } from './auth-helper';
 
 export class EmailHelper {
 
@@ -85,7 +86,16 @@ export class EmailHelper {
         return emails;
     }
 
-    static getConfirmationEmail(emailAddress: string, link: string) {
+    static getConfirmationEmail(emailAddress: string) {
+        const date = new Date();
+        date.setHours(date.getHours() + 24);
+
+        const token = {
+            email: emailAddress,
+            expireDate: date,
+        };
+
+        const link = `http://no-hai.ro/email-validation/${AuthHelper.signToken(token)}`;
         return new Email({
             to: emailAddress,
             from: process.env.NOHAI_CUSTOMER_SERVICE_EMAIL,
@@ -134,153 +144,83 @@ export class EmailHelper {
     }
 
     private static getRecoveryEmailHtml(user: User, link: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>
-        <mj-section>
-            <mj-column>
-            <mj-text  font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-            <mj-text  font-family="helvetica">Mai jos se alfla link-ul pentru resetarea parolei atasata contului NoHai</mj-text>
-            <mj-text>
-                <a href="${link}">Resetare parola</a>
-            </mj-text>
-            <mj-text  font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = ` <mj-text  font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        <mj-text  font-family="helvetica">Mai jos se alfla link-ul pentru resetarea parolei atasata contului NoHai</mj-text>
+        <mj-text>
+            <a href="${link}">Resetare parola</a>
+        </mj-text>
+        <mj-text  font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
     }
 
     private static getOccupiedSpotsEmailHtml(user: User, eventTitle: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>
-        <mj-section>
-            <mj-column>
-            <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-            <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
-            dar toate locurile la evenimentul ${eventTitle} au fost ocupate.</mj-text>
-            <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
+        dar toate locurile la evenimentul ${eventTitle} au fost ocupate.</mj-text>
+        <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
+        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
     }
 
     private static getCancelEventEmailHtml(user: User, eventTitle: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>
-        <mj-section>
-            <mj-column>
-            <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-            <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
-            dar ${eventTitle} a fost anulat.</mj-text>
-            <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = ` <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
+        dar ${eventTitle} a fost anulat.</mj-text>
+        <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
+        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
     }
 
     private static getLeaveEventEmailHtml(user: User, leaveUser: User, eventTitle: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>
-        <mj-section>
-            <mj-column>
-            <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-            <mj-text font-family="helvetica">Participantul ${leaveUser.firstName} ${leaveUser.lastName}
-            nu mai poate participa la ${eventTitle}.</mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        <mj-text font-family="helvetica">Participantul ${leaveUser.firstName} ${leaveUser.lastName}
+        nu mai poate participa la ${eventTitle}.</mj-text>
+        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
     }
 
     private static getKickoutEmailHtml(kickoutUser: User, eventTitle: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>p
-        <mj-section>
-            <mj-column>
-            <mj-text font-family="helvetica">Salut ${kickoutUser.firstName} ${kickoutUser.lastName},</mj-text>
-            <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administratorul evenimentului
-                 ${eventTitle} te-a retras din activitate.</mj-text>
-            <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = `<mj-text font-family="helvetica">Salut ${kickoutUser.firstName} ${kickoutUser.lastName},</mj-text>
+        <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administratorul evenimentului
+             ${eventTitle} te-a retras din activitate.</mj-text>
+        <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
+        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
     }
 
     private static getEditEmailHtml(user: User, eventTitle: string): string {
-        return mjml2html(`
-        <mjml>
-        <mj-body>p
-        <mj-section>
-            <mj-column>
-            <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-            <mj-text font-family="helvetica">Detaliile evenimentului ${eventTitle} au fost modificate.</mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
-            </mj-column>
-        </mj-section>
-        <mj-section>
-        <mj-column>
-            <mj-text  font-family="helvetica">Echipa NoHai</mj-text>
-        </mj-column>
-        </mj-section>
-        </mj-body>
-        </mjml>
-        `).html;
+        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+                        <mj-text font-family="helvetica">Detaliile evenimentului ${eventTitle} au fost modificate.</mj-text>
+                        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
+
     }
 
     private static getConfirmationEmailHtml(link: string) {
+
+        const content = `<mj-text font-family="helvetica">No hai cu noi,</mj-text>
+                        <mj-text font-family="helvetica">Pentru a confirma contul tau te rugam sa accesezi link-ul de mai jos. </mj-text>
+                        <mj-text>
+                            <a href="${link}">Confirmare cont</a>
+                        </mj-text>
+                        <mj-text font-family="helvetica">Iti multumim</mj-text>`;
+
+        return EmailHelper.createEmail(content);
+    }
+
+    private static createEmail(content: string) {
         return mjml2html(`
         <mjml>
         <mj-body>p
         <mj-section>
             <mj-column>
-            <mj-text font-family="helvetica">No hai cu noi,</mj-text>
-            <mj-text font-family="helvetica">Pentru a confirma contul tau te rugam sa accesezi link-ul de mai jos. </mj-text>
-            <mj-text>
-              <a href="${link}">Confirmare cont</a>
-            </mj-text>
-            <mj-text font-family="helvetica">Iti multumim</mj-text>
+            ${content}
             </mj-column>
         </mj-section>
         <mj-section>
