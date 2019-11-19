@@ -34,7 +34,7 @@ export class LoginFacebook implements ILoginFacebook {
     }
 
     private buildAccessToken(credentials: any): Observable<string> {
-        return this.userRepository.byCredentials(credentials.login)
+        return this.userRepository.findOne({ login: credentials.login, enabled: true })
             .pipe(map((user) => ({
                 userId: user.id,
                 firstName: user.firstName,
@@ -44,7 +44,7 @@ export class LoginFacebook implements ILoginFacebook {
     }
 
     private login(input: CredentialsInput): Observable<Tokens> {
-        return this.userRepository.byCredentials(input.login)
+        return this.userRepository.findOne({ login: input.login, enabled: true })
             .pipe(catchError(() => this.saveNewUser(input)))
             .pipe(flatMap((user) => this.saveToken(user)));
     }

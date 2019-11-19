@@ -52,9 +52,10 @@ export class UpdateEvent implements IUpdateEvent {
             .pipe(map((userEvents) => userEvents.map((u) => u.userId)));
 
         const notificationTokenFlow = this.userEventsRepository.find({ eventId, status: UserEventsStatus.Approved })
-            .pipe(map((users) => users.map((u) => u.userId)))
-            .pipe(filter((userIds) => userIds && userIds.length > 0))
-            .pipe(flatMap((ids) => this.notificationTokenRepository.find({ where: { userId: In(ids) } })));
+            .pipe(map((users) => users.map((u) => u.userId)),
+                  flatMap((userIds) => iif(() => userIds && userIds.length > 0,
+                                        this.notificationTokenRepository.find({ where: { userId: In(userIds) } }),
+                                        of(undefined))));
 
         const eventFlow = this.eventRepository.getById(eventId);
 
@@ -62,7 +63,7 @@ export class UpdateEvent implements IUpdateEvent {
             .pipe(map((result) => {
                 const notifications = NotificationHelper.buildEditEventNotifications(result[2], result[0]);
                 notifications.map((notification) => {
-                    const tokens = result[1].filter((n) => n.userId === notification.userId);
+                    const tokens = result[1] !== undefined ? result[1].filter((n) => n.userId === notification.userId) : [];
                     this.sendNotification(notification, tokens);
                 });
                 return result[2];

@@ -7,7 +7,7 @@ import { User } from '../models/results/user';
 export interface IUserRepository {
     insert(event: CredentialsInput): Observable<Credentials>;
 
-    byCredentials(login: string): Observable<User>;
+    findOne(parameter: any): Observable<User>;
 
     update(input: UpdateUserInput): Observable<User>;
 
