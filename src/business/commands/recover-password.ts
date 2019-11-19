@@ -13,22 +13,22 @@ export class RecoverPassword implements IRecoverPassword {
     }
 
     execute(input: string): Observable<string> {
-        const userFlow  = this.userRepository.byCredentials(input);
+        const userFlow = this.userRepository.findOne({ login: input, enabled: true });
 
-        const recoveryLinkFlow = this.userRepository.byCredentials(input)
-                            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
-                            .pipe(map(() => ({
-                                email: input,
-                                expireDate: this.getExpiryDate(),
-                            })))
-                            .pipe(map((token) => `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`));
+        const recoveryLinkFlow = this.userRepository.findOne({ login: input, enabled: true })
+            .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
+            .pipe(map(() => ({
+                email: input,
+                expireDate: this.getExpiryDate(),
+            })))
+            .pipe(map((token) => `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`));
 
         return zip(userFlow, recoveryLinkFlow)
-                        .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))
-                        .pipe(flatMap((email) => from(this.emailService.sendEmail(email))))
-                        .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
-                                     EmailHelper.recoverPasswordSuccessfully(input),
-                                     EmailHelper.recoverPasswordError(input))));
+            .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))
+            .pipe(flatMap((email) => from(this.emailService.sendEmail(email))))
+            .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
+                EmailHelper.recoverPasswordSuccessfully(input),
+                EmailHelper.recoverPasswordError(input))));
     }
 
     private getExpiryDate() {
