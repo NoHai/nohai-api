@@ -39,6 +39,7 @@ import { ICancelPendingRequest } from '../../../business/commands/i-cancel-pendi
 import { ISearchEvents } from '../../../business/commands/i-search-events';
 import { ISaveEvent } from '../../../business/commands/i-save-event';
 import { IActivateUser } from '../../../business/commands/i-activate-user';
+import { IResendActivationEmail } from '../../../business/commands/i-resend-activation-email';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -99,6 +100,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly cancelPendingRequest: ICancelPendingRequest,
                 private readonly events: ISearchEvents,
                 private readonly activateUser: IActivateUser,
+                private readonly resendActivationEmail: IResendActivationEmail,
     ) {
     }
 
@@ -199,7 +201,9 @@ export class InitializeGraph implements IInitializeGraph {
                     searchEvents: (context: any) => this.executer(expContext,
                         () => this.events.execute(context.parameter).toPromise(), false),
                     activateUser: (context: any) => this.executer(expContext,
-                                () => this.activateUser.execute(context.parameter).toPromise(), false),
+                        () => this.activateUser.execute(context.parameter).toPromise(), false),
+                    resendActivationEmail: (context: any) => this.executer(expContext,
+                        () => this.resendActivationEmail.execute(context.parameter).toPromise(), false),
                 },
                 schema,
                 customFormatErrorFn: (err) => {
