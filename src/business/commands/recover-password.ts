@@ -13,27 +13,29 @@ export class RecoverPassword implements IRecoverPassword {
     }
 
     execute(input: string): Observable<string> {
-        const userFlow = this.userRepository.findOne({ login: input, enabled: true });
-
-        const recoveryLinkFlow = this.userRepository.findOne({ login: input, enabled: true })
+        return this.userRepository.findOne({ login: input, enabled: true })
             .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
-            .pipe(map(() => ({
-                email: input,
-                expireDate: this.getExpiryDate(),
-            })))
-            .pipe(map((token) => `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`));
-
-        return zip(userFlow, recoveryLinkFlow)
-            .pipe(map((result) => EmailHelper.getRecoverPasswordEmail(result[0], input, result[1])))
-            .pipe(flatMap((email) => from(this.emailService.sendEmail(email))))
-            .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
-                EmailHelper.recoverPasswordSuccessfully(input),
-                EmailHelper.recoverPasswordError(input))));
+            .pipe(flatMap((user) => this.sendRecoverEmail(user)));
     }
 
     private getExpiryDate() {
         const date = new Date();
         return date.setHours(date.getHours() + 12);
+    }
+
+    private sendRecoverEmail(user: any) {
+        const token = {
+            email: user.login,
+            expireDate: this.getExpiryDate(),
+        };
+        const link = `https://no-hai.ro/reset-password/${AuthHelper.signToken(token)}`;
+        const email = EmailHelper.getRecoverPasswordEmail(user, user.login, link);
+
+        return from(this.emailService.sendEmail(email))
+            .pipe(flatMap((emailResult) => iif(() => !!emailResult && emailResult[0].statusCode === 202,
+                EmailHelper.recoverPasswordSuccessfully(user.login),
+                EmailHelper.recoverPasswordError(user.login))));
+
     }
 
 }
