@@ -15,7 +15,7 @@ export class NotificationHelper {
     static noSpotsAvailableTitle: string = 'S-au epuizat locurile';
     static cancelEventTitle: string = 'Eveniment anulat';
     static leaveEventTitle: string = 'Participare anulata';
-    static createEventNotificationTitle: string = 'Avem o sugestie pentru tine';
+    static createEventNotificationTitle: string = 'Am o sugestie pentru tine';
     static kickoutUserNotificationTitle: string = 'Retragere eveniment';
     static editEventNotificationTitle: string = 'Modificare eveniment';
 
@@ -175,7 +175,7 @@ export class NotificationHelper {
     }
 
     static createEventBody(eventTitle: string) {
-        return `Credem ca o sa iti placa evenimentul: ${eventTitle}`;
+        return `Cred ca o sa iti placa evenimentul: ${eventTitle} gazduit de mine.`;
     }
 
     static kickoutUserBody(eventTitle: string) {
