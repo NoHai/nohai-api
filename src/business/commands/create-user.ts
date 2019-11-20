@@ -15,10 +15,10 @@ export class CreateUser implements ICreateUser {
 
     execute(input: CredentialsInput): Observable<Credentials> {
         return this.userRepository.findOne({ login: input.login })
-            .pipe(catchError(() => of(undefined)))
-            .pipe(flatMap((user) => iif(() => user !== undefined,
-                this.sendError(user),
-                this.userRepository.insert(input))))
+            .pipe(catchError(() => of(undefined)),
+                  flatMap((user) => iif(() => user !== undefined,
+                                this.sendError(user),
+                                this.userRepository.insert(input))))
             .pipe(map((credentials) => {
                 this.sendConfirmEmail(credentials);
                 return credentials;
@@ -31,8 +31,8 @@ export class CreateUser implements ICreateUser {
     }
 
     private sendError(user: any) {
-        return user.enabled === true
-            ? throwError(new Error(Errors.AlreadyRegisterd))
-            : throwError(new Error(Errors.InactiveAccount));
+        return user !== undefined && user.enabled === false
+            ? throwError(new Error(Errors.InactiveAccount))
+            : throwError(new Error(Errors.AlreadyRegisterd));
     }
 }

@@ -12,7 +12,7 @@ export class PaginationUtility {
     static startDateEventCondition(parameter: SearchEventsParameter, setDefault: boolean) {
         const startDate = PaginationUtility.startDate(parameter, setDefault);
         return startDate != null
-            ? 'event.startDate > :startDate OR (event.startDate = :startDate AND event.startTime > :startTime)'
+            ? '(event.startDate > :startDate OR (event.startDate = :startDate AND event.startTime > :startTime))'
             : 'event.startDate IS NOT NULL';
     }
 
