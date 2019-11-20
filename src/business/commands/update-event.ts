@@ -19,11 +19,11 @@ import { Errors } from '../../utilities/errors';
 
 export class UpdateEvent implements IUpdateEvent {
     constructor(private eventRepository: IEventRepository,
-        private readonly userEventsRepository: IUserEventsRepository,
-        private readonly userRepository: IUserRepository,
-        private readonly notificationTokenRepository: INotificationTokenRepository,
-        private readonly emailService: EmailService,
-        private readonly userContext: UserContext) {
+                private readonly userEventsRepository: IUserEventsRepository,
+                private readonly userRepository: IUserRepository,
+                private readonly notificationTokenRepository: INotificationTokenRepository,
+                private readonly emailService: EmailService,
+                private readonly userContext: UserContext) {
     }
 
     execute(input: EventInput): Observable<EventResult> {
