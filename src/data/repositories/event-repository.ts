@@ -120,7 +120,7 @@ export class EventRepository implements IEventRepository {
             },
             ))
             .andWhere(PaginationUtility.startDateEventCondition(parameter, false),
-                { startDate: PaginationUtility.startDate(parameter, false) })
+                { startDate: PaginationUtility.startDate(parameter, false), startTime: '' })
             .andWhere(PaginationUtility.sportsEventCondition(parameter), { sports: parameter.sports })
             .andWhere(new Brackets((qb) => {
                 qb.where('event.title like :search', { search: `%${parameter.searchText}%` });

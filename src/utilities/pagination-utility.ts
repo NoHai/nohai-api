@@ -33,7 +33,7 @@ export class PaginationUtility {
     }
 
     static getTodaysTime() {
-        return moment().format('HH:mm').toString();
+        return moment().format('HH:mm');
     }
 
 }

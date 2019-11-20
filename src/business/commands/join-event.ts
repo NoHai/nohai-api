@@ -21,9 +21,9 @@ export class JoinEvent implements IJoinEvent {
     }
 
     execute(eventId: string): Observable<boolean> {
-        return zip(this.allSpotsOccupied(eventId), this.requestAlreadySent(eventId))
-            .pipe(flatMap((result) => iif(() => (result[0] === true || result[1] === true),
-                throwError(this.doNotAllowToJoin(result[0])),
+        return zip(this.allSpotsOccupied(eventId), this.requestAlreadySent(eventId), this.userIsAlsoOwner(eventId))
+            .pipe(flatMap((result) => iif(() => (result[0] === true || result[1] === true || result[2] === true),
+                throwError(this.doNotAllowToJoin(result[0], result[2])),
                 this.joinUser(eventId))));
     }
 
@@ -59,11 +59,18 @@ export class JoinEvent implements IJoinEvent {
                 of(false))));
     }
 
-    private doNotAllowToJoin(spotsOccupied: boolean) {
+    private doNotAllowToJoin(spotsOccupied: boolean, userIsOwner: boolean) {
         if (spotsOccupied === true) {
             return new Error(Errors.AllSpotsOccupied);
+        } else if (userIsOwner === true) {
+            return new Error(Errors.UnableToJoinYourOwnEvent);
         } else {
             return new Error(Errors.JoinRequestAlreadySent);
         }
+    }
+
+    private userIsAlsoOwner(eventId: string): Observable<boolean> {
+        return this.eventRepository.getById(eventId)
+            .pipe(flatMap((event) => iif(() => event.owner.id === this.userContext.userId, of(true), of(false))));
     }
 }
