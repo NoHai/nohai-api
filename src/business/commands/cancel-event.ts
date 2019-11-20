@@ -47,8 +47,9 @@ export class CancelEvent implements ICancelEvent {
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {
-        return from(notification.save())
-            .pipe(flatMap((noti) => NotificationHelper.sendNotification(noti, tokens.map((to) => to.token))));
+        console.log(notification);
+        const savedNotification = notification.save();
+        return  NotificationHelper.sendNotification(savedNotification, tokens.map((to) => to.token));
     }
 
     private deleteEventRelated(id: string) {
@@ -93,9 +94,9 @@ export class CancelEvent implements ICancelEvent {
                 of(false))));
 
         return this.notificationRepository.delete({ eventId: id, type: Not(NotificationType.Cancel) })
-            .pipe(flatMap(() => sendNotificationsFlow),
-                flatMap(() => sendEmailsFlow),
-                flatMap(() => this.deleteEventRelated(id)));
+                .pipe(flatMap(() => sendNotificationsFlow),
+                    flatMap(() => sendEmailsFlow),
+                    flatMap(() => this.deleteEventRelated(id)));
 
     }
 }

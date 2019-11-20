@@ -39,8 +39,9 @@ export class CreateEvent implements ICreateEvent {
                 .pipe(flatMap((result) => {
                     const notifications = NotificationHelper.buildCreateEventNotifications(result[0], userIds);
                     notifications.map((notification) => {
-                        const tokens = result[1].filter((n) => n.userId === notification.userId);
-                        this.sendNotification(notification, tokens);
+                        const tokens = result[1] !== undefined ? result[1].filter((n) => n.userId === notification.userId) : [];
+                        notification.save();
+                        NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
                     });
                     return of(result[0]);
                 }))
