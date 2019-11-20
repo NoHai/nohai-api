@@ -19,11 +19,11 @@ import { Errors } from '../../utilities/errors';
 
 export class UpdateEvent implements IUpdateEvent {
     constructor(private eventRepository: IEventRepository,
-                private readonly userEventsRepository: IUserEventsRepository,
-                private readonly userRepository: IUserRepository,
-                private readonly notificationTokenRepository: INotificationTokenRepository,
-                private readonly emailService: EmailService,
-                private readonly userContext: UserContext) {
+        private readonly userEventsRepository: IUserEventsRepository,
+        private readonly userRepository: IUserRepository,
+        private readonly notificationTokenRepository: INotificationTokenRepository,
+        private readonly emailService: EmailService,
+        private readonly userContext: UserContext) {
     }
 
     execute(input: EventInput): Observable<EventResult> {
@@ -53,9 +53,9 @@ export class UpdateEvent implements IUpdateEvent {
 
         const notificationTokenFlow = this.userEventsRepository.find({ eventId, status: UserEventsStatus.Approved })
             .pipe(map((users) => users.map((u) => u.userId)),
-                  flatMap((userIds) => iif(() => userIds && userIds.length > 0,
-                                        this.notificationTokenRepository.find({ where: { userId: In(userIds) } }),
-                                        of(undefined))));
+                flatMap((userIds) => iif(() => userIds && userIds.length > 0,
+                    this.notificationTokenRepository.find({ where: { userId: In(userIds) } }),
+                    of(undefined))));
 
         const eventFlow = this.eventRepository.getById(eventId);
 
@@ -64,7 +64,9 @@ export class UpdateEvent implements IUpdateEvent {
                 const notifications = NotificationHelper.buildEditEventNotifications(result[2], result[0]);
                 notifications.map((notification) => {
                     const tokens = result[1] !== undefined ? result[1].filter((n) => n.userId === notification.userId) : [];
-                    this.sendNotification(notification, tokens);
+                    notification.save();
+                    NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
+                    // this.sendNotification(notification, tokens);
                 });
                 return result[2];
             }));
@@ -81,8 +83,8 @@ export class UpdateEvent implements IUpdateEvent {
     }
 
     private sendNotification(notification: Notification, tokens: NotificationToken[]) {
-        return from(notification.save())
-            .pipe(flatMap((noti) => NotificationHelper.sendNotification(noti, tokens.map((to) => to.token))));
+        notification.save();
+        return NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
     }
 
     private hasEditRights(input: EventInput) {
