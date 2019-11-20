@@ -2,7 +2,7 @@ import { Observable, from, zip, of, iif, throwError } from 'rxjs';
 import { Event as EventResult } from '../models/results/event';
 import { IEventRepository } from '../repositories/i-event-repository';
 import { IUpdateEvent } from './i-update-event';
-import { map, flatMap, filter, catchError, tap } from 'rxjs/operators';
+import { map, flatMap, catchError } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { Notification } from '../../data/entities/notification';
@@ -19,11 +19,11 @@ import { Errors } from '../../utilities/errors';
 
 export class UpdateEvent implements IUpdateEvent {
     constructor(private eventRepository: IEventRepository,
-        private readonly userEventsRepository: IUserEventsRepository,
-        private readonly userRepository: IUserRepository,
-        private readonly notificationTokenRepository: INotificationTokenRepository,
-        private readonly emailService: EmailService,
-        private readonly userContext: UserContext) {
+                private readonly userEventsRepository: IUserEventsRepository,
+                private readonly userRepository: IUserRepository,
+                private readonly notificationTokenRepository: INotificationTokenRepository,
+                private readonly emailService: EmailService,
+                private readonly userContext: UserContext) {
     }
 
     execute(input: EventInput): Observable<EventResult> {
