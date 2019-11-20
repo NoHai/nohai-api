@@ -5,8 +5,6 @@ import { IUpdateEvent } from './i-update-event';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
-import { Notification } from '../../data/entities/notification';
-import { NotificationToken } from '../models/results/notification-token';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
 import { In } from 'typeorm';
 import { UserEventsStatus } from '../../data/enums/user-events-status';
@@ -66,7 +64,6 @@ export class UpdateEvent implements IUpdateEvent {
                     const tokens = result[1] !== undefined ? result[1].filter((n) => n.userId === notification.userId) : [];
                     notification.save();
                     NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
-                    // this.sendNotification(notification, tokens);
                 });
                 return result[2];
             }));
@@ -80,11 +77,6 @@ export class UpdateEvent implements IUpdateEvent {
             .pipe(flatMap((emails) => this.emailService.sendMultipleEmails(emails)))
             .pipe(flatMap(() => of(event)));
 
-    }
-
-    private sendNotification(notification: Notification, tokens: NotificationToken[]) {
-        notification.save();
-        return NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
     }
 
     private hasEditRights(input: EventInput) {
