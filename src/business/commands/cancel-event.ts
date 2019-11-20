@@ -6,9 +6,7 @@ import { map, flatMap, catchError, filter } from 'rxjs/operators';
 import { IUserEventsRepository } from '../repositories/i-user-events-repository';
 import { NotificationHelper } from '../../utilities/notification-helper';
 import { INotificationTokenRepository } from '../repositories/i-notification-token-repository';
-import { Notification } from '../../data/entities/notification';
 import { In, Not } from 'typeorm';
-import { NotificationToken } from '../models/results/notification-token';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { EmailHelper } from '../../utilities/email-helper';
 import { EmailService } from '../../services/email-service';
@@ -46,12 +44,6 @@ export class CancelEvent implements ICancelEvent {
                 of(false))));
     }
 
-    private sendNotification(notification: Notification, tokens: NotificationToken[]) {
-        console.log(notification);
-        const savedNotification = notification.save();
-        return  NotificationHelper.sendNotification(savedNotification, tokens.map((to) => to.token));
-    }
-
     private deleteEventRelated(id: string) {
         return this.eventRepository.delete(id)
             .pipe(flatMap((rowsAffected) => iif(() => rowsAffected !== undefined, of(true), of(false))));
@@ -77,8 +69,9 @@ export class CancelEvent implements ICancelEvent {
             .pipe(flatMap((result) => {
                 const notifications = NotificationHelper.buildCancelEventNotifications(result[1], result[0]);
                 notifications.map((notification) => {
-                    const tokens = result[2].filter((n) => n.userId === notification.userId);
-                    this.sendNotification(notification, tokens);
+                    const tokens = result[2] !== undefined ? result[2].filter((n) => n.userId === notification.userId) : [];
+                    notification.save();
+                    NotificationHelper.sendNotification(notification, tokens.map((to) => to.token));
                 });
                 return of(true);
             }))
