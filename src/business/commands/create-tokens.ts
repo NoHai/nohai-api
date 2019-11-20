@@ -16,7 +16,7 @@ export class CreateTokens implements ICreateTokens {
     }
 
     execute(input: CredentialsInput): Observable<Tokens> {
-        return this.userRepository.byCredentials(input.login)
+        return this.userRepository.findOne({ login: input.login, enabled: true })
             .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(flatMap((user) => this.userRepository.getCredentials(user.id)))
             .pipe(flatMap((credentials) => AuthHelper.comparePassords(input.password, credentials.password)))
@@ -28,7 +28,7 @@ export class CreateTokens implements ICreateTokens {
     private saveToken(input: CredentialsInput): Observable<Tokens> {
         const accessTokenFlow: Observable<string> = this.buildAccessToken(input);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
-        const userFlow: Observable<User> = this.userRepository.byCredentials(input.login);
+        const userFlow: Observable<User> = this.userRepository.findOne({ login: input.login, enabled: true });
 
         return zip(userFlow, accessTokenFlow, refreshTokenFlow)
             .pipe(map((result) => new Tokens({
@@ -41,7 +41,7 @@ export class CreateTokens implements ICreateTokens {
     }
 
     private buildAccessToken(credentials: CredentialsInput): Observable<string> {
-        return this.userRepository.byCredentials(credentials.login)
+        return this.userRepository.findOne({ login: credentials.login, enabled: true})
             .pipe(map((user) => ({
                 userId: user.id,
                 firstName: user.firstName,

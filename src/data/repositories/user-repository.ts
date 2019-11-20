@@ -17,8 +17,8 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => CredentialsFactory.result.fromUserEntity(entity)));
     }
 
-    byCredentials(login: string): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail({ login, enabled: true }))
+    findOne(parameter: any): Observable<UserResult> {
+        return from(UserEntity.findOneOrFail(parameter))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 

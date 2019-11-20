@@ -6,7 +6,6 @@ import { ICreateUser } from './i-create-user';
 import { flatMap, catchError, map } from 'rxjs/operators';
 import { Errors } from '../../utilities/errors';
 import { EmailService } from '../../services/email-service';
-import { AuthHelper } from '../../utilities/auth-helper';
 import { EmailHelper } from '../../utilities/email-helper';
 
 export class CreateUser implements ICreateUser {
@@ -15,11 +14,11 @@ export class CreateUser implements ICreateUser {
     }
 
     execute(input: CredentialsInput): Observable<Credentials> {
-        return this.userRepository.byCredentials(input.login)
-            .pipe(catchError(() => of(undefined)))
-            .pipe(flatMap((user) => iif(() => user !== undefined,
-                throwError(new Error (Errors.AlreadyRegisterd)),
-                this.userRepository.insert(input))))
+        return this.userRepository.findOne({ login: input.login })
+            .pipe(catchError(() => of(undefined)),
+                  flatMap((user) => iif(() => user !== undefined,
+                                this.sendError(user),
+                                this.userRepository.insert(input))))
             .pipe(map((credentials) => {
                 this.sendConfirmEmail(credentials);
                 return credentials;
@@ -29,5 +28,11 @@ export class CreateUser implements ICreateUser {
     private sendConfirmEmail(credentials: Credentials) {
         const email = EmailHelper.getConfirmationEmail(credentials.login);
         return of(this.emailService.sendEmail(email));
+    }
+
+    private sendError(user: any) {
+        return user !== undefined && user.enabled === false
+            ? throwError(new Error(Errors.InactiveAccount))
+            : throwError(new Error(Errors.AlreadyRegisterd));
     }
 }
