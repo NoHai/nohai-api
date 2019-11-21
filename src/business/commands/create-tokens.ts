@@ -44,8 +44,8 @@ export class CreateTokens implements ICreateTokens {
         return this.userRepository.findOne({ login: credentials.login, enabled: true})
             .pipe(map((user) => ({
                 userId: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                firstName: user.details.firstName,
+                lastName: user.details.lastName,
             })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }

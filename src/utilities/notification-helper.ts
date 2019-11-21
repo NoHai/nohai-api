@@ -25,7 +25,7 @@ export class NotificationHelper {
             body: NotificationHelper.joinNotificationBody(event, user).trim(),
             eventId: event.id,
             userId: event.owner.id,
-            avatarUrl: user.picture,
+            avatarUrl: user.details.picture,
             createdUser: user.id,
             notificationType: NotificationType.JoinRequest,
             status: NotificationStatus.Unread,
@@ -38,7 +38,7 @@ export class NotificationHelper {
             body: NotificationHelper.approveRequestBody(event).trim(),
             eventId: event.id,
             userId: toUser,
-            avatarUrl: fromUser.picture,
+            avatarUrl: fromUser.details.picture,
             createdUser: event.owner.id,
             notificationType: NotificationType.ApproveJoin,
             status: NotificationStatus.Unread,
@@ -51,7 +51,7 @@ export class NotificationHelper {
             body: NotificationHelper.rejectRequestBody(event).trim(),
             eventId: event.id,
             userId: toUser,
-            avatarUrl: fromUser.picture,
+            avatarUrl: fromUser.details.picture,
             createdUser: event.owner.id,
             notificationType: NotificationType.RejectJoin,
             status: NotificationStatus.Unread,
@@ -155,7 +155,8 @@ export class NotificationHelper {
     }
 
     static joinNotificationBody(event: Event, user: User): string {
-        return `${user.firstName} ${user.lastName} doreste sa se alature evenimentului creat de tine - ${event.title.trim()}`;
+        return `${user.details.firstName} ${user.details.lastName}
+        doreste sa se alature evenimentului creat de tine - ${event.title.trim()}`.trim();
     }
 
     static approveRequestBody(event: Event): string {

@@ -5,6 +5,7 @@ import { User as UserEntity } from '../entities/user';
 import { AuthHelper } from '../../utilities/auth-helper';
 import { Credentials } from '../../business/models/results/credentials';
 import { Sport } from '../entities/sport';
+import { In } from 'typeorm';
 
 export class UserFactory {
     static entity = {
@@ -28,10 +29,11 @@ export class UserFactory {
         }),
     };
 
+    // TODO: !!! check if you still need the favorite sport
     static result = {
         fromUserEntity: (user: UserEntity) => new UserResult({
             ...user,
-            favoriteSport: Sport.findOne(user.favoriteSport),
+            // favoriteSports: Sport.find({ where: { id: In(user.favoriteSports) }}),
         }),
         fromUserWithCredentials: (user: UserEntity) => {
             const res = new UserResult(user);
