@@ -9,6 +9,9 @@ import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { UserDetailsInput } from '../../business/models/inputs/user-details-input';
+import { UserDetailsFactory } from '../factories/user-details-factory';
+import { UserDetails } from '../../business/models/results/user-details';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -26,6 +29,12 @@ export class UserRepository implements IUserRepository {
         return of(UserFactory.entity.fromUserInput(input))
             .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
+    }
+
+    saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
+        return of(UserDetailsFactory.entity.fromUserDetailsInput(input, userId))
+        .pipe(flatMap((entity) => entity.save()))
+        .pipe(map((entity) => UserDetailsFactory.result.fromUserDetailsEntity(entity)));
     }
 
     getById(id: string): Observable<UserResult> {
