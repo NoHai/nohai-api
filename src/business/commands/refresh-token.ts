@@ -41,8 +41,8 @@ export class RefreshToken implements IRefreshToken {
             .pipe(catchError(() => throwError(new Error(Errors.UnableToLogin))))
             .pipe(map((user) => ({
                 userId: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                firstName: user.details.firstName,
+                lastName: user.details.lastName,
             })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
