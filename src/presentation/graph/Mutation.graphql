@@ -1,74 +1,78 @@
 ﻿"""One of the three root graph nodes. It's used for posting data to server."""
 type Mutation {
-    """It's used to authenticate a user."""
+    "It's used to authenticate a user."
     auth(input: CredentialsInput!): Tokens
 
-     """It's used to authenticate a user via facebook."""
+    "It's used to authenticate a user via facebook."
     loginFacebook(input: FacebookCredentialsInput!): Tokens
 
-    """It's used to get the refresh token from a user."""
+    "It's used to get the refresh token from a user."
     refreshToken(input: String!): Tokens
 
-    """It's used to create a new user."""
+    "It's used to create a new user."
     createUser(input: CredentialsInput!): Credentials!
 
-    """It's used to create a new event."""
+    "It's used to create a new event."
     saveEvent(input: EventInput!): Event!
 
-     """It's used to update an existing user."""
+    "It's used to update an existing user."
     updateUser(input: UpdateUserInput!): User!
 
-     """It's used to create a notification."""
+    "It's used to create a notification."
     createNotification(input: NotificationInput!): Notification!
 
-    """It's used to create a notification token."""
+    "It's used to create a notification token."
     createNotificationToken(token: String): NotificationToken
 
-     """It's used to delete a notification token."""
+    "It's used to delete a notification token."
     deleteNotificationToken(id: String!) : Int
 
-      """It's used to create a user events."""
+    "It's used to create a user events."
     createUserEvents(input: UserEventsInput!): UserEvents!
 
-     """It's used to delete a user events."""
+    "It's used to delete a user events."
     deleteUserEvents(id: String!) : Int
 
-    """It's used to join to an event."""
+    "It's used to join to an event."
     joinEvent(eventId: String!): Boolean
 
-    """It's used to accept a join request."""
+    "It's used to accept a join request."
     approveRequest(parameter: String!): Boolean
 
-    """It's used to reject a join request."""
+    "It's used to reject a join request."
     rejectRequest(parameter: String!): Boolean
 
-    """It's used to mark a notification as read."""
+    "It's used to mark a notification as read."
     markAsRead(parameter: String!): Notification!
 
-    """It's used to mark all notifications as read."""
+    "It's used to mark all notifications as read."
     markAllAsRead: Boolean!
 
-    """It's used to recover password."""
+    "It's used to recover password."
     recoverPassword(parameter: String!): String
 
-    """It's used to recover password."""
+    "It's used to recover password."
     updateCredentials(input: CredentialsInput!): Boolean
 
-      """It's used to cancel an  event."""
+    "It's used to cancel an  event."
     cancelEvent(parameter: String!): Boolean
 
-      """It's used to leave an  event."""
+    "It's used to leave an  event."
     leaveEvent(parameter: String!): Boolean
 
-      """It's used to kickout an user from the event."""
+    "It's used to kickout an user from the event."
     kickoutUser(parameter: EventUserParameter!): Boolean
 
-     """It's used to cancel a pending request to an event."""
+    "It's used to cancel a pending request to an event."
     cancelPendingRequest(parameter: String!): Boolean
 
     "It's used to activate the user"
     activateUser(parameter: String!): Boolean
 
-      "It's used to resend the activation email"
+    "It's used to resend the activation email"
     resendActivationEmail(parameter: String!): Boolean
+
+    "It's used to save the details relate to the user"
+    saveUserDetails(input: UserDetailsInput): Boolean
+
 }

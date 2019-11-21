@@ -52,6 +52,7 @@ import { SaveEvent } from '../../../business/commands/save-event';
 import { UpdateEvent } from '../../../business/commands/update-event';
 import { ActivateUser } from '../../../business/commands/activate-user';
 import { ResendActivationEmail } from '../../../business/commands/resend-activation-email';
+import { SaveUserDetails } from '../../../business/commands/save-user-details';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -98,6 +99,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { saveEvent: asClass(SaveEvent).transient().classic() },
         { activateUser: asClass(ActivateUser).transient().classic() },
         { resendActivationEmail: asClass(ResendActivationEmail).transient().classic() },
+        { saveUserDetails: asClass(SaveUserDetails).transient().classic() },
     ];
 
     private readonly businessRepositories: ReadonlyArray<any> = [
