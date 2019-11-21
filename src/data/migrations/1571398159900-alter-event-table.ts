@@ -14,5 +14,4 @@ export class AlterEventTable1571398159900 implements MigrationInterface {
     async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.dropColumn('event', 'created_date');
     }
-
 }
