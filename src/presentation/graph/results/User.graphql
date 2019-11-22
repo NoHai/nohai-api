@@ -6,30 +6,13 @@ type User {
     "The email used for login."
     login: String!
 
-    "The first name of the user."
-    firstName: String
+    "The user has logged in via facebook."
+    loginWithFacebook: Boolean
 
-    "The last name of the user."
-    lastName: String
+    "If the user is enabled"
+    enabled: Boolean
 
-    "The date of birth of the user."
-    dateOfBirth: String
-
-    "The height of the user."
-    height: Int 
-
-    "The weight of the user."
-    weight: Int 
-
-    "The picture path of the user."
-    picture: String
-
-    "The city of the user."
-    city: String
-
-    "The login method."
-    loginWithFb: Boolean
-
-   "The favorite main sport."
-    favoriteSport: Sport
+    "The details of the user."
+    details: UserDetails
+    
 }
