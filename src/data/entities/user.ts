@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { Sport } from './sport';
-import { UserDetails } from '../../business/models/results/user-details';
+import { UserDetails } from './user-details';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -21,7 +21,7 @@ export class User extends BaseEntity {
     enabled!: boolean;
 
     @JoinColumn({ name: 'details_id' })
-    @OneToOne(() => UserDetails, (details) => details.id, { cascade: true })
+    @OneToOne(() => UserDetails, (userDetails) => userDetails.id)
     details!: UserDetails;
 
     favoriteSports!: Sport[];

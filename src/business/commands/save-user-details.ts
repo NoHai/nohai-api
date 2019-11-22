@@ -11,7 +11,7 @@ export class SaveUserDetails implements ISaveUserDetails {
                 private readonly userContext: UserContext) { }
 
     execute(input: UserDetailsInput): Observable<boolean> {
-        const testUserId = '7d63def4-7d2d-4219-a666-02c229ce2d87';
+        const testUserId = '70060c58-1a78-47c4-80be-a7a7f3355e38';
         return this.userRepository.saveDetails(input, testUserId)
             .pipe(catchError(() => throwError(new Error(Errors.GenericError))))
             .pipe(flatMap((details) => of(details.id !== undefined ? true : false)));
