@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, CreateDateColumn, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, CreateDateColumn } from 'typeorm';
 import { Sport } from './sport';
 import { User } from './user';
 
@@ -8,7 +8,7 @@ export class UserSports extends BaseEntity {
     id!: string;
 
     @JoinColumn({ name: 'sport_id' })
-    @OneToOne(() => Sport, (sport) => sport.id, { cascade: false })
+    @OneToOne(() => Sport, (sport) => sport.id, { cascade: false, eager: true })
     sport!: Sport;
 
     @JoinColumn({ name: 'user_id' })

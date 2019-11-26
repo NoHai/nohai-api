@@ -1,4 +1,4 @@
-import { from, Observable, of } from 'rxjs';
+import { from, Observable, of, zip } from 'rxjs';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
@@ -12,6 +12,7 @@ import { AuthHelper } from '../../utilities/auth-helper';
 import { UserDetailsInput } from '../../business/models/inputs/user-details-input';
 import { UserDetailsFactory } from '../factories/user-details-factory';
 import { UserDetails } from '../../business/models/results/user-details';
+import { UserSports } from '../entities/user_sports';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -39,9 +40,14 @@ export class UserRepository implements IUserRepository {
     }
 
     getById(id: string): Observable<UserResult> {
-        return of(UserEntity.findOneOrFail(id, { relations: ['details', 'details.favoriteSports'] }))
-            .pipe(flatMap((entity) => from(entity)))
-            .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
+        const userFlow = from(UserEntity.findOneOrFail(id, { relations: ['details'] }));
+        const sportFlow = UserSports.find({ user: { id } });
+
+        return zip(userFlow, sportFlow)
+            .pipe(flatMap((result) => {
+                result[0].details.favoriteSports = result[1];
+                return  of(UserFactory.result.fromUserEntity(result[0]));
+            }));
     }
 
     getCredentials(id: string): Observable<Credentials> {

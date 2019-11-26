@@ -37,7 +37,7 @@ export class UserDetails extends BaseEntity {
     @Column()
     description!: string;
 
-    @OneToMany(() => UserSports, (favoriteSports) => favoriteSports.user)
+    @OneToMany(() => UserSports, (favoriteSports) => favoriteSports.user, { cascade: true })
     favoriteSports!: UserSports[];
 
     @CreateDateColumn({ name: 'created_date' })

@@ -14,14 +14,16 @@ export class SaveUserDetails implements ISaveUserDetails {
 
 
     execute(input: UserDetailsInput): Observable<boolean> {
-        return this.userRepository.saveDetails(input, this.userContext.userId)
+        const test = 'aec3e97a-a0df-4d83-9934-0df4acffc442';
+        return this.userRepository.saveDetails(input, test)
             .pipe(catchError(() => throwError(new Error(Errors.GenericError))))
             .pipe(flatMap((details) => this.updateUserWithDetail(details)));
     }
 
     private updateUserWithDetail(details: any): Observable<boolean> {
+        const test = 'aec3e97a-a0df-4d83-9934-0df4acffc442';
         if (details && details.id) {
-            return from(User.findOneOrFail(this.userContext.userId, { relations: ['details'] }))
+            return from(User.findOneOrFail(test, { relations: ['details'] }))
                 .pipe(flatMap((user) => {
                     user.details = new UserDetails({ id: details.id });
                     user.save();
