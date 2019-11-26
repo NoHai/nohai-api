@@ -41,7 +41,7 @@ export class CreateTokens implements ICreateTokens {
     }
 
     private buildAccessToken(credentials: CredentialsInput): Observable<string> {
-        return this.userRepository.findOne({ login: credentials.login, enabled: true})
+        return this.userRepository.findOne({ login: credentials.login, enabled: true, relations: ['details']})
             .pipe(map((user) => ({
                 userId: user.id,
                 firstName: user.details.firstName,
