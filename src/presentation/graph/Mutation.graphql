@@ -73,6 +73,6 @@ type Mutation {
     resendActivationEmail(parameter: String!): Boolean
 
     "It's used to save the details relate to the user"
-    saveUserDetails(input: UserDetailsInput): Boolean
+    saveUserDetails(input: UserDetailsInput): String
 
 }
