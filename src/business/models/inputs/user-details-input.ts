@@ -1,3 +1,4 @@
+import { UserSports } from '../../../data/entities/user_sports';
 export class UserDetailsInput {
     id?: string;
     firstName!: string;
@@ -9,6 +10,7 @@ export class UserDetailsInput {
     webPage!: string;
     facebookPage!: any;
     description!: string;
+    favoriteSports!: UserSports[];
 
     constructor(init?: any) {
         Object.assign(this, init);

@@ -60,6 +60,18 @@ export class CreateUserDetailsTable1574332666654 implements MigrationInterface {
                     name: 'description',
                     type: 'varchar',
                 },
+                {
+                    isNullable: false,
+                    name: 'created_date',
+                    default: 'CURRENT_TIMESTAMP',
+                    type: 'datetime',
+                },
+                {
+                    isNullable: true,
+                    name: 'modified_date',
+                    default: 'CURRENT_TIMESTAMP',
+                    type: 'datetime',
+                },
             ],
             name: 'user_details',
         }), true);

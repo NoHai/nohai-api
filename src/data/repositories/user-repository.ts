@@ -32,13 +32,14 @@ export class UserRepository implements IUserRepository {
     }
 
     saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
-        return of(UserDetailsFactory.entity.fromUserDetailsInput(input, userId))
+        return from(UserEntity.findOneOrFail({ id: userId }))
+            .pipe(map((user) => UserDetailsFactory.entity.fromUserDetailsInput(input, user)))
             .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => UserDetailsFactory.result.fromUserDetailsEntity(entity)));
     }
 
     getById(id: string): Observable<UserResult> {
-        return of(UserEntity.findOneOrFail(id, { relations: ['details'] }))
+        return of(UserEntity.findOneOrFail(id, { relations: ['details', 'details.favoriteSports'] }))
             .pipe(flatMap((entity) => from(entity)))
             .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
     }

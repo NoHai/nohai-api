@@ -1,5 +1,8 @@
 """An input model used for posting the user details to the server."""
 input UserDetailsInput {
+    "The id of the user detaiils."
+    id: String
+
     "The first name of the user."
     firstName: String
 
@@ -26,4 +29,7 @@ input UserDetailsInput {
 
     "The self description of the user."
     description: String
+
+    "The favorites sports of the user."
+    favoriteSports: [UserSportsInput]
 }
