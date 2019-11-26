@@ -13,23 +13,23 @@ export class SaveUserDetails implements ISaveUserDetails {
                 private readonly userContext: UserContext) { }
 
 
-    execute(input: UserDetailsInput): Observable<boolean> {
+    execute(input: UserDetailsInput): Observable<string> {
         return this.userRepository.saveDetails(input, this.userContext.userId)
             .pipe(catchError(() => throwError(new Error(Errors.GenericError))))
             .pipe(flatMap((details) => this.updateUserWithDetail(details)));
     }
 
-    private updateUserWithDetail(details: any): Observable<boolean> {
+    private updateUserWithDetail(details: any): Observable<string> {
         if (details && details.id) {
             return from(User.findOneOrFail(this.userContext.userId, { relations: ['details'] }))
                 .pipe(flatMap((user) => {
                     user.details = new UserDetails({ id: details.id });
                     user.save();
-                    return of(true);
+                    return user.id;
                 }))
              .pipe(catchError(() => throwError(new Error(Errors.GenericError))));
         } else {
-            return of(false);
+            return of('');
         }
     }
 }
