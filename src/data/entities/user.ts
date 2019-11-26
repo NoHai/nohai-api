@@ -1,5 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Sport } from './sport';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { UserDetails } from './user-details';
 
 @Entity('user')
@@ -24,7 +23,11 @@ export class User extends BaseEntity {
     @OneToOne(() => UserDetails, (userDetails) => userDetails.id)
     details!: UserDetails;
 
-    favoriteSports!: Sport[];
+    @CreateDateColumn({ name: 'created_date' })
+    createdDate!: Date;
+
+    @UpdateDateColumn({ name: 'modified_date' })
+    modifiedDate!: Date;
 
     constructor(init?: any) {
         super();

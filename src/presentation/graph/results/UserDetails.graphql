@@ -31,4 +31,7 @@ type UserDetails {
 
     "The auto description of the user."
     description: String
+
+    "The favorite sports of the user."
+    favoriteSports: [UserSports]
 }
