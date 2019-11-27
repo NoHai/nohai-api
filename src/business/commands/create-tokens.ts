@@ -28,7 +28,7 @@ export class CreateTokens implements ICreateTokens {
     private saveToken(input: CredentialsInput): Observable<Tokens> {
         const accessTokenFlow: Observable<string> = this.buildAccessToken(input);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
-        const userFlow: Observable<User> = this.userRepository.findOne({ login: input.login, enabled: true });
+        const userFlow: Observable<User> = this.userRepository.findOne({ login: input.login, enabled: true, relations: ['details'] });
 
         return zip(userFlow, accessTokenFlow, refreshTokenFlow)
             .pipe(map((result) => new Tokens({
