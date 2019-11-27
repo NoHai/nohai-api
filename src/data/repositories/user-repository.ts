@@ -45,8 +45,11 @@ export class UserRepository implements IUserRepository {
 
         return zip(userFlow, sportFlow)
             .pipe(flatMap((result) => {
-                result[0].details.favoriteSports = result[1];
-                return  of(UserFactory.result.fromUserEntity(result[0]));
+                if (result[0].details !== null) {
+                    result[0].details.favoriteSports = result[1];
+                }
+
+                return of(UserFactory.result.fromUserEntity(result[0]));
             }));
     }
 
