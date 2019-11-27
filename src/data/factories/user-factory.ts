@@ -4,17 +4,13 @@ import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { AuthHelper } from '../../utilities/auth-helper';
 import { Credentials } from '../../business/models/results/credentials';
-import { Sport } from '../entities/sport';
-import { In } from 'typeorm';
 
 export class UserFactory {
     static entity = {
         fromCredentialsInput: (input: CredentialsInput) => {
-            const picture = AuthHelper.hashEmail(input.login);
             const hashedInput = AuthHelper.hashCredentials(input);
             return new UserEntity({
                 ...hashedInput,
-                picture,
                 enabled : input.loginWithFb === true ? true : false,
             });
         },

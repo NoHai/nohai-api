@@ -14,7 +14,7 @@ export class CreateUser implements ICreateUser {
     }
 
     execute(input: CredentialsInput): Observable<Credentials> {
-        return this.userRepository.findOne({ login: input.login })
+        return this.userRepository.findOne({ login: input.login, relations: ['details'] })
             .pipe(catchError(() => of(undefined)),
                   flatMap((user) => iif(() => user !== undefined,
                                 this.sendError(user),
