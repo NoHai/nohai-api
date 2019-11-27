@@ -41,11 +41,11 @@ export class CreateTokens implements ICreateTokens {
     }
 
     private buildAccessToken(credentials: CredentialsInput): Observable<string> {
-        return this.userRepository.findOne({ login: credentials.login, enabled: true, relations: ['details']})
+        return this.userRepository.findOne({ login: credentials.login, enabled: true, relations: ['details'] })
             .pipe(map((user) => ({
                 userId: user.id,
-                firstName: user.details.firstName,
-                lastName: user.details.lastName,
+                firstName: user.details ? user.details.firstName : '',
+                lastName: user.details ? user.details.lastName : '',
             })))
             .pipe(map((token) => AuthHelper.signToken(token)));
     }
