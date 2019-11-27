@@ -13,7 +13,7 @@ export class RecoverPassword implements IRecoverPassword {
     }
 
     execute(input: string): Observable<string> {
-        return this.userRepository.findOne({ login: input, enabled: true })
+        return this.userRepository.findOne({ login: input, enabled: true , relations: ['details']})
             .pipe(catchError(() => throwError(new Error(Errors.NotRegistered))))
             .pipe(flatMap((user) => this.sendRecoverEmail(user)));
     }

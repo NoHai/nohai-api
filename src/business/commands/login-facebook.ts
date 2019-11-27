@@ -34,7 +34,7 @@ export class LoginFacebook implements ILoginFacebook {
     }
 
     private buildAccessToken(credentials: any): Observable<string> {
-        return this.userRepository.findOne({ login: credentials.login, enabled: true })
+        return this.userRepository.findOne({ login: credentials.login, enabled: true , relations: ['details']})
             .pipe(map((user) => ({
                 userId: user.id,
                 firstName: user.details.firstName,

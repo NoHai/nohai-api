@@ -21,7 +21,7 @@ type UserDetails {
     city: String
 
     "The job title of the user."
-    jobTitle: Boolean
+    jobTitle: String
 
    "The web page of the user."
     webPage: String
