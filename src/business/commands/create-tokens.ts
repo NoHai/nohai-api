@@ -1,6 +1,5 @@
 import { Observable, zip, throwError } from 'rxjs';
 import { map, flatMap, catchError } from 'rxjs/operators';
-
 import { CredentialsInput } from '../models/inputs/credentials-input';
 import { Tokens } from '../models/results/tokens';
 import { User } from '../models/results/user';

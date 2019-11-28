@@ -14,6 +14,7 @@ export class CreateUser implements ICreateUser {
     }
 
     execute(input: CredentialsInput): Observable<Credentials> {
+        console.log(input);
         return this.userRepository.findOne({ login: input.login, relations: ['details'] })
             .pipe(catchError(() => of(undefined)),
                   flatMap((user) => iif(() => user !== undefined,
@@ -31,6 +32,7 @@ export class CreateUser implements ICreateUser {
     }
 
     private sendError(user: any) {
+        console.log(user);
         return user !== undefined && user.enabled === false
             ? throwError(new Error(Errors.InactiveAccount))
             : throwError(new Error(Errors.AlreadyRegisterd));
