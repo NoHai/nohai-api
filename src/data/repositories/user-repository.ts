@@ -1,5 +1,5 @@
 import { from, Observable, of, zip } from 'rxjs';
-import { map, flatMap, catchError } from 'rxjs/operators';
+import { map, flatMap, catchError, tap } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { Credentials } from '../../business/models/results/credentials';

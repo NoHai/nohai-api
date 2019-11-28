@@ -25,12 +25,8 @@ export class UserFactory {
         }),
     };
 
-    // TODO: !!! check if you still need the favorite sport
     static result = {
-        fromUserEntity: (user: UserEntity) => new UserResult({
-            ...user,
-            // favoriteSports: Sport.find({ where: { id: In(user.favoriteSports) }}),
-        }),
+        fromUserEntity: (user: UserEntity) => new UserResult(user),
         fromUserWithCredentials: (user: UserEntity) => {
             const res = new UserResult(user);
             return {
