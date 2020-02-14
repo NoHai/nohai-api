@@ -72,7 +72,7 @@
     "typeorm": "^0.2.19",
     "typeorm-seeding": "^1.0.0-rc.3",
     "uuid": "^3.3.2",
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
