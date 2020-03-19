@@ -3,7 +3,7 @@ import { UserDetailsInput } from '../models/inputs/user-details-input';
 import { Observable, of, throwError, from } from 'rxjs';
 import { IUserRepository } from '../repositories/i-user-repository';
 import { UserContext } from '../../utilities/user-context';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, flatMap, map } from 'rxjs/operators';
 import { Errors } from '../../utilities/errors';
 import { User } from '../../data/entities/user';
 import { UserDetails } from '../../data/entities/user-details';
@@ -22,7 +22,7 @@ export class SaveUserDetails implements ISaveUserDetails {
     private updateUserWithDetail(details: any): Observable<string> {
         if (details && details.id) {
             return from(User.findOneOrFail(this.userContext.userId, { relations: ['details'] }))
-                .pipe(flatMap((user) => {
+                .pipe(map((user) => {
                     user.details = new UserDetails({ id: details.id });
                     user.save();
                     return user.id;
