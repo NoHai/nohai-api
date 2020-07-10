@@ -8,7 +8,7 @@ export class DeleteNotificationToken implements IDeleteNotificationToken {
                 private readonly userContext: UserContext) {
     }
 
-    execute(id: string): Observable<number | undefined> {
+    execute(id: string): Observable<number | null | undefined> {
         return this.notificationTokenRepository.delete(this.userContext.userId, id);
     }
 }

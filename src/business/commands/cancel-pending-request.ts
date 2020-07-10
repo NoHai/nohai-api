@@ -23,7 +23,10 @@ export class CancelPendingRequest implements ICancelPendingRequest {
                 createdUser: this.userContext.userId,
             })))
             .pipe(flatMap(() => this.userEventsRepository.delete({ eventId: parameter, userId: this.userContext.userId })))
-            .pipe(flatMap((deleteResult) => iif(() => deleteResult !== undefined && deleteResult > 0, of(true), of(false))))
+            .pipe(flatMap((deleteResult) => iif(() => deleteResult !== undefined
+                && deleteResult != null
+                && deleteResult > 0,
+                of(true), of(false))))
             .pipe(catchError(() => of(false)));
     }
 }

@@ -23,5 +23,5 @@ export interface INotificationRepository {
 
     rejectAll(parameter: any): Observable<NotificationResult[]>;
 
-    delete(parameter: any): Observable<number | undefined>;
+    delete(parameter: any): Observable<number | null | undefined>;
 }
