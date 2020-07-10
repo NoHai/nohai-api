@@ -14,7 +14,7 @@ export class UserEventsRepository implements IUserEventsRepository {
             .pipe(map((entity) => UserEventsFactory.result.fromUserEventsEntity(entity)));
     }
 
-    delete(parameter: any): Observable<number | undefined> {
+    delete(parameter: any): Observable<number | null | undefined> {
             return from(UserEvents.delete(parameter))
                 .pipe(map((res) => res.affected));
         }

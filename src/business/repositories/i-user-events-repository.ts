@@ -8,7 +8,7 @@ export interface IUserEventsRepository {
 
     update(eventId: string, userId: string, status: UserEventsStatus): Observable<UserEventsResult>;
 
-    delete(parameter: any): Observable<number | undefined>;
+    delete(parameter: any): Observable<number | null | undefined>;
 
     get(eventId: string): Observable<UserEventsResult[]>;
 

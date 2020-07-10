@@ -100,7 +100,7 @@ export class NotificationRepository implements INotificationRepository {
             .pipe(map((savedEntities) => NotificationFactory.results.fromNotificationEntities(savedEntities)));
     }
 
-    delete(parameter: any): Observable<number | undefined> {
+    delete(parameter: any): Observable<number | null | undefined> {
         return from(NotificationEntity.delete(parameter))
             .pipe(flatMap((deleteResult) => of(deleteResult.affected)));
     }
