@@ -40,7 +40,7 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id, { relations: ['address', 'sport', 'owner.details'] }))
+        return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
