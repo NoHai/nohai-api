@@ -20,7 +20,7 @@ export class User extends BaseEntity {
     enabled!: boolean;
 
     @JoinColumn({ name: 'details_id' })
-    @OneToOne(() => UserDetails, (userDetails) => userDetails.id, { eager: true})
+    @OneToOne(() => UserDetails, (userDetails) => userDetails.id)
     details!: UserDetails;
 
     @CreateDateColumn({ name: 'created_date' })

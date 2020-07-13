@@ -156,7 +156,7 @@ export class InitializeGraph implements IInitializeGraph {
                     eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise(), false),
                     events: (context: any) => this.executer(expContext, () => this.events.execute(context.parameter).toPromise()),
                     eventDetails: (context: any) => this.executer(expContext,
-                        () => this.eventDetails.execute(context.parameter).toPromise()),
+                        () => this.eventDetails.execute(context.parameter).toPromise(), false),
                     sports: (context: any) => this.executer(expContext, () => this.sports.execute(context.input).toPromise()),
                     updateUser: (context: any) => this.executer(expContext, () => this.updateUser.execute(context.input).toPromise()),
                     createNotification: (context: any) => this.executer(expContext,
