@@ -4,16 +4,13 @@ import { User as UserResult } from '../../business/models/results/user';
 import { User as UserEntity } from '../entities/user';
 import { AuthHelper } from '../../utilities/auth-helper';
 import { Credentials } from '../../business/models/results/credentials';
-import { Sport } from '../entities/sport';
 
 export class UserFactory {
     static entity = {
         fromCredentialsInput: (input: CredentialsInput) => {
-            const picture = AuthHelper.hashEmail(input.login);
             const hashedInput = AuthHelper.hashCredentials(input);
             return new UserEntity({
                 ...hashedInput,
-                picture,
                 enabled : input.loginWithFb === true ? true : false,
             });
         },
@@ -29,10 +26,7 @@ export class UserFactory {
     };
 
     static result = {
-        fromUserEntity: (user: UserEntity) => new UserResult({
-            ...user,
-            favoriteSport: Sport.findOne(user.favoriteSport),
-        }),
+        fromUserEntity: (user: UserEntity) => new UserResult(user),
         fromUserWithCredentials: (user: UserEntity) => {
             const res = new UserResult(user);
             return {

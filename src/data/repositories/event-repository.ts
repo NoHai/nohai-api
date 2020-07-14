@@ -40,7 +40,7 @@ export class EventRepository implements IEventRepository {
     }
 
     getById(id: any): Observable<EventResult> {
-        return from(Event.findOneOrFail(id, { relations: ['address', 'sport'] }))
+        return from(Event.findOneOrFail(id, { relations: ['address', 'sport', 'owner', 'owner.details'] }))
             .pipe(map((event) => EventFactory.result.fromEventEntity(event)));
     }
 
@@ -82,6 +82,7 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
+            .leftJoinAndSelect('owner.details', 'details' )
             .where(PaginationUtility.startDateEventCondition(parameter, true),
                 {
                     startDate: PaginationUtility.startDate(parameter, true),
@@ -106,6 +107,7 @@ export class EventRepository implements IEventRepository {
             .leftJoinAndSelect('event.sport', 'sport')
             .leftJoinAndSelect('event.address', 'address')
             .leftJoinAndSelect('event.owner', 'owner')
+            .leftJoinAndSelect('owner.details', 'details' )
             .leftJoinAndSelect(UserEvents, 'userEvents',
                 'userEvents.event_id = event.id AND userEvents.user_id = :userId',
                 { userId: this.userContext.userId })

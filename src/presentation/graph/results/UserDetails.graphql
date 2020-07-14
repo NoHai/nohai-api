@@ -1,0 +1,37 @@
+type UserDetails {
+    "The id of the user details."
+    id: String
+
+    "The user that has these details."
+    userId: String
+
+    "The first name of the user."
+    firstName: String
+
+    "The last name of the user."
+    lastName: String
+
+    "The date of birth of the user."
+    dateOfBirth: DateTime
+
+    "The picture path of the user."
+    picture: String
+
+    "The city of the user."
+    city: String
+
+    "The job title of the user."
+    jobTitle: String
+
+   "The web page of the user."
+    webPage: String
+
+   "The facebook page of the user."
+    facebookPage: String
+
+    "The auto description of the user."
+    description: String
+
+    "The favorite sports of the user."
+    favoriteSports: [UserSports]
+}

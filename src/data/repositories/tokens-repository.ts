@@ -16,7 +16,7 @@ export class TokensRepository implements ITokensRepository {
     }
 
     getUser(refresh: string): Observable<User> {
-        return from(TokensEntity.findOneOrFail({ refreshToken: refresh }, { relations: ['user'] }))
+        return from(TokensEntity.findOneOrFail({ refreshToken: refresh }, { relations: ['user', 'user.details'] }))
             .pipe(map((token) => UserFactory.result.fromUserEntity(token.user)));
     }
 }

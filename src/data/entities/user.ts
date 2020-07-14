@@ -1,5 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Sport } from './sport';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { UserDetails } from './user-details';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -13,36 +13,21 @@ export class User extends BaseEntity {
     @Column()
     password!: string;
 
-    @Column({ name: 'first_name' })
-    firstName!: string;
-
-    @Column({ name: 'last_name' })
-    lastName!: string;
-
-    @Column({ name: 'date_of_birth' })
-    dateOfBirth!: string;
-
-    @Column()
-    height!: number;
-
-    @Column()
-    weight!: number;
-
-    @Column()
-    picture!: string;
-
-    @Column()
-    city!: string;
-
-    @Column({ name: 'login_with_fb'})
+    @Column({ name: 'login_with_fb' })
     loginWithFb!: boolean;
-
-    @OneToOne(() => Sport, (sport) => sport.id, { cascade: false, eager: true })
-    @JoinColumn({ name: 'favorite_sport'})
-    favoriteSport!: Sport;
 
     @Column()
     enabled!: boolean;
+
+    @JoinColumn({ name: 'details_id' })
+    @OneToOne(() => UserDetails, (userDetails) => userDetails.id)
+    details!: UserDetails;
+
+    @CreateDateColumn({ name: 'created_date' })
+    createdDate!: Date;
+
+    @UpdateDateColumn({ name: 'modified_date' })
+    modifiedDate!: Date;
 
     constructor(init?: any) {
         super();

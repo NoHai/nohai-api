@@ -41,7 +41,7 @@ export class Event extends BaseEntity {
     @Column({ name: 'end_time'})
     endTime!: string;
 
-    @OneToOne(() => User, (user) => user.id, { cascade: false, eager: true })
+    @OneToOne(() => User, (user) => user.id, { cascade: false })
     @JoinColumn({ name: 'owner'})
     owner!: User;
 

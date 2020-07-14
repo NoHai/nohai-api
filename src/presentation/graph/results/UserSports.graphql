@@ -1,0 +1,13 @@
+"""A result model used to return the favorite sport for user from server.
+"""
+type UserSports {
+  "The id of the event."
+  id: String!
+
+  "The sport. "
+  sport: Sport!
+  
+  "The user who has that favorite sport."
+  user: User!
+
+}

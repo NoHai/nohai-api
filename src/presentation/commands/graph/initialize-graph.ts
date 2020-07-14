@@ -40,6 +40,7 @@ import { ISearchEvents } from '../../../business/commands/i-search-events';
 import { ISaveEvent } from '../../../business/commands/i-save-event';
 import { IActivateUser } from '../../../business/commands/i-activate-user';
 import { IResendActivationEmail } from '../../../business/commands/i-resend-activation-email';
+import { ISaveUserDetails } from '../../../business/commands/i-save-user-details';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -101,6 +102,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly events: ISearchEvents,
                 private readonly activateUser: IActivateUser,
                 private readonly resendActivationEmail: IResendActivationEmail,
+                private readonly saveUserDetails: ISaveUserDetails,
     ) {
     }
 
@@ -151,10 +153,10 @@ export class InitializeGraph implements IInitializeGraph {
                     saveEvent: (context: any) => this.executer(expContext, () => this.saveEvent.execute(context.input).toPromise()),
                     createUser: (context: any) => this.executer(expContext,
                         () => this.createUser.execute(context.input).toPromise(), false),
-                    eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise()),
+                    eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise(), false),
                     events: (context: any) => this.executer(expContext, () => this.events.execute(context.parameter).toPromise()),
                     eventDetails: (context: any) => this.executer(expContext,
-                        () => this.eventDetails.execute(context.parameter).toPromise()),
+                        () => this.eventDetails.execute(context.parameter).toPromise(), false),
                     sports: (context: any) => this.executer(expContext, () => this.sports.execute(context.input).toPromise()),
                     updateUser: (context: any) => this.executer(expContext, () => this.updateUser.execute(context.input).toPromise()),
                     createNotification: (context: any) => this.executer(expContext,
@@ -204,6 +206,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.activateUser.execute(context.parameter).toPromise(), false),
                     resendActivationEmail: (context: any) => this.executer(expContext,
                         () => this.resendActivationEmail.execute(context.parameter).toPromise(), false),
+                    saveUserDetails: (context: any) => this.executer(expContext,
+                        () => this.saveUserDetails.execute(context.input).toPromise(), false),
                 },
                 schema,
                 customFormatErrorFn: (err) => {

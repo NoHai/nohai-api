@@ -1,5 +1,5 @@
-import { from, Observable, of } from 'rxjs';
-import { map, flatMap, catchError } from 'rxjs/operators';
+import { from, Observable, of, zip } from 'rxjs';
+import { map, flatMap, catchError, tap } from 'rxjs/operators';
 import { CredentialsInput } from '../../business/models/inputs/credentials-input';
 import { UpdateUserInput } from '../../business/models/inputs/update-user-input';
 import { Credentials } from '../../business/models/results/credentials';
@@ -9,6 +9,10 @@ import { User as UserEntity, User } from '../entities/user';
 import { CredentialsFactory } from '../factories/credentials-factory';
 import { UserFactory } from '../factories/user-factory';
 import { AuthHelper } from '../../utilities/auth-helper';
+import { UserDetailsInput } from '../../business/models/inputs/user-details-input';
+import { UserDetailsFactory } from '../factories/user-details-factory';
+import { UserDetails } from '../../business/models/results/user-details';
+import { UserSports } from '../entities/user_sports';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -18,7 +22,7 @@ export class UserRepository implements IUserRepository {
     }
 
     findOne(parameter: any): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail(parameter))
+        return from(UserEntity.findOneOrFail(parameter, { relations: ['details']}))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
@@ -28,10 +32,25 @@ export class UserRepository implements IUserRepository {
             .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
     }
 
+    saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
+        return from(UserEntity.findOneOrFail({ id: userId }))
+            .pipe(map((user) => UserDetailsFactory.entity.fromUserDetailsInput(input, user)))
+            .pipe(flatMap((entity) => entity.save()))
+            .pipe(map((entity) => UserDetailsFactory.result.fromUserDetailsEntity(entity)));
+    }
+
     getById(id: string): Observable<UserResult> {
-        return of(UserEntity.findOneOrFail(id))
-            .pipe(flatMap((entity) => from(entity)))
-            .pipe(map((entity) => UserFactory.result.fromUserEntity(entity)));
+        const userFlow = from(UserEntity.findOneOrFail(id, { relations: ['details'] }));
+        const sportFlow = UserSports.find({ user: { id } });
+
+        return zip(userFlow, sportFlow)
+            .pipe(flatMap((result) => {
+                if (result[0].details !== null) {
+                    result[0].details.favoriteSports = result[1];
+                }
+
+                return of(UserFactory.result.fromUserEntity(result[0]));
+            }));
     }
 
     getCredentials(id: string): Observable<Credentials> {

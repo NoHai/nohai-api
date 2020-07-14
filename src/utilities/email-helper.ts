@@ -128,7 +128,7 @@ export class EmailHelper {
     }
 
     private static leaveEventMessage(leaveUser: any, eventTitle: string): string {
-        return `${leaveUser.firstName} ${leaveUser.lastName} nu mai ajunge la evenimentul ${eventTitle}.`;
+        return `${leaveUser.details.firstName} ${leaveUser.details.lastName} nu mai ajunge la evenimentul ${eventTitle}.`;
     }
 
     private static kickoutUserMessage(eventTitle: string): string {
@@ -144,7 +144,7 @@ export class EmailHelper {
     }
 
     private static getRecoveryEmailHtml(user: User, link: string): string {
-        const content = ` <mj-text  font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        const content = ` <mj-text  font-family="helvetica">Salut ${user.details.firstName} ${user.details.lastName},</mj-text>
         <mj-text  font-family="helvetica">Mai jos se alfla link-ul pentru resetarea parolei atasata contului NoHai</mj-text>
         <mj-text>
             <a href="${link}">Resetare parola</a>
@@ -155,7 +155,7 @@ export class EmailHelper {
     }
 
     private static getOccupiedSpotsEmailHtml(user: User, eventTitle: string): string {
-        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        const content = `<mj-text font-family="helvetica">Salut ${user.details.firstName} ${user.details.lastName},</mj-text>
         <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
         dar toate locurile la evenimentul ${eventTitle} au fost ocupate.</mj-text>
         <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
@@ -165,7 +165,7 @@ export class EmailHelper {
     }
 
     private static getCancelEventEmailHtml(user: User, eventTitle: string): string {
-        const content = ` <mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        const content = ` <mj-text font-family="helvetica">Salut ${user.details.firstName} ${user.details.lastName},</mj-text>
         <mj-text font-family="helvetica">Ne pare rau sa te anuntam,
         dar ${eventTitle} a fost anulat.</mj-text>
         <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
@@ -175,8 +175,8 @@ export class EmailHelper {
     }
 
     private static getLeaveEventEmailHtml(user: User, leaveUser: User, eventTitle: string): string {
-        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
-        <mj-text font-family="helvetica">Participantul ${leaveUser.firstName} ${leaveUser.lastName}
+        const content = `<mj-text font-family="helvetica">Salut ${user.details.firstName} ${user.details.lastName},</mj-text>
+        <mj-text font-family="helvetica">Participantul ${leaveUser.details.firstName} ${leaveUser.details.lastName}
         nu mai poate participa la ${eventTitle}.</mj-text>
         <mj-text font-family="helvetica">Iti multumim</mj-text>`;
 
@@ -184,7 +184,7 @@ export class EmailHelper {
     }
 
     private static getKickoutEmailHtml(kickoutUser: User, eventTitle: string): string {
-        const content = `<mj-text font-family="helvetica">Salut ${kickoutUser.firstName} ${kickoutUser.lastName},</mj-text>
+        const content = `<mj-text font-family="helvetica">Salut ${kickoutUser.details.firstName} ${kickoutUser.details.lastName},</mj-text>
         <mj-text font-family="helvetica">Ne pare rau sa te anuntam dar administratorul evenimentului
              ${eventTitle} te-a retras din activitate.</mj-text>
         <mj-text font-family="helvetica">Te asteptam la urmatoarele evenimente.</mj-text>
@@ -194,7 +194,7 @@ export class EmailHelper {
     }
 
     private static getEditEmailHtml(user: User, eventTitle: string): string {
-        const content = `<mj-text font-family="helvetica">Salut ${user.firstName} ${user.lastName},</mj-text>
+        const content = `<mj-text font-family="helvetica">Salut ${user.details.firstName} ${user.details.lastName},</mj-text>
                         <mj-text font-family="helvetica">Detaliile evenimentului ${eventTitle} au fost modificate.</mj-text>
                         <mj-text font-family="helvetica">Iti multumim</mj-text>`;
 

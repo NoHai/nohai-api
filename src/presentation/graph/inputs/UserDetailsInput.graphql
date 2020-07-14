@@ -1,0 +1,35 @@
+"""An input model used for posting the user details to the server."""
+input UserDetailsInput {
+    "The id of the user detaiils."
+    id: String
+
+    "The first name of the user."
+    firstName: String
+
+    "The last name of the user."
+    lastName: String
+
+    "The date of birth of the user."
+    dateOfBirth: DateTime
+
+    "The city of the user."
+    city: String
+   
+   "The city of the user."
+    picture: String
+
+    "The job title of the user."
+    jobTitle: String
+
+    "The web page of the user."
+    webPage: String
+
+    "The facebook page of the user."
+    facebookPage: String
+
+    "The self description of the user."
+    description: String
+
+    "The favorites sports of the user."
+    favoriteSports: [UserSportsInput]
+}
