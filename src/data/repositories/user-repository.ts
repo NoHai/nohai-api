@@ -22,7 +22,7 @@ export class UserRepository implements IUserRepository {
     }
 
     findOne(parameter: any): Observable<UserResult> {
-        return from(UserEntity.findOneOrFail(parameter))
+        return from(UserEntity.findOneOrFail(parameter, { relations: ['details']}))
             .pipe(map((foundEntity) => UserFactory.result.fromUserEntity(foundEntity)));
     }
 
