@@ -33,10 +33,18 @@ export class UserRepository implements IUserRepository {
     }
 
     saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
-        return from(UserEntity.findOneOrFail({ id: userId }))
+
+        const deleteExistingSportFlow = from(UserSports.delete({ user: { id: userId}}));
+
+        const saveDetailsFlow = from(UserEntity.findOneOrFail({ id: userId }))
             .pipe(map((user) => UserDetailsFactory.entity.fromUserDetailsInput(input, user)))
             .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => UserDetailsFactory.result.fromUserDetailsEntity(entity)));
+
+        return zip(deleteExistingSportFlow, saveDetailsFlow)
+            .pipe(flatMap((result) => {
+                return of(result[1]);
+            }));
     }
 
     getById(id: string): Observable<UserResult> {
