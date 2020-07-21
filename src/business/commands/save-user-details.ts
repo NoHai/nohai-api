@@ -25,8 +25,7 @@ export class SaveUserDetails implements ISaveUserDetails {
 
     private updateUserWithDetail(details: any): Observable<UserResult | undefined> {
         if (details && details.id) {
-            console.log('asdf', details);
-            const sportFlow = UserSports.find({ user: details.userId });
+            const sportFlow = from(UserSports.find({ user: details.userId }));
             const userFlow = from(User.findOneOrFail(details.userId, { relations: ['details'] }))
         .pipe(map((user) => {
                     user.details = new UserDetails({ id: details.id });

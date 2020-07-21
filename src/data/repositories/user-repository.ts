@@ -13,6 +13,7 @@ import { UserDetailsInput } from '../../business/models/inputs/user-details-inpu
 import { UserDetailsFactory } from '../factories/user-details-factory';
 import { UserDetails } from '../../business/models/results/user-details';
 import { UserSports } from '../entities/user_sports';
+import { DeleteResult } from 'typeorm';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -34,17 +35,13 @@ export class UserRepository implements IUserRepository {
 
     saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
 
-        const deleteExistingSportFlow = from(UserSports.delete({ user: { id: userId}}));
+        const deleteResults = from(UserSports.delete({ user: { id: userId}}))
+            .pipe(map((deleteResult) => deleteResult));
 
-        const saveDetailsFlow = from(UserEntity.findOneOrFail({ id: userId }))
+        return from(UserEntity.findOneOrFail({ id: userId }))
             .pipe(map((user) => UserDetailsFactory.entity.fromUserDetailsInput(input, user)))
             .pipe(flatMap((entity) => entity.save()))
             .pipe(map((entity) => UserDetailsFactory.result.fromUserDetailsEntity(entity)));
-
-        return zip(deleteExistingSportFlow, saveDetailsFlow)
-            .pipe(flatMap((result) => {
-                return of(result[1]);
-            }));
     }
 
     getById(id: string): Observable<UserResult> {
