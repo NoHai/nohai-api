@@ -13,6 +13,7 @@ import { UserDetailsInput } from '../../business/models/inputs/user-details-inpu
 import { UserDetailsFactory } from '../factories/user-details-factory';
 import { UserDetails } from '../../business/models/results/user-details';
 import { UserSports } from '../entities/user_sports';
+import { DeleteResult } from 'typeorm';
 
 export class UserRepository implements IUserRepository {
     insert(input: CredentialsInput): Observable<Credentials> {
@@ -33,6 +34,10 @@ export class UserRepository implements IUserRepository {
     }
 
     saveDetails(input: UserDetailsInput, userId: string): Observable<UserDetails> {
+
+        const deleteResults = from(UserSports.delete({ user: { id: userId}}))
+            .pipe(map((deleteResult) => deleteResult));
+
         return from(UserEntity.findOneOrFail({ id: userId }))
             .pipe(map((user) => UserDetailsFactory.entity.fromUserDetailsInput(input, user)))
             .pipe(flatMap((entity) => entity.save()))
