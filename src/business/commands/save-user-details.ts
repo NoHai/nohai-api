@@ -27,23 +27,21 @@ export class SaveUserDetails implements ISaveUserDetails {
         if (details && details.id) {
             const sportFlow = from(UserSports.find({ user: details.userId }));
             const userFlow = from(User.findOneOrFail(details.userId, { relations: ['details'] }))
-        .pipe(map((user) => {
-                    user.details = new UserDetails({ id: details.id });
-                    user.save();
-                    user.details = details;
-                    return UserFactory.result.fromUserEntity(user);;
-        })).pipe(catchError(() => throwError(new Error(Errors.GenericError))));
-
-            return zip(userFlow, sportFlow)
-        .pipe(flatMap((result) => {
-            if (result[0].details !== null) {
-                result[0].details.favoriteSports = result[1];
-            }
-
-            return of(result[0]);
-        }));
-        } else {
-            return of(undefined);
-        }
-    }
-}
+                            .pipe(
+                                map((user) => {
+                                    user.details = new UserDetails({ id: details.id });
+                                    user.save();
+                                    user.details = details;
+                                    return UserFactory.result.fromUserEntity(user);}))
+                                    .pipe(catchError(() => throwError(new Error(Errors.GenericError))));
+                                    return zip(userFlow, sportFlow).pipe(flatMap((result) => {
+                                        if (result[0].details !== null) {
+                                            result[0].details.favoriteSports = result[1];
+                                        }
+                                        return of(result[0]);
+                                    }));
+                                } else {
+                                    return of(undefined);
+                                }
+                            }
+                        }
