@@ -32,9 +32,9 @@ export class SaveUserDetails implements ISaveUserDetails {
                                     user.details = new UserDetails({ id: details.id });
                                     user.save();
                                     user.details = details;
-                                    return UserFactory.result.fromUserEntity(user);}))
+                                    return UserFactory.result.fromUserEntity(user); }))
                                     .pipe(catchError(() => throwError(new Error(Errors.GenericError))));
-                                    return zip(userFlow, sportFlow).pipe(flatMap((result) => {
+            return zip(userFlow, sportFlow).pipe(flatMap((result) => {
                                         if (result[0].details !== null) {
                                             result[0].details.favoriteSports = result[1];
                                         }

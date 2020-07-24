@@ -1,10 +1,10 @@
 export class CredentialsInput {
     login!: string;
     password!: string;
-    loginWithFb: boolean;
+    loginWithFb: string;
 
     constructor(init?: any) {
-        this.loginWithFb = false;
+        this.loginWithFb = '';
         Object.assign(this, init);
     }
 }

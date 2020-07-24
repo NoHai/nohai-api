@@ -61,7 +61,7 @@ export class AuthHelper {
                 return  new CredentialsInput({
                     login: response.data.email,
                     password: uuid().toString(),
-                    loginWithFb: true,
+                    loginWithFb: response.data.id,
                 });
             }))
             .toPromise();

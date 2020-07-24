@@ -11,7 +11,7 @@ export class UserFactory {
             const hashedInput = AuthHelper.hashCredentials(input);
             return new UserEntity({
                 ...hashedInput,
-                enabled : input.loginWithFb === true ? true : false,
+                enabled : input.loginWithFb ? true : false,
             });
         },
         fromUserInput: (user: UpdateUserInput) => new UserEntity(user),
