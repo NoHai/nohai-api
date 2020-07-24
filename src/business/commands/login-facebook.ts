@@ -21,7 +21,7 @@ export class LoginFacebook implements ILoginFacebook {
     }
 
     private saveToken(credentials: CredentialsInput): Observable<Tokens> {
-        const accessTokenFlow: Observable<string> = this.buildAccessToken(credentials);
+        const accessTokenFlow: Observable<string> = AuthHelper.buildAccessToken(credentials);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow = this.userRepository.findOne({ login: credentials.login, enabled: true });
 
@@ -33,16 +33,6 @@ export class LoginFacebook implements ILoginFacebook {
                 expireIn: AuthHelper.expireIn,
             })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
-    }
-
-    private buildAccessToken(credentials: any): Observable<string> {
-        return this.userRepository.findOne({ login: credentials.login, enabled: true })
-            .pipe(map((user) => ({
-                userId: user.id,
-                firstName: user.details ? user.details.firstName : '',
-                lastName: user.details ? user.details.lastName : '',
-            })))
-            .pipe(map((token) => AuthHelper.signToken(token)));
     }
 
     private login(input: CredentialsInput): Observable<Tokens> {
