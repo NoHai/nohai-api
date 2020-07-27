@@ -7,9 +7,12 @@ import { FacebookCredentialsInput } from '../business/models/inputs/facebook-cre
 import crypto from 'crypto';
 import axios from 'axios';
 import { map, catchError, tap } from 'rxjs/operators';
+import { IUserRepository } from '../business/repositories/i-user-repository';
+import { UserRepository } from '../data/repositories/user-repository';
 
 export class AuthHelper {
     static expireIn: number = 600;
+    static readonly userRepository: IUserRepository = new UserRepository;
 
     static signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
@@ -61,10 +64,20 @@ export class AuthHelper {
                 return  new CredentialsInput({
                     login: response.data.email,
                     password: uuid().toString(),
-                    loginWithFb: true,
+                    loginWithFb: response.data.id,
                 });
             }))
             .toPromise();
+    }
+
+    static buildAccessToken(credentials: CredentialsInput): Observable<string> {
+        return this.userRepository.findOne({ login: credentials.login, enabled: true })
+            .pipe(map((user) => ({
+                userId: user.id,
+                firstName: user.details ? user.details.firstName : '',
+                lastName: user.details ? user.details.lastName : '',
+            })))
+            .pipe(map((token) => this.signToken(token)));
     }
 }
 

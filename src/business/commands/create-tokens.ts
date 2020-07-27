@@ -25,7 +25,7 @@ export class CreateTokens implements ICreateTokens {
     }
 
     private saveToken(input: CredentialsInput): Observable<Tokens> {
-        const accessTokenFlow: Observable<string> = this.buildAccessToken(input);
+        const accessTokenFlow: Observable<string> = AuthHelper.buildAccessToken(input);
         const refreshTokenFlow: Observable<string> = AuthHelper.buildRefreshToken();
         const userFlow: Observable<User> = this.userRepository.findOne({ login: input.login, enabled: true});
 
@@ -37,15 +37,5 @@ export class CreateTokens implements ICreateTokens {
                 expireIn: AuthHelper.expireIn,
             })))
             .pipe(flatMap((token) => this.tokensRepository.insert(token)));
-    }
-
-    private buildAccessToken(credentials: CredentialsInput): Observable<string> {
-        return this.userRepository.findOne({ login: credentials.login, enabled: true })
-            .pipe(map((user) => ({
-                userId: user.id,
-                firstName: user.details ? user.details.firstName : '',
-                lastName: user.details ? user.details.lastName : '',
-            })))
-            .pipe(map((token) => AuthHelper.signToken(token)));
     }
 }

@@ -13,8 +13,8 @@ export class User extends BaseEntity {
     @Column()
     password!: string;
 
-    @Column({ name: 'login_with_fb' })
-    loginWithFb!: boolean;
+    @Column({ name: 'login_with_fb' , nullable: true})
+    loginWithFb?: string;
 
     @Column()
     enabled!: boolean;

@@ -7,7 +7,7 @@ type User {
     login: String!
 
     "The user has logged in via facebook."
-    loginWithFacebook: Boolean
+    loginWithFacebook: String
 
     "If the user is enabled"
     enabled: Boolean
