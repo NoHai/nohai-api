@@ -12,7 +12,7 @@ import { UserRepository } from '../data/repositories/user-repository';
 
 export class AuthHelper {
     static expireIn: number = 600;
-    static readonly userRepository: IUserRepository = new UserRepository;
+    static readonly userRepository: IUserRepository = new UserRepository();
 
     static signToken(accessToken: any): string {
         return sign(accessToken, process.env.NOHAI_JWT_SECRET || '', {
