@@ -74,5 +74,8 @@ type Mutation {
 
     "It's used to save the details relate to the user"
     saveUserDetails(input: UserDetailsInput): User
+   
+    "It's used to create a new comment."
+    saveComment(input: CommentInput!): Comment!
 
 }

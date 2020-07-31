@@ -1,0 +1,19 @@
+type Comment {
+  "The id of the comment."
+  id: String!
+
+  "The id of the author."
+  authorId: String!
+
+  "The id of the event."
+  eventId: String!
+
+  "The message content."
+  description: String!
+
+  "The Message date."
+  date: DateTime!
+
+  "The delete status of message"
+  isDeleted: Boolean!
+}

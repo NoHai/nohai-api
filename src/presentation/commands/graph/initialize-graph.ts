@@ -41,6 +41,7 @@ import { ISaveEvent } from '../../../business/commands/i-save-event';
 import { IActivateUser } from '../../../business/commands/i-activate-user';
 import { IResendActivationEmail } from '../../../business/commands/i-resend-activation-email';
 import { ISaveUserDetails } from '../../../business/commands/i-save-user-details';
+import { ICreateComment } from '../../../business/commands/i-create-comment';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -73,6 +74,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly saveEvent: ISaveEvent,
                 private readonly createUser: ICreateUser,
                 private readonly createTokens: ICreateTokens,
+                private readonly createComment: ICreateComment,
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
                 private readonly eventDetails: IGetEventDetails,
@@ -151,6 +153,7 @@ export class InitializeGraph implements IInitializeGraph {
                 rootValue: {
                     auth: (context: any) => this.executer(expContext, () => this.createTokens.execute(context.input).toPromise(), false),
                     saveEvent: (context: any) => this.executer(expContext, () => this.saveEvent.execute(context.input).toPromise()),
+                    saveComment: (context: any) => this.executer(expContext, () => this.createComment.execute(context.input).toPromise()),
                     createUser: (context: any) => this.executer(expContext,
                         () => this.createUser.execute(context.input).toPromise(), false),
                     eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise(), false),

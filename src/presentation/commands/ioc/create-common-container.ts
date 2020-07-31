@@ -53,6 +53,8 @@ import { UpdateEvent } from '../../../business/commands/update-event';
 import { ActivateUser } from '../../../business/commands/activate-user';
 import { ResendActivationEmail } from '../../../business/commands/resend-activation-email';
 import { SaveUserDetails } from '../../../business/commands/save-user-details';
+import { CommentRepository } from '../../../data/repositories/comment-repository';
+import { CreateComment } from '../../../business/commands/create-comment';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -66,6 +68,7 @@ export class CreateCommonContainer implements ICreateContainer {
     ];
 
     private readonly businessCommands: ReadonlyArray<any> = [
+        { createComment: asClass(CreateComment).transient().classic() },
         { createEvent: asClass(CreateEvent).transient().classic() },
         { createUser: asClass(CreateUser).transient().classic() },
         { createTokens: asClass(CreateTokens).transient().classic() },
@@ -112,6 +115,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { userEventsRepository: asClass(UserEventsRepository).transient().classic() },
         { cityRepository: asClass(CityRepository).transient().classic() },
         { countyRepository: asClass(CountyRepository).transient().classic() },
+        { commentRepository: asClass(CommentRepository).transient().classic() },
     ];
 
     private readonly presentationCommands: ReadonlyArray<any> = [

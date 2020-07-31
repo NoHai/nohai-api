@@ -19,6 +19,7 @@ export class EventFactory {
             owner: UserFactory.entity.fromId(userId),
             status: event.id ? EventStatus.Edited : EventStatus.Active,
         }),
+        fromId: (id: string) => new EventEntity({ id }),
     };
 
     static result = {
