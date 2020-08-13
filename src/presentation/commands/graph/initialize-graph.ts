@@ -42,6 +42,7 @@ import { IActivateUser } from '../../../business/commands/i-activate-user';
 import { IResendActivationEmail } from '../../../business/commands/i-resend-activation-email';
 import { ISaveUserDetails } from '../../../business/commands/i-save-user-details';
 import { ICreateComment } from '../../../business/commands/i-create-comment';
+import { IGetComments } from '../../../business/commands/i-get-comments';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -93,6 +94,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly rejectRequest: IRejectRequest,
                 private readonly cities: IGetCities,
                 private readonly counties: IGetCounties,
+                private readonly comments: IGetComments,
                 private readonly markAsRead: IMarkAsRead,
                 private readonly markAllAsRead: IMarkAllAsRead,
                 private readonly recoverPassword: IRecoverPassword,
@@ -187,6 +189,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.cities.execute(context.parameter).toPromise()),
                     counties: (context: any) => this.executer(expContext,
                         () => this.counties.execute(context.parameter).toPromise()),
+                    comments: (context: any) => this.executer(expContext,
+                        () => this.comments.execute(context.parameter).toPromise()),
                     markAsRead: (context: any) => this.executer(expContext,
                         () => this.markAsRead.execute(context.parameter).toPromise()),
                     markAllAsRead: (context: any) => this.executer(expContext,

@@ -9,6 +9,7 @@ import { UserFactory } from './user-factory';
 import { UserEvents } from '../entities/user-events';
 import { NotificationType } from '../enums/notification-type';
 import { EventStatus } from '../enums/event-status';
+import { CommentFactory } from './comment-factory';
 
 export class EventFactory {
     static entity = {
@@ -28,7 +29,7 @@ export class EventFactory {
             address: Address.findOne(event.address.id),
             sport: Sport.findOne(event.sport.id),
             numberOfParticipants: UserEvents.count({ eventId: event.id, status: NotificationType.ApproveJoin }),
-        }),
+            comments: CommentFactory.results.fromCommentEntities(event.comments)}),
     };
 
     static results = {

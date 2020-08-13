@@ -55,6 +55,7 @@ import { ResendActivationEmail } from '../../../business/commands/resend-activat
 import { SaveUserDetails } from '../../../business/commands/save-user-details';
 import { CommentRepository } from '../../../data/repositories/comment-repository';
 import { CreateComment } from '../../../business/commands/create-comment';
+import { GetComments } from '../../../business/commands/get-comments';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -85,6 +86,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { deleteNotificationToken: asClass(DeleteNotificationToken).transient().classic() },
         { joinEvent: asClass(JoinEvent).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
+        { comments: asClass(GetComments).transient().classic() },
         { refreshToken: asClass(RefreshToken).transient().classic() },
         { loginFacebook: asClass(LoginFacebook).transient().classic() },
         { approveRequest: asClass(ApproveRequest).transient().classic() },

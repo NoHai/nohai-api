@@ -8,6 +8,9 @@ type Comment {
   "The id of the event."
   eventId: String!
 
+  "The user information."
+  user: User!
+
   "The message content."
   description: String!
 

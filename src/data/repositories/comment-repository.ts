@@ -1,5 +1,5 @@
 import { from, Observable, of, throwError, zip } from 'rxjs';
-import { catchError, flatMap, map, switchMap } from 'rxjs/operators';
+import { catchError, flatMap, map, switchMap, tap } from 'rxjs/operators';
 import { CommentInput } from '../../business/models/inputs/comment-input';
 import { Comment as CommentResult } from '../../business/models/results/comment';
 import { ICommentRepository } from '../../business/repositories/i-comment-repository';
@@ -9,6 +9,10 @@ import { CommentFactory } from '../factories/comment-factory';
 
 export class CommentRepository implements ICommentRepository {
     constructor(private readonly userContext: UserContext) {
+    }
+    get(eventId: string): Observable<CommentResult[]> {
+        return from(Comment.find({ relations: ['user', 'user.details'], where: { event: eventId}, order: { date: 'ASC'}}))
+        .pipe(map((results) => CommentFactory.results.fromCommentEntities(results)));
     }
 
     insert(input: CommentInput): Observable<CommentResult> {

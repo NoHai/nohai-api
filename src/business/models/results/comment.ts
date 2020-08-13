@@ -1,6 +1,8 @@
+import { User } from '../../../data/entities/user';
+
 export class Comment {
   id!: string;
-  userId!: string;
+  user!: User;
   eventId!: string;
   description!: string;
   date!: Date;

@@ -55,7 +55,7 @@ export class Event extends BaseEntity {
     @Column()
     status!: number;
 
-    @OneToMany(() => Comment, (comment) => comment.event, { cascade: true, nullable : true })
+    @OneToMany(() => Comment, (comment) => comment.event, { cascade: true, nullable : true, eager : true })
     comments!: Comment[];
 
     constructor(init?: Partial<Event>) {
