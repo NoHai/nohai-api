@@ -9,7 +9,7 @@ export class Comment extends BaseEntity {
     id!: string;
 
     @JoinColumn({ name: 'author_id' })
-    @ManyToOne(() => User, (user) => user.comments, { eager : true})
+    @ManyToOne(() => User, (user) => user.comments)
     user!: User;
 
     @JoinColumn({ name: 'event_id'})

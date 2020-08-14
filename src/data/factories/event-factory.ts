@@ -28,8 +28,7 @@ export class EventFactory {
             ...event,
             address: Address.findOne(event.address.id),
             sport: Sport.findOne(event.sport.id),
-            numberOfParticipants: UserEvents.count({ eventId: event.id, status: NotificationType.ApproveJoin }),
-            comments: CommentFactory.results.fromCommentEntities(event.comments)}),
+            numberOfParticipants: UserEvents.count({ eventId: event.id, status: NotificationType.ApproveJoin })}),
     };
 
     static results = {
