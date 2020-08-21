@@ -56,6 +56,7 @@ import { SaveUserDetails } from '../../../business/commands/save-user-details';
 import { CommentRepository } from '../../../data/repositories/comment-repository';
 import { CreateComment } from '../../../business/commands/create-comment';
 import { GetComments } from '../../../business/commands/get-comments';
+import { DeleteComment } from '../../../business/commands/delete-comment';
 
 export class CreateCommonContainer implements ICreateContainer {
     private readonly dataDatabaseConnection: ReadonlyArray<any> = [
@@ -84,6 +85,7 @@ export class CreateCommonContainer implements ICreateContainer {
         { createNotificationToken: asClass(CreateNotificationToken).transient().classic() },
         { getNotificationTokens: asClass(GetNotificationTokens).transient().classic() },
         { deleteNotificationToken: asClass(DeleteNotificationToken).transient().classic() },
+        { deleteComment: asClass(DeleteComment).transient().classic() },
         { joinEvent: asClass(JoinEvent).transient().classic() },
         { getUserById: asClass(GetUserById).transient().classic() },
         { comments: asClass(GetComments).transient().classic() },

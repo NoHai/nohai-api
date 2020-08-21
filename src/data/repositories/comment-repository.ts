@@ -11,7 +11,7 @@ export class CommentRepository implements ICommentRepository {
     constructor(private readonly userContext: UserContext) {
     }
     get(eventId: string): Observable<CommentResult[]> {
-        return from(Comment.find({ relations: ['user', 'user.details'], where: { event: eventId}, order: { date: 'ASC'}}))
+        return from(Comment.find({ relations: ['user', 'user.details'], where: { event: eventId , isDeleted: false}, order: { date: 'ASC'}}))
         .pipe(map((results) => CommentFactory.results.fromCommentEntities(results)));
     }
 
