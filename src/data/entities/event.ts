@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { Address } from './address';
 import { Sport } from './sport';
 import { User } from './user';
+import { Comment } from '../entities/comment';
 
 @Entity('event')
 export class Event extends BaseEntity {
@@ -53,6 +54,9 @@ export class Event extends BaseEntity {
 
     @Column()
     status!: number;
+
+    @OneToMany(() => Comment, (comment) => comment.event, { cascade: true, nullable : true, eager : true })
+    comments!: Comment[];
 
     constructor(init?: Partial<Event>) {
         super();

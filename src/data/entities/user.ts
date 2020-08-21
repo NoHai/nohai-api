@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { UserDetails } from './user-details';
+import { Comment } from '../entities/comment';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -28,6 +29,9 @@ export class User extends BaseEntity {
 
     @UpdateDateColumn({ name: 'modified_date' })
     modifiedDate!: Date;
+
+    @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
+    comments!: Comment[];
 
     constructor(init?: any) {
         super();

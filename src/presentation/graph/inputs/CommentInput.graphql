@@ -1,0 +1,16 @@
+"""
+An input model used for messages.
+"""
+input CommentInput {
+  "The id of the author."
+  authorId: String!
+
+  "The id of the event."
+  eventId: String!
+
+  "The message content."
+  description: String!
+
+  "The Message date."
+  date: DateTime!
+}

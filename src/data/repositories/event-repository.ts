@@ -1,5 +1,5 @@
 import { from, Observable, of, zip } from 'rxjs';
-import { map, switchMap, flatMap, catchError } from 'rxjs/operators';
+import { map, switchMap, flatMap, catchError, tap } from 'rxjs/operators';
 import { EventInput } from '../../business/models/inputs/event-input';
 import { Event as EventResult } from '../../business/models/results/event';
 import { Pagination } from '../../business/models/results/pagination';

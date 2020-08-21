@@ -20,7 +20,7 @@ export class UserEventsFactory {
         fromUserEventsEntities: (userEvents: UserEventsEntity[]): UserEventsResult[] => {
             return userEvents.map((userEvent) => new UserEventsResult({
                 ...userEvent,
-                user: User.findOne(userEvent.userId),
+                user: User.findOne(userEvent.userId, { relations: ['details']}),
             }));
         },
 

@@ -41,6 +41,9 @@ import { ISaveEvent } from '../../../business/commands/i-save-event';
 import { IActivateUser } from '../../../business/commands/i-activate-user';
 import { IResendActivationEmail } from '../../../business/commands/i-resend-activation-email';
 import { ISaveUserDetails } from '../../../business/commands/i-save-user-details';
+import { ICreateComment } from '../../../business/commands/i-create-comment';
+import { IGetComments } from '../../../business/commands/i-get-comments';
+import { IDeleteComment } from '../../../business/commands/i-delete-comment';
 
 export class InitializeGraph implements IInitializeGraph {
     private static readonly rootPath = `${__dirname}/../../graph`;
@@ -73,6 +76,7 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly saveEvent: ISaveEvent,
                 private readonly createUser: ICreateUser,
                 private readonly createTokens: ICreateTokens,
+                private readonly createComment: ICreateComment,
                 private readonly updateUser: IUpdateUser,
                 private readonly eventById: IGetEventById,
                 private readonly eventDetails: IGetEventDetails,
@@ -91,6 +95,8 @@ export class InitializeGraph implements IInitializeGraph {
                 private readonly rejectRequest: IRejectRequest,
                 private readonly cities: IGetCities,
                 private readonly counties: IGetCounties,
+                private readonly comments: IGetComments,
+                private readonly deleteComment: IDeleteComment,
                 private readonly markAsRead: IMarkAsRead,
                 private readonly markAllAsRead: IMarkAllAsRead,
                 private readonly recoverPassword: IRecoverPassword,
@@ -151,6 +157,7 @@ export class InitializeGraph implements IInitializeGraph {
                 rootValue: {
                     auth: (context: any) => this.executer(expContext, () => this.createTokens.execute(context.input).toPromise(), false),
                     saveEvent: (context: any) => this.executer(expContext, () => this.saveEvent.execute(context.input).toPromise()),
+                    saveComment: (context: any) => this.executer(expContext, () => this.createComment.execute(context.input).toPromise()),
                     createUser: (context: any) => this.executer(expContext,
                         () => this.createUser.execute(context.input).toPromise(), false),
                     eventById: (context: any) => this.executer(expContext, () => this.eventById.execute(context).toPromise(), false),
@@ -184,6 +191,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.cities.execute(context.parameter).toPromise()),
                     counties: (context: any) => this.executer(expContext,
                         () => this.counties.execute(context.parameter).toPromise()),
+                    comments: (context: any) => this.executer(expContext,
+                        () => this.comments.execute(context.parameter).toPromise()),
                     markAsRead: (context: any) => this.executer(expContext,
                         () => this.markAsRead.execute(context.parameter).toPromise()),
                     markAllAsRead: (context: any) => this.executer(expContext,
@@ -194,6 +203,8 @@ export class InitializeGraph implements IInitializeGraph {
                         () => this.updateCredentials.execute(context.input).toPromise(), false),
                     cancelEvent: (context: any) => this.executer(expContext,
                         () => this.cancelEvent.execute(context.parameter).toPromise()),
+                    deleteComment: (context: any) => this.executer(expContext,
+                        () => this.deleteComment.execute(context.parameter).toPromise()),
                     leaveEvent: (context: any) => this.executer(expContext,
                         () => this.leaveEvent.execute(context.parameter).toPromise()),
                     kickoutUser: (context: any) => this.executer(expContext,

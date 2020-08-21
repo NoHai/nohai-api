@@ -47,4 +47,7 @@ type Event {
 
     "The status of the event"
     status: Int
+
+    "Comments of the event"
+    comments: [Comment]
 }
